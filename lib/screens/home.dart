@@ -1,4 +1,5 @@
 import 'package:active_ecommerce_flutter/data_model/product_mini_response.dart';
+import 'package:active_ecommerce_flutter/dummy_data/products.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/flash_deal_list.dart';
@@ -7,6 +8,7 @@ import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
 import 'package:active_ecommerce_flutter/screens/category_products.dart';
 import 'package:active_ecommerce_flutter/screens/category_list.dart';
 import 'package:active_ecommerce_flutter/ui_sections/drawer.dart';
+import 'package:active_ecommerce_flutter/utill/color_resources.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:active_ecommerce_flutter/repositories/sliders_repository.dart';
@@ -115,7 +117,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       page: _productPage,
     );
 
-    _featuredProductList=productList;
+    _featuredProductList=productList_;
    // _featuredProductList.addAll(productResponse.products);
     _isProductInitial = false;
     _totalProductData = productResponse.meta.total;
@@ -203,6 +205,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     slivers: <Widget>[
                       SliverList(
                         delegate: SliverChildListDelegate([
+
                           AppConfig.purchase_code == ""
                               ? Padding(
                                   padding: const EdgeInsets.fromLTRB(
@@ -266,7 +269,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           ),
                         ]),
                       ),
-                      SliverList(
+                      /* SliverList(
                         delegate: SliverChildListDelegate([
                           Padding(
                             padding: const EdgeInsets.fromLTRB(
@@ -302,8 +305,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             child: buildHomeFeaturedCategories(context),
                           ),
                         ),
-                      ),
-                      SliverList(
+                      ),*/
+                   /*   SliverList(
                         delegate: SliverChildListDelegate([
                           Padding(
                             padding: const EdgeInsets.fromLTRB(
@@ -341,13 +344,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             height: 80,
                           )
                         ]),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),
-                Align(
+             /*   Align(
                     alignment: Alignment.center,
-                    child: buildProductLoadingContainer())
+                    child: buildProductLoadingContainer())*/
               ],
             )),
       ),
@@ -361,17 +364,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               scontroller: _featuredProductScrollController));
     } else if (_featuredProductList.length > 0) {
       //snapshot.hasData
-
       return GridView.builder(
         // 2
         //addAutomaticKeepAlives: true,
-        itemCount: _featuredProductList.length,
+        itemCount: productList_.length,
         controller: _featuredProductScrollController,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
+        scrollDirection: Axis.horizontal,
+      /*  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
-            childAspectRatio: 0.618),
+            childAspectRatio: 0.618),*/
         padding: EdgeInsets.all(8),
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -509,21 +512,23 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             width: MediaQuery.of(context).size.width / 5 - 4,
             child: Column(
               children: [
-                Container(
-                    height: 57,
-                    width: 57,
+                Container( // All Category Container
+                    height: 40,
+                    width: 40,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(color: MyTheme.light_grey, width: 1)),
+                      //  shape: BoxShape.circle,
+                      color: MyTheme.primary_Colour,
+                      borderRadius: BorderRadius.circular(10),
+                       // border: Border.all(color: MyTheme.light_grey, width: 1)
+                    ),
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Image.asset("assets/top_categories.png"),
+                      padding: const EdgeInsets.all(8),
+                      child: Image.asset("assets/all_category.png",color: Colors.white,),
                     )),
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    AppLocalizations.of(context).home_screen_top_categories,
+                  child: Text("All Category",
+                  //  AppLocalizations.of(context).home_screen_top_categories,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Color.fromRGBO(132, 132, 132, 1),
@@ -542,25 +547,28 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               );
             }));
           },
-          child: Container(
+          child: Container( // Top  Seller
             height: 100,
             width: MediaQuery.of(context).size.width / 5 - 4,
             child: Column(
               children: [
                 Container(
-                    height: 57,
-                    width: 57,
+                    height: 40,
+                    width: 40,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(color: MyTheme.light_grey, width: 1)),
-                    child: Padding(
+                      //  shape: BoxShape.circle,
+                      color: MyTheme.primary_Colour,
+                      borderRadius: BorderRadius.circular(10),
+                      // border: Border.all(color: MyTheme.light_grey, width: 1)
+                    ),
+                  child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Image.asset("assets/brands.png"),
+                      child: Image.asset("assets/top_seller.png",color: Colors.white),
                     )),
                 Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(AppLocalizations.of(context).home_screen_brands,
+                    child: Text("Top Seller",
+                        //AppLocalizations.of(context).home_screen_brands,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Color.fromRGBO(132, 132, 132, 1),
@@ -575,25 +583,27 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               return TopSellingProducts();
             }));
           },
-          child: Container(
+          child: Container(// Top Selling
             height: 100,
             width: MediaQuery.of(context).size.width / 5 - 4,
             child: Column(
               children: [
                 Container(
-                    height: 57,
-                    width: 57,
+                    height: 40,
+                    width: 40,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(color: MyTheme.light_grey, width: 1)),
-                    child: Padding(
+                      //  shape: BoxShape.circle,
+                      color: MyTheme.primary_Colour,
+                      borderRadius: BorderRadius.circular(10),
+                      // border: Border.all(color: MyTheme.light_grey, width: 1)
+                    ),                    child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Image.asset("assets/top_sellers.png"),
+                      child: Image.asset("assets/icon/top_seller.png",color: Colors.white),
                     )),
                 Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(AppLocalizations.of(context).home_screen_top_sellers,
+                    child: Text("Top Selling",
+                        //AppLocalizations.of(context).home_screen_top_sellers,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Color.fromRGBO(132, 132, 132, 1),
@@ -608,25 +618,28 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               return TodaysDealProducts();
             }));
           },
-          child: Container(
+          child: Container( // Group Buying Container
             height: 100,
             width: MediaQuery.of(context).size.width / 5 - 4,
             child: Column(
               children: [
                 Container(
-                    height: 57,
-                    width: 57,
+                    height: 40,
+                    width: 40,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(color: MyTheme.light_grey, width: 1)),
+                      //  shape: BoxShape.circle,
+                      color: MyTheme.primary_Colour,
+                      borderRadius: BorderRadius.circular(10),
+                      // border: Border.all(color: MyTheme.light_grey, width: 1)
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Image.asset("assets/todays_deal.png"),
+                      child: Image.asset("assets/group_buying.png",color: Colors.white),
                     )),
                 Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(AppLocalizations.of(context).home_screen_todays_deal,
+                    child: Text("Group Buying",
+                        // AppLocalizations.of(context).home_screen_todays_deal,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Color.fromRGBO(132, 132, 132, 1),
@@ -641,25 +654,29 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               return FlashDealList();
             }));
           },
-          child: Container(
+          child: Container( //Brand Container
             height: 100,
             width: MediaQuery.of(context).size.width / 5 - 4,
             child: Column(
               children: [
                 Container(
-                    height: 57,
-                    width: 57,
+                    height: 40,
+                    width: 40,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(color: MyTheme.light_grey, width: 1)),
+                      //  shape: BoxShape.circle,
+                      color: MyTheme.primary_Colour,
+                      borderRadius: BorderRadius.circular(10),
+                      // border: Border.all(color: MyTheme.light_grey, width: 1)
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Image.asset("assets/flash_deal.png"),
+                      child: Image.asset("assets/brand.png",color: Colors.white,),
+
                     )),
                 Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(AppLocalizations.of(context).home_screen_flash_deal,
+                    child: Text("Brand",
+                        //AppLocalizations.of(context).home_screen_flash_deal,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Color.fromRGBO(132, 132, 132, 1),
@@ -790,7 +807,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       'assets/hamburger.png',
                       height: 16,
                       //color: MyTheme.dark_grey,
-                      color: MyTheme.dark_grey,
+                      color: MyTheme.primary_Colour,
                     ),
                   ),
                 ),
@@ -816,7 +833,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         ),
       ),
       elevation: 0.0,
-      titleSpacing: 0,
+     // titleSpacing: 0,
       actions: <Widget>[
         InkWell(
           onTap: () {
@@ -824,14 +841,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
           },
           child: Visibility(
-            visible: false,
+            visible: true,
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 18.0, horizontal: 12.0),
               child: Image.asset(
                 'assets/bell.png',
-                height: 16,
-                color: MyTheme.dark_grey,
+                height: 20,
+                color: MyTheme.primary_Colour,
               ),
             ),
           ),
@@ -841,37 +858,53 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   buildHomeSearchBox(BuildContext context) {
-    return TextField(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Filter();
-        }));
-      },
-      autofocus: false,
-      decoration: InputDecoration(
-          hintText: AppLocalizations.of(context).home_screen_search,
-          hintStyle: TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: MyTheme.textfield_grey, width: 0.5),
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(16.0),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: MyTheme.primary_Colour,
+      ),
+      padding: EdgeInsets.only(left: 10,right: 0),
+      child: TextField(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Filter();
+          }));
+        },
+        autofocus: false,
+        decoration: InputDecoration(
+           
+            hintText: AppLocalizations.of(context).home_screen_search,
+            hintStyle: TextStyle(fontSize: 12.0, color: MyTheme.white),
+            fillColor: MyTheme.primary_Colour,
+            border: InputBorder.none,
+          /*  enabledBorder: OutlineInputBorder(
+              // borderSide: BorderSide(color: MyTheme.primary_Colour, width: 0.5),
+              borderRadius: const BorderRadius.all(
+                const Radius.circular(16.0),
+              ),
             ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: MyTheme.textfield_grey, width: 1.0),
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(16.0),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyTheme.primary_Colour, width: 1.0),
+              borderRadius: const BorderRadius.all(
+                const Radius.circular(16.0),
+              ),
+            ),*/
+            suffixIcon: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: Icon(
+                    Icons.search,
+                    color: MyTheme.primary_Colour,
+                    size: 16,
+                  ),
+                )
             ),
-          ),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.search,
-              color: MyTheme.textfield_grey,
-              size: 20,
-            ),
-          ),
-          contentPadding: EdgeInsets.all(0.0)),
+            contentPadding: EdgeInsets.all(0.0)),
+      ),
     );
   }
 

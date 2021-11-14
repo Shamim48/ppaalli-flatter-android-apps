@@ -8,7 +8,7 @@ ProductMiniResponse productMiniResponseFromJson(String str) => ProductMiniRespon
 
 String productMiniResponseToJson(ProductMiniResponse data) => json.encode(data.toJson());
 
-var productList=[
+var productList_=[
   Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: "assets/splasah_screen_logo.png",main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
   Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: "assets/splasah_screen_logo.png",main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
   Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
