@@ -67,24 +67,34 @@ class _MainState extends State<Main> {
     body: _children[_currentIndex],
     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     //specify the location of the FAB
-    floatingActionButton: FloatingActionButton(
-      backgroundColor: Colors.transparent,
+    floatingActionButton: Stack(
+      children: [
+           Positioned(
+            bottom: 7,
+            left: 10,
+            right: 10,
+            child: FloatingActionButton(
+              backgroundColor: Colors.transparent,
 
-      onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Filter(
-            selected_filter: "sellers",
-          );
-        }));
-      },
-    child: new Image.asset("assets/shop.png",
-      height: 100,
-      width: 100,
-    ),
-      /*IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Filter(
+                    selected_filter: "sellers",
+                  );
+                }));
+              },
+              child: new Image.asset("assets/shop.png",
+                height: 100,
+                width: 100,
+              ),
+              /*IconButton(
     icon:
     tooltip: 'Action',
    ),*/
+            ),
+          ),
+
+      ],
     ),
     bottomNavigationBar: Container(
 
@@ -92,9 +102,9 @@ class _MainState extends State<Main> {
     borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         color: MyTheme.primary_Colour,
 
-      /*  boxShadow: [
-        BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
-      ],*/
+        boxShadow: [
+        BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 5),
+      ],
     ),
     child: ClipRRect(
     borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)) ,
@@ -111,12 +121,12 @@ class _MainState extends State<Main> {
     "assets/home.png",
     color: _currentIndex == 0
     ? MyTheme.white
-        : MyTheme.white,
+        : MyTheme.light_grey,
     /*  color: _currentIndex == 0
                             ? Theme.of(context).accentColor
                             : Color.fromRGBO(153, 153, 153, 1),
                         */
-    height: 20,
+    height: 25,
     ),
     title: Text("",
     style: TextStyle(fontSize: 12,color: MyTheme.white),
@@ -124,11 +134,11 @@ class _MainState extends State<Main> {
     ),
     BottomNavigationBarItem(
     icon: Image.asset(
-    "assets/categories.png",
+    "assets/group.png",
     color: _currentIndex == 1
     ? MyTheme.white
-        : MyTheme.white,
-    height: 20,
+        : MyTheme.light_grey,
+    height: 25,
     ),
       title: Text("",
         style: TextStyle(fontSize: 12,color: MyTheme.white),
@@ -154,8 +164,8 @@ class _MainState extends State<Main> {
     "assets/cart.png",
     color: _currentIndex == 3
     ? MyTheme.white
-        : MyTheme.white,
-    height: 20,
+        : MyTheme.light_grey,
+    height: 25,
     ),
       title: Text("",
         style: TextStyle(fontSize: 12,color: MyTheme.white),
@@ -166,8 +176,8 @@ class _MainState extends State<Main> {
     "assets/profile.png",
     color: _currentIndex == 4
     ? MyTheme.white
-        : MyTheme.white,
-    height: 20,
+        : MyTheme.light_grey,
+    height: 25,
     ),
       title: Text("",
         style: TextStyle(fontSize: 12,color: MyTheme.white),

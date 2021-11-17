@@ -618,7 +618,7 @@ class _SellerDetailsState extends State<SellerDetails> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(8, 4, 8, 8),
-              child: buildRatingWithCountRow(),
+              child: Text("Rating Bar") //buildRatingWithCountRow(),
             ),
           ],
         ),
@@ -626,6 +626,7 @@ class _SellerDetailsState extends State<SellerDetails> {
     ]);
   }
 
+/*
   Row buildRatingWithCountRow() {
     return Row(
       children: [
@@ -649,4 +650,5 @@ class _SellerDetailsState extends State<SellerDetails> {
       ],
     );
   }
+*/
 }

@@ -9,20 +9,20 @@ ProductMiniResponse productMiniResponseFromJson(String str) => ProductMiniRespon
 String productMiniResponseToJson(ProductMiniResponse data) => json.encode(data.toJson());
 
 var productList_=[
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: "assets/splasah_screen_logo.png",main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: "assets/splasah_screen_logo.png",main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
-  Product(id: 1,name: 'Textured Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Product Name',thumbnail_image: "dummy_assets/p1.jpeg",main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Blue T-Shirt',thumbnail_image: "dummy_assets/p2.jpeg",main_price: '800',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Shirt',thumbnail_image: 'dummy_assets/p3.jpeg',main_price: '700',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Sleeve',thumbnail_image: 'dummy_assets/p4.jpeg',main_price: '800',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Textured ',thumbnail_image: 'dummy_assets/p5.jpeg',main_price: '500',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: ' Short Sleeve',thumbnail_image: 'dummy_assets/p6.jpeg',main_price: '900',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: ' Short ',thumbnail_image: 'dummy_assets/p7.jpeg',main_price: '300',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Textured ',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: ' Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Textured ',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Short Sleeve',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Textured',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Money Bag',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
+  Product(id: 1,name: 'Textured ',thumbnail_image: 'assets/splash_screen_logo.png',main_price: '1000',stroked_price: '800',has_discount: false,rating: 5,sales: 5),
 ];
 
 class ProductMiniResponse {
@@ -65,9 +65,6 @@ class Product {
     this.sales,
     this.links,
   });
-
-
-
 
   int id;
   String name;
