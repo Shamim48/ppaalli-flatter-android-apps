@@ -104,6 +104,9 @@ class _ProductDetailsState extends State<ProductDetails> {
     var productDetailsResponse =
         await ProductRepository().getProductDetails(id: widget.id);
 
+     //var productDetailsResponse =_productImageList.ge;
+
+
     if (productDetailsResponse.detailed_products.length > 0) {
       _productDetails = productDetailsResponse.detailed_products[0];
       sellerChatTitleController.text =

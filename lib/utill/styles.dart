@@ -31,3 +31,37 @@ const SFBold = TextStyle(
   fontSize: Dimensions.FONT_SIZE_DEFAULT,
   fontWeight: FontWeight.w700,
 );
+
+const LatoBold = TextStyle(
+  fontFamily: 'Lato',
+  fontSize: Dimensions.FONT_SIZE_DEFAULT,
+  fontWeight: FontWeight.w700,
+);
+const LatoSemiBold = TextStyle(
+  fontFamily: 'Lato',
+  fontSize: Dimensions.FONT_SIZE_DEFAULT,
+  fontWeight: FontWeight.w600,
+);
+const LatoHeavy = TextStyle(
+  fontFamily: 'Lato',
+  fontSize: Dimensions.FONT_SIZE_DEFAULT,
+  fontWeight: FontWeight.w800,
+);
+
+const LatoRegular = TextStyle(
+  fontFamily: 'Lato',
+  fontSize: Dimensions.FONT_SIZE_DEFAULT,
+  fontWeight: FontWeight.w400,
+);
+const LatoLight = TextStyle(
+  fontFamily: 'Lato',
+  fontSize: Dimensions.FONT_SIZE_DEFAULT,
+  fontWeight: FontWeight.w300,
+);
+const LatoMedium = TextStyle(
+  fontFamily: 'Lato',
+  fontSize: Dimensions.FONT_SIZE_DEFAULT,
+  fontWeight: FontWeight.w500,
+);
+
+

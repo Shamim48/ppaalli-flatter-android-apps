@@ -96,7 +96,26 @@ flutter:
   generate: true
   assets:
     - assets/
+    - assets/icon/
     - dummy_assets/
+    - dummy_assets/icons/
+
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Lato-Heavy.ttf
+          weight: 800
+        - asset: assets/fonts/Lato-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Lato-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Lato-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Lato-Semibold.ttf
+          weight: 600
+
 
 
 

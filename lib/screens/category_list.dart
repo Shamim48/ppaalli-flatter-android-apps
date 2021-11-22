@@ -1,3 +1,5 @@
+import 'package:active_ecommerce_flutter/ui_elements/AppBar_Common.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/ui_sections/drawer.dart';
@@ -9,6 +11,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'home.dart';
 
 class CategoryList extends StatefulWidget {
   CategoryList(
@@ -30,29 +34,97 @@ class CategoryList extends StatefulWidget {
 
 class _CategoryListState extends State<CategoryList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
-     return Directionality(
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    return Directionality(
       textDirection: app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
           key: _scaffoldKey,
           drawer: MainDrawer(),
           backgroundColor: Colors.white,
-          appBar: buildAppBar(context),
-          body: Stack(children: [
-            CustomScrollView(
+          appBar: buildCommonAppBar(statusBarHeight,context),
+          body:  Container(
+            height: double.infinity,
+            width: double.infinity,
+            child:  Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+
+                Container(width: 150,
+                height: double.infinity,
+                  color: Colors.blue,
+                ),
+                SizedBox(width: 10,),
+                GridView.count(crossAxisCount: 2,
+                children: [
+                  Container(width: 80,
+                    height: 80,
+                    color: Colors.blue,
+                  ),
+                  Container(width: 80,
+                    height: 80,
+                    color: Colors.black54,
+                  ),
+                  Container(width: 80,
+                    height: 80,
+                    color: Colors.grey,
+                  ),
+                  Container(width: 80,
+                    height: 80,
+                    color: Colors.green,
+                  ),
+                  Container(width: 80,
+                    height: 80,
+                    color: Colors.yellow,
+                  ),
+                  Container(width: 80,
+                    height: 80,
+                    color: Colors.red,
+                  ),
+                  Container(width: 80,
+                    height: 80,
+                    color: Colors.blue,
+                  ),
+
+                ],
+                )
+
+              ],
+            )
+
+            /*CustomScrollView(
               slivers: [
                 SliverList(
                     delegate: SliverChildListDelegate([
-                  buildCategoryList(),
-                  Container(
-                    height: widget.is_base_category ? 60 : 90,
-                  )
-                ]))
+                      buildCategoryList(),
+                      Container(
+                        height: widget.is_base_category ? 60 : 90,
+                      )
+                    ]))
               ],
-            ),
-            Align(
+
+            ),*/
+
+          )
+        /*Stack(children: [
+            Positioned(
+              left: 5,
+              top: 5,
+              right: 5,
+              child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+
+
+              ],
+            ),),
+
+             Align(
               alignment: Alignment.bottomCenter,
               child: widget.is_base_category || widget.is_top_category
                   ? Container(
@@ -60,7 +132,38 @@ class _CategoryListState extends State<CategoryList> {
                     )
                   : buildBottomContainer(),
             )
-          ])),
+          ])*/
+
+        /*Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+
+                  Container(width: 200,)
+
+                ],
+              ),
+              SizedBox(width: 10,),
+            ],
+          )*/
+        /*Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(child: Text(
+                "ALL CATEGORIES",
+                style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primary_Colour),
+              ),),
+
+            ],
+          )*/
+      ),
     );
   }
 
@@ -94,8 +197,8 @@ class _CategoryListState extends State<CategoryList> {
               ),
             ),
       title: Text(
-        getAppBarTitle(),
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        "ALL CATEGORIES",
+        style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primary_Colour),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -247,7 +350,7 @@ class _CategoryListState extends State<CategoryList> {
                       fontWeight: FontWeight.w600),
                 ),
               ),
-              Padding(
+/*              Padding(
                 padding: EdgeInsets.fromLTRB(32, 8, 8, 4),
                 child: Row(
                   children: [
@@ -316,7 +419,7 @@ class _CategoryListState extends State<CategoryList> {
                     ),
                   ],
                 ),
-              ),
+              ),*/
             ],
           ),
         ),

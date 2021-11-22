@@ -66,7 +66,7 @@ class _SplashState extends State<Splash> {
 
       //navigateAfterFuture: loadFromFuture(), //uncomment this
       title: Text(
-        "V " + _packageInfo.version,
+        "Ppaalli ",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.white),
       ),

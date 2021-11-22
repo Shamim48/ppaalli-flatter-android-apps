@@ -16,9 +16,7 @@ class Main extends StatefulWidget {
 
   Main({Key key, go_back = true})
       : super(key: key);
-
   bool go_back;
-
 
   @override
   _MainState createState() => _MainState();
@@ -27,20 +25,30 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
 
 
-  int _currentIndex = 0;
+  int _currentIndex = 3;
   var _children = [
     Home(),
     CategoryList(
       is_base_category: true,
     ),
-    Home(),
+   // Home(),
     Cart(has_bottomnav: true),
-    Profile()
+   // Profile()
+    CategoryList()
   ];
 
   void onTapped(int i) {
     setState(() {
       _currentIndex = i;
+      /*switch(_currentIndex){
+        case 0:
+           break;
+        case 3:
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Profile();
+          }));
+          break;
+      }*/
     });
   }
 
@@ -172,19 +180,28 @@ class _MainState extends State<Main> {
       ),
     ),
     BottomNavigationBarItem(
-    icon: Image.asset(
-    "assets/profile.png",
-    color: _currentIndex == 4
-    ? MyTheme.white
-        : MyTheme.light_grey,
-    height: 25,
+    icon: GestureDetector(
+      onTap: (){
+        onTapped(3);
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Profile();
+          print('Profle tab Click');
+        }));
+      },
+
+      child: Image.asset(
+        "assets/profile.png",
+        color: _currentIndex == 3
+            ? MyTheme.white
+            : MyTheme.light_grey,
+        height: 25,
+      ),
     ),
       title: Text("",
         style: TextStyle(fontSize: 12,color: MyTheme.white),
       ),
     ),
     ],
-
 
     ),
     ),

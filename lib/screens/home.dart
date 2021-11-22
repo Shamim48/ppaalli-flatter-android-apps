@@ -955,6 +955,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             return Center( child: Column( mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
               Stack(
+                clipBehavior:  Clip.none,
               children: [
 
                 Padding(
@@ -1072,9 +1073,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             ),
                           ))),
                 ),
-                /*Positioned(
-                  right: -8,
-                  top: -8,
+              /*  Positioned(
+                  right: 3,
+                  top: 3,
                   child: Row(
                     children: [
                       Text('1h.30m.12s', style: SFSemiBold.copyWith(color: ColorResources.getPrimaryColor(context), fontSize: Dimensions.FONT_SIZE_LARGE)),
@@ -1258,9 +1259,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     ],
                                   ),
                                 ))),
-                    Positioned(
-                      right: -8,
-                      top: -8,
+                   /* Positioned(
+                      right: 0,
+                      top: 0,
                       child: Row(
                         children: [
                           Text('1h.30m.12s', style: SFSemiBold.copyWith(color: ColorResources.getPrimaryColor(context), fontSize: Dimensions.FONT_SIZE_LARGE)),
@@ -1275,7 +1276,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               child: Icon(Icons.person_add_alt_1, color: ColorResources.getBackgroundColor(context),))
                         ],
                       ),
-                    )
+                    )*/
                   ],
                 ),
               ],
