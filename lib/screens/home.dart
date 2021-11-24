@@ -13,6 +13,7 @@ import 'package:active_ecommerce_flutter/utill/color_resources.dart';
 import 'package:active_ecommerce_flutter/utill/dimensions.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:active_ecommerce_flutter/repositories/sliders_repository.dart';
@@ -65,10 +66,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   var _carouselImageList = [];
   var _featuredCategoryList = [];
   var _featuredProductList = [];
+  var _bestSellingProductList = [];
   bool _isProductInitial = true;
+  bool _isBestSellingProductInitial = true;
   bool _isCategoryInitial = true;
   bool _isCarouselInitial = true;
   int _totalProductData = 0;
+  int _totalBestSellingProductData = 0;
   int _productPage = 1;
   bool _showProductLoadingContainer = false;
 
@@ -94,6 +98,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         });
         _showProductLoadingContainer = true;
         fetchFeaturedProducts();
+        fetchBestSellingProducts();
       }
     });
   }
@@ -102,6 +107,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     fetchCarouselImages();
     fetchFeaturedCategories();
     fetchFeaturedProducts();
+    fetchBestSellingProducts();
   }
 
   fetchCarouselImages() async {
@@ -125,14 +131,29 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       page: _productPage,
     );
 
-    _featuredProductList=productList_;
-   // _featuredProductList.addAll(productResponse.products);
-   // _isProductInitial = false;
+    //_featuredProductList=productList_;
+    _featuredProductList.addAll(productResponse.data);
+    _isProductInitial = false;
     _totalProductData = _featuredProductList.length;
     _showProductLoadingContainer = false;
     setState(() {}
     );
   }
+
+  fetchBestSellingProducts() async {
+    var productResponse = await ProductRepository().getBestSellingProducts(
+    );
+
+    //_featuredProductList=productList_;
+    _bestSellingProductList.addAll(productResponse.data);
+    _isBestSellingProductInitial = false;
+    _totalBestSellingProductData = _bestSellingProductList.length;
+    _showProductLoadingContainer = false;
+    setState(() {}
+    );
+  }
+
+
 
   reset() {
     _carouselImageList.clear();
@@ -153,6 +174,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   resetProductList() {
     _featuredProductList.clear();
     _isProductInitial = true;
+    _isBestSellingProductInitial = true;
     _totalProductData = 0;
     _productPage = 1;
     _showProductLoadingContainer = false;
@@ -355,7 +377,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           child: SizedBox(
                             height: 100,
                             width: 150,
-                            child: buildHomeFeaturedProduct(context),
+                            child: buildHomeFeaturedProduct(context)
+                            //buildHomeFeaturedProduct(context),
                           ),
                         ),
                       ),
@@ -395,7 +418,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           child: SizedBox(
                             height: 100,
                             width: 150,
-                            child: buildHomeFeaturedProduct(context),
+                            child: buildHomeBestSellingProduct(context),
                           ),
                         ),
                       ),
@@ -440,7 +463,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-
 
                       SliverList(
                         delegate: SliverChildListDelegate([
@@ -615,11 +637,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       return ListView.builder(
         // 2
         // addAutomaticKeepAlives: true,
-        itemCount: productList_.length,
+        itemCount: _featuredProductList.length,
         controller: _featuredProductScrollController,
         scrollDirection: Axis.horizontal,
-
-        /* gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+/*         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
 
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
@@ -740,25 +761,25 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
        // addAutomaticKeepAlives: true,
         itemCount: _featuredProductList.length,
         controller: _featuredProductScrollController,
-        scrollDirection: Axis.horizontal,
-
-       /* gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        scrollDirection: Axis.vertical,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
 
             crossAxisSpacing: 10,
+            crossAxisCount: 2,
             mainAxisSpacing: 10,
-            childAspectRatio: 0.618),*/
+            childAspectRatio: 0.618),
         padding: EdgeInsets.all(8),
-        physics: NeverScrollableScrollPhysics(),
+      //  physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) {
           // 3
           return ProductCard(
               id: _featuredProductList[index].id,
-              image: _featuredProductList[index].thumbnail_image,
+              image: _featuredProductList[index].thumbnailImage,
               name: _featuredProductList[index].name,
-              main_price: _featuredProductList[index].main_price,
-              stroked_price: _featuredProductList[index].stroked_price,
-              has_discount: _featuredProductList[index].has_discount);
+              main_price: _featuredProductList[index].mainPrice,
+              stroked_price: _featuredProductList[index].strokedPrice,
+              has_discount: _featuredProductList[index].hasDiscount);
         },
       );
     } else if (_totalProductData == 0) {
@@ -796,21 +817,177 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           itemCount: _featuredProductList.length,
           itemExtent: 130,
           itemBuilder: (context, index) {
+            return Flexible(child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return ProductDetails(
+                       // id: _featuredProductList[index].id,
+                        id: 37,
+                      );
+                    }));
+                  },
+                  child: Container(
+                    // clipBehavior: Clip.antiAlias,
+                      height: 100,
+                      width: 130,
+                      decoration: BoxDecoration(
+                        // color: MyTheme.primary_Colour,
+                        borderRadius: BorderRadius.circular(8.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: MyTheme.primary_Colour.withOpacity(0.4),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 1), // changes position of shadow
+                          ),
+                        ],
+
+                      ),
+
+
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Column(
+
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                                width: 130,
+                                height: 60,
+                                color: MyTheme.white,
+                                child:  Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: 'assets/placeholder.png',
+                                    image: AppConfig.BASE_PATH +
+                                        _featuredProductList[index].thumbnailImage,
+                                    fit: BoxFit.scaleDown,
+                                    height: 60,
+                                    width: 130,
+                                  ),
+                                )),
+
+                            /*ClipRRect(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(16),
+                                    bottom: Radius.zero),
+                                )),*/
+                            Container(
+                                width: 130,
+                                height: 40,
+                                color: MyTheme.primary_Colour,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      _featuredProductList[index].name,
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 14, color: MyTheme.white),
+                                    ),
+                                    Row(
+                                      children: [
+                                        /*  RatingBar(
+                                      initialRating: 3,
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                      onRatingUpdate: (rating) {
+                                        print(rating);
+                                      },
+                                    ),*/
+
+                                        Flexible(child: Padding(padding: EdgeInsets.only(left: 5),
+                                          child: RatingBarIndicator(
+                                            rating: 2.75,
+                                            itemBuilder: (context, index) => Icon(
+                                              Icons.star,
+                                              color: Colors.white,
+                                            ),
+                                            itemCount: 5,
+                                            itemSize: 12.0,
+                                            direction: Axis.horizontal,
+                                          ),),),
+
+
+                                         Padding(padding: EdgeInsets.fromLTRB(5, 2, 10, 5),
+                                          child: Text(_featuredProductList[index].basePrice,style: TextStyle(fontSize: 12, color: MyTheme.white),),),
+
+                                      ],
+                                    )
+                                  ],
+                                )
+                            ),
+                          ],
+                        ),
+                      )
+                  )
+              ),
+            ));
+          });
+    } else if (!_isProductInitial && _featuredProductList.length == 0) {
+      return Container(
+          height: 100,
+          child: Center(
+              child: Text(
+            AppLocalizations.of(context).home_screen_no_category_found,
+            style: TextStyle(color: MyTheme.font_grey),
+          )));
+    } else {
+      // should not be happening
+      return Container(
+        height: 100,
+      );
+    }
+  }
+  buildHomeBestSellingProduct(context) {
+    if (_isBestSellingProductInitial && _bestSellingProductList.length == 0) {
+      return Row(
+        children: [
+          Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ShimmerHelper().buildBasicShimmer(
+                  height: 120.0,
+                  width: (MediaQuery.of(context).size.width - 32) / 3)),
+          Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ShimmerHelper().buildBasicShimmer(
+                  height: 120.0,
+                  width: (MediaQuery.of(context).size.width - 32) / 3)),
+          Padding(
+              padding: const EdgeInsets.only(right: 0.0),
+              child: ShimmerHelper().buildBasicShimmer(
+                  height: 120.0,
+                  width: (MediaQuery.of(context).size.width - 32) / 3)),
+        ],
+      );
+    } else if (_bestSellingProductList.length > 0) {
+      //snapshot.hasData
+      return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: _bestSellingProductList.length,
+          itemExtent: 130,
+          itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return CategoryProducts(
-                      category_id: _featuredProductList[index].id,
-                      category_name: _featuredProductList[index].name,
+                    return ProductDetails(
+                      id: _bestSellingProductList[index].id,
                     );
                   }));
                 },
                  child: Container(
                    // clipBehavior: Clip.antiAlias,
                     height: 100,
-                    width: 150,
+                    width: 130,
                     decoration: BoxDecoration(
                      // color: MyTheme.primary_Colour,
                       borderRadius: BorderRadius.circular(8.0),
@@ -839,14 +1016,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               color: MyTheme.white,
                               child:  Padding(
                                 padding: EdgeInsets.all(5),
-                                child: Image.asset( productList_[index].thumbnail_image)
-                                /*FadeInImage.assetNetwork(
+                                child: FadeInImage.assetNetwork(
                                   placeholder: 'assets/placeholder.png',
                                   image: AppConfig.BASE_PATH +
-                                      _featuredCategoryList[index].banner,
-
-
-                                ),*/
+                                      _bestSellingProductList[index].thumbnailImage,
+                                  fit: BoxFit.scaleDown,
+                                  height: 60,
+                                  width: 130,
+                                ),
                               )),
 
                           /*ClipRRect(
@@ -854,23 +1031,24 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     top: Radius.circular(16),
                                     bottom: Radius.zero),
                                 )),*/
-                          Container(
-                            width: 130,
-                            height: 40,
-                            color: MyTheme.primary_Colour,
-                            child: Column(
-                              children: [
-                                Text(
-                                  productList_[index].name,
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      fontSize: 14, color: MyTheme.white),
-                                ),
-                                Row(
-                                  children: [
-                                  /*  RatingBar(
+                         Flexible(child:  Container(
+                             width: 130,
+                             height: 40,
+                             color: MyTheme.primary_Colour,
+                             child: Column(
+                               children: [
+                                 Flexible(child: Text(
+                                   _bestSellingProductList[index].name,
+                                   textAlign: TextAlign.center,
+                                   overflow: TextOverflow.ellipsis,
+                                   maxLines: 1,
+                                   style: TextStyle(
+                                       fontSize: 14, color: MyTheme.white),
+                                 )),
+                                 Row(
+                                   children: [
+
+                                         /*  RatingBar(
                                       initialRating: 3,
                                       minRating: 1,
                                       direction: Axis.horizontal,
@@ -882,26 +1060,28 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                       },
                                     ),*/
 
-                                    Padding(padding: EdgeInsets.only(left: 5),
-                                    child: RatingBarIndicator(
-                                      rating: 2.75,
-                                      itemBuilder: (context, index) => Icon(
-                                        Icons.star,
-                                        color: Colors.white,
-                                      ),
-                                      itemCount: 5,
-                                      itemSize: 12.0,
-                                      direction: Axis.horizontal,
-                                    ),),
+                                       Expanded( child: Padding(padding: EdgeInsets.only(left: 5),
+                                             child: RatingBarIndicator(
+                                               rating: 2.75,
+                                               itemBuilder: (context, index) => Icon(
+                                                 Icons.star,
+                                                 color: Colors.white,
+                                               ),
+                                               itemCount: 5,
+                                               itemSize: 12.0,
+                                               direction: Axis.horizontal,
+                                             ),),),
 
-                                    Expanded(child: Container()),
-                                    Padding(padding: EdgeInsets.fromLTRB(5, 0, 10, 5),
-                                    child: Text('\$${productList_[index].main_price}',style: TextStyle(fontSize: 12, color: MyTheme.white),),)
-                                  ],
-                                )
-                              ],
-                            )
-                          ),
+                                     Padding(padding: EdgeInsets.fromLTRB(5, 2, 5, 5),
+                                       child: Text(_bestSellingProductList[index].basePrice,style: TextStyle(fontSize: 12, color: MyTheme.white),),)
+
+
+
+                                   ],
+                                 )
+                               ],
+                             )
+                         ))
                         ],
                       ),
                     )
@@ -909,7 +1089,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               ),
             );
           });
-    } else if (!_isProductInitial && _featuredProductList.length == 0) {
+    } else if (!_isBestSellingProductInitial && _bestSellingProductList.length == 0) {
       return Container(
           height: 100,
           child: Center(
@@ -924,6 +1104,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       );
     }
   }
+
   buildGroupBuyingProduct(context) {
     if (_isCategoryInitial && _featuredCategoryList.length == 0) {
       return Row(
@@ -1853,6 +2034,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       ),
     );
   }
+
 
   Container buildProductLoadingContainer() {
     return Container(

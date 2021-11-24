@@ -203,9 +203,9 @@ class _FilterState extends State<Filter> {
         max: _maxPriceController.text.toString(),
         min: _minPriceController.text.toString());
 
-    _productList.addAll(productResponse.products);
+    _productList.addAll(productResponse.data);
     _isProductInitial = false;
-    _totalProductData = productResponse.meta.total;
+    _totalProductData = productResponse.data.length;
     _showProductLoadingContainer = false;
     setState(() {});
   }

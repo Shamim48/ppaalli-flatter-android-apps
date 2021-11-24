@@ -1,18 +1,17 @@
+import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/dummy_data/featured_categories.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
+import 'package:active_ecommerce_flutter/screens/category_products.dart';
 import 'package:active_ecommerce_flutter/ui_elements/AppBar_Common.dart';
+import 'package:active_ecommerce_flutter/ui_sections/drawer.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/ui_sections/drawer.dart';
-import 'package:active_ecommerce_flutter/custom/toast_component.dart';
-import 'package:toast/toast.dart';
-import 'package:active_ecommerce_flutter/screens/category_products.dart';
-import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:active_ecommerce_flutter/app_config.dart';
-import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'home.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:toast/toast.dart';
 
 class CategoryList extends StatefulWidget {
   CategoryList(
@@ -34,6 +33,16 @@ class CategoryList extends StatefulWidget {
 
 class _CategoryListState extends State<CategoryList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool _selectedIndex = true;
+
+  void toggle(){
+    _selectedIndex = !_selectedIndex;
+  }
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -44,7 +53,55 @@ class _CategoryListState extends State<CategoryList> {
           drawer: MainDrawer(),
           backgroundColor: Colors.white,
           appBar: buildCommonAppBar(statusBarHeight,context),
-          body:  Container(
+          body: Column(
+            children: [
+              SizedBox(height: 15,),
+              Text('All Category', style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primary_Colour),),
+              SizedBox(height: 15,),
+              Expanded(
+                child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                    /*  Container(
+                        width: 130,
+                        height: double.infinity,
+                        margin: EdgeInsets.only(top: 3, left: 5, bottom: 100),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all( color: MyTheme.primary_Colour,width: 1),
+                        ),
+                        child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: 10,
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(0),
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                toggle();
+                                setState(() {
+                                });
+                              },
+                              child: CategoryItem(
+                                title: 'Item',
+                                index: _selectedIndex,
+                              ),
+                            );
+                          },
+                        ),
+                      ),*/
+
+                      Expanded(
+                        child: buildCategoryList() ,
+                      ),
+                    ]),
+              ),
+            ],
+          ),
+
+/*
+          Container(
             height: double.infinity,
             width: double.infinity,
             child:  Row(
@@ -52,50 +109,69 @@ class _CategoryListState extends State<CategoryList> {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
+               // SizedBox(width: 10,),
 
-                Container(width: 150,
-                height: double.infinity,
-                  color: Colors.blue,
+                Padding(
+                  padding: EdgeInsets.only(left: 10,top: 10,bottom: 100),
+                  child: Container(
+                    // height: double.infinity,
+                    width: 130,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: MyTheme.primary_Colour
+                      )
+                    ),
+                    child: ListView.builder(
+                      itemCount: featuredCategoryList.length,
+                        itemBuilder: (context,index){
+                      return Padding(padding: EdgeInsets.all(5),
+                      child:  Row(
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 10,
+                            decoration: BoxDecoration(
+                              color: MyTheme.primary_Colour,
+                              borderRadius: BorderRadius.circular(180),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            width: 90,
+                            child: Text( '${featuredCategoryList[index].name}',
+                              style: LatoMedium.copyWith(color: Colors.black, overflow: TextOverflow.clip,  fontSize: 14),
+
+                              //TextStyle(color: Colors.black,  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ),
+                         */
+/* Expanded(
+                            child: Container(),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 14,
+                          )*//*
+
+                        ],
+                      ),);
+                    }),
+                  ),
                 ),
-                SizedBox(width: 10,),
-                GridView.count(crossAxisCount: 2,
-                children: [
-                  Container(width: 80,
-                    height: 80,
-                    color: Colors.blue,
-                  ),
-                  Container(width: 80,
-                    height: 80,
-                    color: Colors.black54,
-                  ),
-                  Container(width: 80,
-                    height: 80,
-                    color: Colors.grey,
-                  ),
-                  Container(width: 80,
-                    height: 80,
-                    color: Colors.green,
-                  ),
-                  Container(width: 80,
-                    height: 80,
-                    color: Colors.yellow,
-                  ),
-                  Container(width: 80,
-                    height: 80,
-                    color: Colors.red,
-                  ),
-                  Container(width: 80,
-                    height: 80,
-                    color: Colors.blue,
-                  ),
 
-                ],
-                )
+                Expanded(child: Padding(
+                    padding: EdgeInsets.all(3),
+                    child: buildCategoryList()
+                ) ),
 
               ],
             )
 
-            /*CustomScrollView(
+            */
+/*CustomScrollView(
               slivers: [
                 SliverList(
                     delegate: SliverChildListDelegate([
@@ -106,9 +182,11 @@ class _CategoryListState extends State<CategoryList> {
                     ]))
               ],
 
-            ),*/
+            ),*//*
+
 
           )
+*/
         /*Stack(children: [
             Positioned(
               left: 5,
@@ -231,7 +309,91 @@ class _CategoryListState extends State<CategoryList> {
           } else if (snapshot.hasData) {
             //snapshot.hasData
             var categoryResponse = snapshot.data;
-            return SingleChildScrollView(
+            return GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 1/1.4,
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 10),
+              itemCount: categoryResponse.categories.length,
+              padding: EdgeInsets.all(12),
+              shrinkWrap: true,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index){
+                return Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey[200], width: 1),
+                        borderRadius: BorderRadius.circular(12),
+                        //boxShadow: [BoxShadow(color: Colors.grey[300], spreadRadius: 0.5, blurRadius: 0.1)],
+                      ),
+                      child: FadeInImage.assetNetwork( placeholder: 'assets/placeholder.png',
+                        image: AppConfig.BASE_PATH +
+                            categoryResponse.categories[index].banner,
+                        fit: BoxFit.scaleDown,height: 100, width: 100,),
+                    ),
+                    SizedBox(height:5,),
+                    Text(categoryResponse.categories[index].name,style: LatoMedium.copyWith(color: Colors.black), overflow: TextOverflow.ellipsis,)
+                  ],
+                );
+              },
+
+            );
+            /*GridView.builder(
+
+                  scrollDirection: Axis.vertical,
+                 // physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 5,
+                      childAspectRatio: .8/1,
+                      crossAxisSpacing: 5),
+                  itemCount: categoryResponse.categories.length,
+                  itemBuilder: (context, index) {
+                    return  Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                         Expanded(child: Container(
+                           width: 80,
+                           height: 80,
+                           decoration: BoxDecoration(
+                               color: Colors.white,
+                               borderRadius: BorderRadius.circular(10),
+                               boxShadow: [
+                                 BoxShadow(
+                                     color: Colors.black.withOpacity(.2),
+                                     spreadRadius: .5,
+                                     blurRadius: 2,
+                                     offset: Offset(0, .3))
+                               ]),
+                           child: Center(
+                               child: Padding(
+                                 padding: EdgeInsets.all(5),
+                                 child: FadeInImage.assetNetwork(
+                                   placeholder: 'assets/placeholder.png',
+                                   image: AppConfig.BASE_PATH +
+                                       categoryResponse.categories[index].banner,
+                                   fit: BoxFit.cover,
+                                  *//* height: 70,
+                                   width: 70,*//*
+                                 ),
+                               )
+                           ),
+                         ),
+
+                         ),
+                           // SizedBox(height: 5,),
+                          //  Text(categoryResponse.categories[index].name,style: LatoMedium.copyWith(color: Colors.black), overflow: TextOverflow.ellipsis,),
+                             Expanded(child:  Center(child: Text(categoryResponse.categories[index].name, overflow: TextOverflow.ellipsis,),),)
+
+                          ],
+                        )
+                    );
+                  });*/
+            /*SingleChildScrollView(
               child: ListView.builder(
                 itemCount: categoryResponse.categories.length,
                 scrollDirection: Axis.vertical,
@@ -246,6 +408,7 @@ class _CategoryListState extends State<CategoryList> {
                 },
               ),
             );
+            */
           } else {
             return SingleChildScrollView(
               child: ListView.builder(
@@ -350,7 +513,7 @@ class _CategoryListState extends State<CategoryList> {
                       fontWeight: FontWeight.w600),
                 ),
               ),
-/*              Padding(
+              Padding(
                 padding: EdgeInsets.fromLTRB(32, 8, 8, 4),
                 child: Row(
                   children: [
@@ -419,7 +582,7 @@ class _CategoryListState extends State<CategoryList> {
                     ),
                   ],
                 ),
-              ),*/
+              ),
             ],
           ),
         ),
@@ -473,6 +636,46 @@ class _CategoryListState extends State<CategoryList> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CategoryItem extends StatelessWidget {
+  final String title;
+  final bool index;
+
+  CategoryItem({@required this.title, this.index});
+
+  Widget build(BuildContext context) {
+    return Center(
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        Container(
+            height: 20,
+            width: 20,
+            margin: EdgeInsets.all(5),
+            padding: EdgeInsets.all(3),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: index ? Colors.red : Colors.white)
+            ),
+            child: Container(
+                height: 20,
+                width: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ))
+        ),
+        Text(title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: LatoMedium.copyWith(
+                fontSize: 12,
+                color: Colors.black)),
+      ]),
     );
   }
 }

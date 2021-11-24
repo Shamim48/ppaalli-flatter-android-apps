@@ -102,16 +102,16 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   fetchProductDetails() async {
     var productDetailsResponse =
-        await ProductRepository().getProductDetails(id: widget.id);
+        await ProductRepository().getProductDetails(id: 37);
 
-     //var productDetailsResponse =_productImageList.ge;
+    // var productDetailsResponse =_productImageList.ge;
 
 
-    if (productDetailsResponse.detailed_products.length > 0) {
-      _productDetails = productDetailsResponse.detailed_products[0];
-      sellerChatTitleController.text =
-          productDetailsResponse.detailed_products[0].name;
-    }
+   // if (productDetailsResponse.data.length > 0) {
+      _productDetails = productDetailsResponse.data;
+      print(productDetailsResponse.data);
+    //  sellerChatTitleController.text = productDetailsResponse.data[0].name;
+   // }
 
     setProductDetailValues();
 
@@ -121,7 +121,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   fetchRelatedProducts() async {
     var relatedProductResponse =
         await ProductRepository().getRelatedProducts(id: widget.id);
-    _relatedProducts.addAll(relatedProductResponse.products);
+    _relatedProducts.addAll(relatedProductResponse.data);
     _relatedProductInit = true;
 
     setState(() {});
@@ -130,7 +130,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   fetchTopProducts() async {
     var topProductResponse =
         await ProductRepository().getTopFromThisSellerProducts(id: widget.id);
-    _topProducts.addAll(topProductResponse.products);
+    _topProducts.addAll(topProductResponse.data);
     _topProductInit = true;
   }
 

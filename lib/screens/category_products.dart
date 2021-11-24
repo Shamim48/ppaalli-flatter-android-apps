@@ -60,9 +60,9 @@ class _CategoryProductsState extends State<CategoryProducts> {
   fetchData() async {
     var productResponse = await ProductRepository().getCategoryProducts(
         id: widget.category_id, page: _page, name: _searchKey);
-    _productList.addAll(productResponse.products);
+    _productList.addAll(productResponse.data);
     _isInitial = false;
-    _totalData = productResponse.meta.total;
+    _totalData = productResponse.data.length;
     _showLoadingContainer = false;
     setState(() {});
   }

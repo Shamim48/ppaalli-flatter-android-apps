@@ -78,7 +78,7 @@ class _SellerDetailsState extends State<SellerDetails> {
   fetchNewArrivalProducts() async {
     var newArrivalProductResponse =
         await ShopRepository().getNewFromThisSellerProducts(id: widget.id);
-    _newArrivalProducts.addAll(newArrivalProductResponse.products);
+    _newArrivalProducts.addAll(newArrivalProductResponse.data);
     _newArrivalProductInit = true;
 
     setState(() {});
@@ -87,14 +87,14 @@ class _SellerDetailsState extends State<SellerDetails> {
   fetchTopProducts() async {
     var topProductResponse =
         await ShopRepository().getTopFromThisSellerProducts(id: widget.id);
-    _topProducts.addAll(topProductResponse.products);
+    _topProducts.addAll(topProductResponse.data);
     _topProductInit = true;
   }
 
   fetchFeaturedProducts() async {
     var featuredProductResponse =
         await ShopRepository().getfeaturedFromThisSellerProducts(id: widget.id);
-    _featuredProducts.addAll(featuredProductResponse.products);
+    _featuredProducts.addAll(featuredProductResponse.data);
     _featuredProductInit = true;
   }
 

@@ -62,9 +62,9 @@ class _SellerProductsState extends State<SellerProducts> {
 
   fetchData() async {
     var productResponse = await ProductRepository().getShopProducts(id:widget.id,page: _page, name: _searchKey);
-    _productList.addAll(productResponse.products);
+    _productList.addAll(productResponse.data);
     _isInitial = false;
-    _totalData = productResponse.meta.total;
+    _totalData = productResponse.data.length;
     _showLoadingContainer = false;
     setState(() {});
   }
