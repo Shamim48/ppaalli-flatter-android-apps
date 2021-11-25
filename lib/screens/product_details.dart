@@ -34,7 +34,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class ProductDetails extends StatefulWidget {
-  int id;
+  int id=37;
 
   ProductDetails({Key key, this.id}) : super(key: key);
 
@@ -96,7 +96,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       fetchWishListCheckInfo();
     }
 
-    fetchRelatedProducts();
+   // fetchRelatedProducts();
     fetchTopProducts();
   }
 
@@ -105,12 +105,10 @@ class _ProductDetailsState extends State<ProductDetails> {
         await ProductRepository().getProductDetails(id: 37);
 
     // var productDetailsResponse =_productImageList.ge;
-
-
    // if (productDetailsResponse.data.length > 0) {
-      _productDetails = productDetailsResponse.data;
-      print(productDetailsResponse.data);
-    //  sellerChatTitleController.text = productDetailsResponse.data[0].name;
+      _productDetails = productDetailsResponse;
+      print('Product Details : ${productDetailsResponse.data}');
+      sellerChatTitleController.text = productDetailsResponse.data[0].name;
    // }
 
     setProductDetailValues();
@@ -136,28 +134,28 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   setProductDetailValues() {
     if (_productDetails != null) {
-      _appbarPriceString = _productDetails.price_high_low;
-      _singlePrice = _productDetails.calculable_price;
-      _singlePriceString = _productDetails.main_price;
-      calculateTotalPrice();
-      _stock = _productDetails.current_stock;
-      _productDetails.photos.forEach((photo) {
+      _appbarPriceString = _productDetails.data[0].priceHighLow;
+      _singlePrice = _productDetails.data[0].calculablePrice;
+      _singlePriceString = _productDetails.data[0].mainPrice;
+     // calculateTotalPrice();
+      _stock = _productDetails.data[0].currentStock;
+     /* _productDetails.data[0].photos.forEach((photo) {
         _productImageList.add(photo.path);
-      });
+      });*/
 
-      _productDetails.choice_options.forEach((choice_opiton) {
+     /* _productDetails.data[0].choice_options.forEach((choice_opiton) {
         _selectedChoices.add(choice_opiton.options[0]);
       });
-      _productDetails.colors.forEach((color) {
+      _productDetails.data[0].colors.forEach((color) {
         _colorList.add(color);
-      });
+      });*/
 
       setChoiceString();
-
-      if (_productDetails.colors.length > 0 ||
-          _productDetails.choice_options.length > 0) {
+/*
+      if (_productDetails.data[0].colors.length > 0 ||
+          _productDetails.data[0].choice_options.length > 0) {
         fetchAndSetVariantWiseInfo(change_appbar_string: true);
-      }
+      }*/
       _productDetailsFetched = true;
 
       setState(() {});
@@ -733,7 +731,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       child: _productDetails != null
                           ? Text(
-                              _productDetails.name,
+                              _productDetails.data[0].name,
                               style: TextStyle(
                                   fontSize: 16,
                                   color: MyTheme.font_grey,
@@ -766,11 +764,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                       16.0,
                       0.0,
                     ),
-                    child: _productDetails != null
+                   /* child: _productDetails != null
                         ? buildBrandRow()
                         : ShimmerHelper().buildBasicShimmer(
                             height: 50.0,
-                          ),
+                          ),*/
                   ),
                   Divider(
                     height: 24.0,
@@ -786,7 +784,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       0.0,
                     ),
                     child: _productDetails != null
-                        ? buildMainPriceRow()
+                        ? buildMainPriceRow(                                                                                                                                                                                                                                                                                                                                                                                      )
                         : ShimmerHelper().buildBasicShimmer(
                             height: 30.0,
                           ),
@@ -813,12 +811,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                     height: 24.0,
                   ),
                 ])),
-                SliverList(
+                /*SliverList(
                     delegate: SliverChildListDelegate([
                   _productDetails != null
                       ? buildChoiceOptionList()
                       : buildVariantShimmers(),
-                ])),
+                ])),*/
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(
@@ -928,7 +926,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     InkWell(
                       onTap: () {
-                        if (_productDetails.video_link == "") {
+                        if (_productDetails.data[0].videoLink == "") {
                           ToastComponent.showDialog(
                               AppLocalizations.of(context).product_details_screen_video_not_available, context,
                               gravity: Toast.CENTER,
@@ -1215,7 +1213,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     //print("sl:" + AppConfig.BASE_PATH + _productDetails.shop_logo);
     return Row(
       children: [
-        _productDetails.added_by == "admin"
+        _productDetails.data[0].addedBy == "admin"
             ? Container()
             : Padding(
                 padding: app_language_rtl.$ ? EdgeInsets.only(left: 8.0) : EdgeInsets.only(right: 8.0),
@@ -1228,11 +1226,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                         color: Color.fromRGBO(112, 112, 112, .3), width: 0.5),
                     //shape: BoxShape.rectangle,
                   ),
-                  child: FadeInImage.assetNetwork(
+                 /* child: FadeInImage.assetNetwork(
                     placeholder: 'assets/placeholder.png',
-                    image: AppConfig.BASE_PATH + _productDetails.shop_logo,
+                    image: AppConfig.BASE_PATH + _productDetails.data[0].shopLogo,
                     fit: BoxFit.cover,
-                  ),
+                  ),*/
                 ),
               ),
         Container(
@@ -1244,13 +1242,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                   style: TextStyle(
                     color: Color.fromRGBO(153, 153, 153, 1),
                   )),
-              Text(
-                _productDetails.shop_name,
+              /*Text(
+                _productDetails.data[0].shopName,
                 style: TextStyle(
                     color: MyTheme.font_grey,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
-              )
+              )*/
             ],
           ),
         ),
@@ -1300,13 +1298,13 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
         ),
-        Text(
-          _productDetails.currency_symbol + _totalPrice.toString(),
+       /* Text(
+          _productDetails.data[0].currencySymbol + _totalPrice.toString(),
           style: TextStyle(
               color: MyTheme.accent_color,
               fontSize: 18.0,
               fontWeight: FontWeight.w600),
-        )
+        )*/
       ],
     );
   }
@@ -1429,9 +1427,9 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  buildChoiceOptionList() {
+ /* buildChoiceOptionList() {
     return ListView.builder(
-      itemCount: _productDetails.choice_options.length,
+      itemCount: _productDetails.data[0].choiceOptions.length,
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -1442,7 +1440,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         );
       },
     );
-  }
+  }*/
 
   buildChoiceOpiton(choice_options, choice_options_index) {
     return Padding(
@@ -1634,7 +1632,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
             child: Text(
-              _productDetails.earn_point.toString(),
+              _productDetails.data[0].earnPoint.toString(),
               style: TextStyle(color: MyTheme.golden, fontSize: 12.0),
             ),
           ),
@@ -1656,24 +1654,24 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
         ),
-        _productDetails.has_discount
+/*        _productDetails.data[0].hasDiscount
             ? Padding(
                 padding: EdgeInsets.only(right: 8.0),
-                child: Text(_productDetails.stroked_price,
+                child: Text(_productDetails.data[0].strokedPrice,
                     style: TextStyle(
                         decoration: TextDecoration.lineThrough,
                         color: Color.fromRGBO(224, 224, 225, 1),
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600)),
               )
-            : Container(),
-        Text(
+            : Container(),*/
+        /*Text(
           _singlePriceString,
           style: TextStyle(
               color: MyTheme.accent_color,
               fontSize: 18.0,
               fontWeight: FontWeight.w600),
-        )
+        )*/
       ],
     );
   }
@@ -1697,7 +1695,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             child: Padding(
               padding: const EdgeInsets.only(top: 22.0),
               child: Text(
-                _appbarPriceString,
+                "_appbarPriceString",
                 style: TextStyle(fontSize: 16, color: MyTheme.font_grey),
               ),
             )),
@@ -1779,7 +1777,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         RatingBar(
           itemSize: 18.0,
           ignoreGestures: true,
-          initialRating: double.parse(_productDetails.rating.toString()),
+          initialRating: double.parse(_productDetails.data[0].rating.toString()),
           direction: Axis.horizontal,
           allowHalfRating: false,
           itemCount: 5,
@@ -1796,7 +1794,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Text(
-            "(" + _productDetails.rating_count.toString() + ")",
+            "(" + _productDetails.data[0].ratingCount.toString() + ")",
             style: TextStyle(
                 color: Color.fromRGBO(152, 152, 153, 1), fontSize: 14),
           ),
@@ -1828,11 +1826,11 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   buildBrandRow() {
-    return _productDetails.brand.id > 0
+    return _productDetails.data[0].brand.id > 0
         ? InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return BrandProducts(id: _productDetails.brand.id,brand_name: _productDetails.brand.name,);
+                return BrandProducts(id: _productDetails.data[0].brand.id,brand_name: _productDetails.data[0].brand.name,);
               }));
             },
             child: Row(
@@ -1850,7 +1848,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Text(
-                    _productDetails.brand.name,
+                    _productDetails.data[0].brand.name,
                     style: TextStyle(
                         color: Color.fromRGBO(152, 152, 153, 1), fontSize: 16),
                   ),
@@ -1869,7 +1867,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       borderRadius: BorderRadius.circular(5),
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/placeholder.png',
-                        image: AppConfig.BASE_PATH + _productDetails.brand.logo,
+                        image: AppConfig.BASE_PATH + _productDetails.data[0].brand.logo,
                         fit: BoxFit.contain,
                       )),
                 ),
@@ -1885,11 +1883,11 @@ class _ProductDetailsState extends State<ProductDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Expandable(
+          /*Expandable(
             collapsed: Container(
-                height: 50, child: Html(data: _productDetails.description)),
-            expanded: Container(child: Html(data: _productDetails.description)),
-          ),
+                height: 50, child: Html(data: _productDetails.data[0].description)),
+            expanded: Container(child: Html(data: _productDetails.data[0].description)),
+          ),*/
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[

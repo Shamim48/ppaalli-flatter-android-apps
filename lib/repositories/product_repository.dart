@@ -93,9 +93,9 @@ class ProductRepository {
   }
 
   Future<ProductDetailsResponse> getProductDetails(
-      {@required int id = 0}) async {
+      {@required int id = 37}) async {
    // Uri url = Uri.parse("${AppConfig.BASE_URL}/products/${37}");
-    Uri url = Uri.parse("https://ecommerce9.nextpagetl.com/api/v2/products?id=${37}");
+    Uri url = Uri.parse("https://ecommerce9.nextpagetl.com/api/v2/products/${id}");
     final response = await http.get(url, headers: {
       "App-Language": app_language.$,
     });
@@ -104,7 +104,7 @@ class ProductRepository {
 
   Future<ProductMiniResponse> getRelatedProducts({@required int id = 0}) async {
     Uri url =
-        Uri.parse("${AppConfig.BASE_URL}/products/related/" + " ${id}");
+        Uri.parse("${AppConfig.BASE_URL}/products/related/" +id.toString());
     final response = await http.get(url, headers: {
       "App-Language": app_language.$,
     });

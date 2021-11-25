@@ -110,7 +110,9 @@ class Data {
       });
     }
     thumbnailImage = json['thumbnail_image'];
-    tags = json['tags'].cast<String>();
+    if (json['tags'] != null) {
+      tags = json['tags'].cast<String>();
+    }
     priceHighLow = json['price_high_low'];
     if (json['choice_options'] != null) {
       choiceOptions = new List<ChoiceOptions>();
@@ -118,7 +120,9 @@ class Data {
         choiceOptions.add(new ChoiceOptions.fromJson(v));
       });
     }
-    colors = json['colors'].cast<String>();
+    if (json['colors'] != null) {
+      colors = json['colors'].cast<String>();
+    }
     hasDiscount = json['has_discount'];
     strokedPrice = json['stroked_price'];
     mainPrice = json['main_price'];

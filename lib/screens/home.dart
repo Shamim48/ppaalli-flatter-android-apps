@@ -823,8 +823,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return ProductDetails(
-                       // id: _featuredProductList[index].id,
-                        id: 37,
+                      //  id: _featuredProductList[index].id,
+                      //  id: 37,
+
                       );
                     }));
                   },
@@ -980,7 +981,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return ProductDetails(
-                      id: _bestSellingProductList[index].id,
+                     // id: _bestSellingProductList[index].id,
                     );
                   }));
                 },
