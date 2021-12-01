@@ -35,6 +35,7 @@ class Images{
   static const String message = 'assets/images/Message.png';
   static const String account_profile = 'assets/images/account_profile.png';
   static const String lets_drive = 'assets/images/lest_drive.png';
+  static const String product_background_shape = 'assets/images/product_background_shape.png';
 
   // Home Images
  //  static const String  user='assets/images/user.png';
