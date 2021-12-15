@@ -817,14 +817,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           itemCount: _featuredProductList.length,
           itemExtent: 130,
           itemBuilder: (context, index) {
-            return Flexible(child: Padding(
+            return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return ProductDetails(
-                        id: _featuredProductList[index].id,
-
+                        id: _bestSellingProductList[index].id,
                       );
                     }));
                   },
@@ -875,22 +874,23 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     top: Radius.circular(16),
                                     bottom: Radius.zero),
                                 )),*/
-                            Container(
+                            Flexible(child:  Container(
                                 width: 130,
                                 height: 40,
                                 color: MyTheme.primary_Colour,
                                 child: Column(
                                   children: [
-                                    Text(
-                                      _featuredProductList[index].name,
+                                    Flexible(child: Text(
+                                      _bestSellingProductList[index].name,
                                       textAlign: TextAlign.center,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       style: TextStyle(
                                           fontSize: 14, color: MyTheme.white),
-                                    ),
+                                    )),
                                     Row(
                                       children: [
+
                                         /*  RatingBar(
                                       initialRating: 3,
                                       minRating: 1,
@@ -903,7 +903,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                       },
                                     ),*/
 
-                                        Flexible(child: Padding(padding: EdgeInsets.only(left: 5),
+                                        Expanded( child: Padding(padding: EdgeInsets.only(left: 5),
                                           child: RatingBarIndicator(
                                             rating: 2.75,
                                             itemBuilder: (context, index) => Icon(
@@ -915,21 +915,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                             direction: Axis.horizontal,
                                           ),),),
 
+                                        Padding(padding: EdgeInsets.fromLTRB(5, 2, 5, 5),
+                                          child: Text(_featuredProductList[index].basePrice,style: TextStyle(fontSize: 12, color: MyTheme.white),),)
 
-                                         Padding(padding: EdgeInsets.fromLTRB(5, 2, 10, 5),
-                                          child: Text(_featuredProductList[index].basePrice,style: TextStyle(fontSize: 12, color: MyTheme.white),),),
 
                                       ],
                                     )
                                   ],
                                 )
-                            ),
+                            ))
                           ],
                         ),
                       )
                   )
               ),
-            ));
+            );
           });
     } else if (!_isProductInitial && _featuredProductList.length == 0) {
       return Container(
@@ -946,6 +946,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       );
     }
   }
+
   buildHomeBestSellingProduct(context) {
     if (_isBestSellingProductInitial && _bestSellingProductList.length == 0) {
       return Row(

@@ -771,38 +771,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ]),
                 ),
 
-                /*  SliverList(
-                    delegate: SliverChildListDelegate([
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      16.0,
-                      8.0,
-                      16.0,
-                      0.0,
-                    ),
-                    child: _productDetails != null
-                        ? buildRatingAndWishButtonRow()
-                        : ShimmerHelper().buildBasicShimmer(
-                            height: 30.0,
-                          ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      16.0,
-                      16.0,
-                      16.0,
-                      0.0,
-                    ),
-                   */ /* child: _productDetails != null
-                        ? buildBrandRow()
-                        : ShimmerHelper().buildBasicShimmer(
-                            height: 50.0,
-                          ),*/ /*
-                  ),
-                  Divider(
-                    height: 24.0,
-                  ),
-                ])),*/
+
                 SliverList(
                     delegate: SliverChildListDelegate([
                   Padding(
@@ -813,147 +782,87 @@ class _ProductDetailsState extends State<ProductDetails> {
                       0.0,
                     ),
                     child: _productDetails != null
-                        ? buildMainPriceRow()
+                        ? Row(
+                      children: [
+                        SizedBox(width: 10,),
+                        buildQuantityRow(),
+                        Expanded(child: Container()),
+                        buildMainPriceRow(),
+                        SizedBox(width: 10,),
+                      ],
+                    )
                         : ShimmerHelper().buildBasicShimmer(
                             height: 30.0,
                           ),
                   ),
                 ])),
+
                 SliverList(
                     delegate: SliverChildListDelegate([
-                  AddonConfig.club_point_addon_installed
-                      ? Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            16.0,
-                            8.0,
-                            16.0,
-                            0.0,
-                          ),
-                          child: _productDetails != null
-                              ? buildClubPointRow()
-                              : ShimmerHelper().buildBasicShimmer(
-                                  height: 30.0,
-                                ),
-                        )
-                      : Container(),
-                  Divider(
-                    height: 24.0,
-                  ),
-                ])),
-                /*SliverList(
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          16.0,
+                          16.0,
+                          16.0,
+                          10.0,
+                        ),
+                        child: _productDetails != null
+                            ? buildSellerRow(context)
+                            : ShimmerHelper().buildBasicShimmer(
+                          height: 50.0,
+                        ),
+                      ),
+                    ])),
+
+                 SliverList(
                     delegate: SliverChildListDelegate([
-                  _productDetails != null
-                      ? buildChoiceOptionList()
-                      : buildVariantShimmers(),
-                ])),*/
-                /* SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      16.0,
-                      16.0,
-                      16.0,
-                      0.0,
-                    ),
-                    child: _productDetails != null
-                        ? (_colorList.length > 0
-                            ? buildColorColumn()
-                            : Container())
-                        : ShimmerHelper().buildBasicShimmer(
-                            height: 30.0,
-                          ),
-                  ),
-                ),*/
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          16.0,
+                          16.0,
+                          16.0,
+                          0.0,
+                        ),
+                        child: _productDetails != null
+                            ? buildDiscountRow(context)
+                            : ShimmerHelper().buildBasicShimmer(
+                          height: 50.0,
+                        ),
+                      ),
+                    ])),
+
+
                 SliverList(
                     delegate: SliverChildListDelegate([
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      16.0,
-                      8.0,
-                      16.0,
-                      0.0,
-                    ),
-                    child: _productDetails != null
-                        ? buildQuantityRow()
-                        : ShimmerHelper().buildBasicShimmer(
-                            height: 30.0,
-                          ),
-                  ),
-                ])),
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      16.0,
-                      16.0,
-                      16.0,
-                      0.0,
-                    ),
-                    child: _productDetails != null
-                        ? buildTotalPriceRow()
-                        : ShimmerHelper().buildBasicShimmer(
-                            height: 30.0,
-                          ),
-                  ),
-                  Divider(
-                    height: 24.0,
-                  ),
-                ])),
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      16.0,
-                      0.0,
-                      16.0,
-                      0.0,
-                    ),
-                    child: _productDetails != null
-                        ? buildSellerRow(context)
-                        : ShimmerHelper().buildBasicShimmer(
-                            height: 50.0,
-                          ),
-                  ),
-                  Divider(
-                    height: 24,
-                  ),
-                ])),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          16.0,
+                          12.0,
+                          250.0,
+                          0.0,
+                        ),
+                        child: buildDescription(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          8.0,
+                          5.0,
+                          8.0,
+                          5.0,
+                        ),
+                        child: _productDetails != null
+                            ? Text(_productDetails.data[0].description, style: LatoRegular,)
+                            : Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 8.0),
+                            child: ShimmerHelper().buildBasicShimmer(
+                              height: 60.0,
+                            )),
+                      ),
+                    ])),
+
                 SliverList(
                   delegate: SliverChildListDelegate([
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        16.0,
-                        0.0,
-                        16.0,
-                        0.0,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .product_details_screen_description,
-                        style: TextStyle(
-                            color: MyTheme.font_grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        8.0,
-                        0.0,
-                        8.0,
-                        8.0,
-                      ),
-                      child: _productDetails != null
-                          ? buildExpandableDescription()
-                          : Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 8.0),
-                              child: ShimmerHelper().buildBasicShimmer(
-                                height: 60.0,
-                              )),
-                    ),
-                    Divider(
-                      height: 1,
-                    ),
                     InkWell(
                       onTap: () {
                         if (_productDetails.data[0].videoLink == "") {
@@ -1255,78 +1164,94 @@ class _ProductDetailsState extends State<ProductDetails> {
     //print("sl:" + AppConfig.BASE_PATH + _productDetails.shop_logo);
     return Row(
       children: [
-        _productDetails.data[0].addedBy == "admin"
-            ? Container()
-            : Padding(
-                padding: app_language_rtl.$
-                    ? EdgeInsets.only(left: 8.0)
-                    : EdgeInsets.only(right: 8.0),
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2.0),
-                    border: Border.all(
-                        color: Color.fromRGBO(112, 112, 112, .3), width: 0.5),
-                    //shape: BoxShape.rectangle,
-                  ),
-                  child: FadeInImage.assetNetwork(
-                    placeholder: 'assets/placeholder.png',
-                    image:
-                        AppConfig.BASE_PATH + _productDetails.data[0].shopLogo,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-        Container(
-          width: MediaQuery.of(context).size.width * (.5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(AppLocalizations.of(context).product_details_screen_seller,
-                  style: TextStyle(
-                    color: Color.fromRGBO(153, 153, 153, 1),
-                  )),
-              Text(
-                _productDetails.data[0].shopName,
-                style: TextStyle(
-                    color: MyTheme.font_grey,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600),
-              )
-            ],
-          ),
-        ),
-        Spacer(),
+
         Container(
             child: Row(
-          children: [
-            InkWell(
-              onTap: () {
-                if (is_logged_in == false) {
-                  ToastComponent.showDialog("You need to log in", context,
-                      gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-                  return;
-                }
+              children: [
+                Icon(Icons.message, size: 16, color: MyTheme.primary_Colour),
+                InkWell(
+                  onTap: () {
+                    if (is_logged_in == false) {
+                      ToastComponent.showDialog("You need to log in", context,
+                          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+                      return;
+                    }
 
-                onTapSellerChat();
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Text(
-                  AppLocalizations.of(context)
-                      .product_details_screen_chat_with_seller,
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Color.fromRGBO(7, 101, 136, 1),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600),
+                    onTapSellerChat();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Text(
+                      "Message Seller",
+                      style: LatoHeavy
+                    ),
+                  ),
                 ),
+              ],
+            )),
+
+        Spacer(),
+
+        Icon(Icons.share, color: MyTheme.primary_Colour,)
+
+
+
+      ],
+    );
+  }
+
+  Row buildDiscountRow(BuildContext context) {
+    //print("sl:" + AppConfig.BASE_PATH + _productDetails.shop_logo);
+    return Row(
+      children: [
+
+       Column(
+         children: [
+           Text("Discount Buying Remaining", style: LatoMedium.copyWith(color: Colors.grey),),
+           Text("00:00:00", style: LatoHeavy.copyWith(color: Colors.grey),),
+         ],
+       ),
+        Spacer(),
+
+        Row(
+          children: [
+            Container(
+              width: 100,
+              height: 80,
+              decoration: BoxDecoration(
+                color: MyTheme.golden,
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), topLeft: Radius.circular(20))
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("100", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 20),),
+                  Text("Individual", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 20),),
+                ],
               ),
             ),
-            Icon(Icons.message, size: 16, color: Color.fromRGBO(7, 101, 136, 1))
+            Container(
+              width: 100,
+              height: 80,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), topRight: Radius.circular(20)),
+
+               border: Border.all(color: Colors.redAccent, width: 3)
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("60-80", style: LatoHeavy.copyWith(color: Colors.redAccent, fontSize: 20),),
+                  Text("Discount", style: LatoHeavy.copyWith(color: Colors.redAccent, fontSize: 20),),
+                ],
+              ),
+            ),
           ],
-        ))
+        )
+
+
+
       ],
     );
   }
@@ -1357,24 +1282,17 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  Row buildQuantityRow() {
-    return Row(
+  Column buildQuantityRow() {
+    return Column(
       children: [
-        Padding(
-          padding: app_language_rtl.$
-              ? EdgeInsets.only(left: 8.0)
-              : EdgeInsets.only(right: 8.0),
-          child: Container(
-            width: 75,
-            child: Text(
-              AppLocalizations.of(context).product_details_screen_quantity,
-              style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
-            ),
-          ),
+        Text(
+          AppLocalizations.of(context).product_details_screen_quantity,
+          style: LatoHeavy,
         ),
+        SizedBox(height: 10,),
         Container(
-          height: 36,
-          width: 120,
+          height: 26,
+          width: 100,
           decoration: BoxDecoration(
               border:
                   Border.all(color: Color.fromRGBO(222, 222, 222, 1), width: 1),
@@ -1386,7 +1304,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             children: [
               buildQuantityDownButton(),
               Container(
-                  width: 36,
+                  width: 26,
                   child: Center(
                       child: Text(
                     _quantity.toString(),
@@ -1396,14 +1314,14 @@ class _ProductDetailsState extends State<ProductDetails> {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+   /*     Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6.0),
           child: Text(
             "(${_stock} ${AppLocalizations.of(context).product_details_screen_available})",
             style: TextStyle(
-                color: Color.fromRGBO(152, 152, 153, 1), fontSize: 14),
+                color: Color.fromRGBO(152, 152, 153, 1), fontSize: 12),
           ),
-        ),
+        ),*/
       ],
     );
   }
@@ -1754,22 +1672,15 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  Row buildMainPriceRow() {
-    return Row(
+  Column buildMainPriceRow() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: app_language_rtl.$
-              ? EdgeInsets.only(left: 8.0)
-              : EdgeInsets.only(right: 8.0),
-          child: Container(
-            width: 75,
-            child: Text(
-              AppLocalizations.of(context).product_details_screen_price,
-              style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
-            ),
-          ),
-        ),
-/*        _productDetails.data[0].hasDiscount
+        Text(
+            AppLocalizations.of(context).product_details_screen_total_price,
+            style: LatoHeavy),
+       SizedBox(height: 10,),
+       /* _productDetails.data[0].hasDiscount
             ? Padding(
                 padding: EdgeInsets.only(right: 8.0),
                 child: Text(_productDetails.data[0].strokedPrice,
@@ -1780,13 +1691,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                         fontWeight: FontWeight.w600)),
               )
             : Container(),*/
-        /*Text(
+        Text(
           _singlePriceString,
-          style: TextStyle(
-              color: MyTheme.accent_color,
-              fontSize: 18.0,
-              fontWeight: FontWeight.w600),
-        )*/
+          style: LatoHeavy
+        )
       ],
     );
   }
@@ -1843,7 +1751,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               FlatButton(
                 minWidth: MediaQuery.of(context).size.width / 2 - .5,
                 height: 50,
-                color: MyTheme.golden,
+                color: MyTheme.primary_Colour,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0.0),
                 ),
@@ -1865,7 +1773,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               FlatButton(
                 minWidth: MediaQuery.of(context).size.width / 2 - .5,
                 height: 50,
-                color: MyTheme.accent_color,
+                color: MyTheme.golden,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0.0),
                 ),
@@ -2158,9 +2066,9 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   buildQuantityUpButton() => SizedBox(
-        width: 36,
+        width: 26,
         child: IconButton(
-            icon: Icon(FontAwesome.plus, size: 16, color: MyTheme.dark_grey),
+            icon: Icon(FontAwesome.plus, size: 12, color: MyTheme.dark_grey),
             onPressed: () {
               if (_quantity < _stock) {
                 _quantity++;
@@ -2171,9 +2079,9 @@ class _ProductDetailsState extends State<ProductDetails> {
       );
 
   buildQuantityDownButton() => SizedBox(
-      width: 36,
+      width: 26,
       child: IconButton(
-          icon: Icon(FontAwesome.minus, size: 16, color: MyTheme.dark_grey),
+          icon: Icon(FontAwesome.minus, size: 12, color: MyTheme.dark_grey),
           onPressed: () {
             if (_quantity > 1) {
               _quantity--;
@@ -2422,5 +2330,35 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ));
     }
+  }
+
+ Container buildDescription() {
+    return Container(
+       width: 150,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8
+        ),
+        // border: Border.all(color: Colors.grey),
+        boxShadow: [
+          BoxShadow(
+            color: MyTheme.grey_153,
+            spreadRadius: .5,
+            blurRadius: .5,
+            offset: Offset(.5, .5), // changes position of shadow
+          ),
+        ],
+      ),
+
+      child: Row(
+        children: [
+          Padding(padding: EdgeInsets.all(5),
+            child: Text("Description", style: LatoBold,),),
+          Icon(
+            Icons.fifteen_mp_outlined ,  color: MyTheme.primary_Colour,
+          )
+        ],
+      ),
+    );
   }
 }
