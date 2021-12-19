@@ -4,10 +4,44 @@
 
 import 'dart:convert';
 
+import 'package:active_ecommerce_flutter/utill/images.dart';
+
 List<CartResponse> cartResponseFromJson(String str) => List<CartResponse>.from(json.decode(str).map((x) => CartResponse.fromJson(x)));
 
 String cartResponseToJson(List<CartResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+var cartList=[
+  CartResponse(
+    name: "Shamim Ahmed",
+    owner_id: 1,
+    cart_items: [
+      CartItem(
+        id: 1,
+        owner_id: 1,
+        user_id: 1,
+        product_id: 70,
+        product_name: "jamdani saree",
+        product_thumbnail_image : Images.logo,
+        price: 1000.00,
+      )
+    ]
+  ),
+  CartResponse(
+    name: "Shamim Ahmed",
+    owner_id: 1,
+    cart_items: [
+      CartItem(
+        id: 1,
+        owner_id: 1,
+        user_id: 1,
+        product_id: 66,
+        product_name: "Men's Athletic Tracksuit Full Zip Warm",
+        product_thumbnail_image : Images.logo,
+        price: 1000.00,
+      )
+    ]
+  )
 
+];
 class CartResponse {
   CartResponse({
     this.name,

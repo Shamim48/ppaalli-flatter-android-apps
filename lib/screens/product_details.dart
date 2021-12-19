@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:active_ecommerce_flutter/addon_config.dart';
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/data_model/product_mini_response.dart';
 import 'package:active_ecommerce_flutter/helpers/color_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
@@ -16,6 +17,7 @@ import 'package:active_ecommerce_flutter/screens/brand_products.dart';
 import 'package:active_ecommerce_flutter/screens/cart.dart';
 import 'package:active_ecommerce_flutter/screens/chat.dart';
 import 'package:active_ecommerce_flutter/screens/common_webview_screen.dart';
+import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/product_reviews.dart';
 import 'package:active_ecommerce_flutter/screens/video_description_screen.dart';
 import 'package:active_ecommerce_flutter/ui_elements/list_product_card.dart';
@@ -25,6 +27,7 @@ import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:photo_view/photo_view.dart';
@@ -316,15 +319,23 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   addToCart({mode, context = null, snackbar = null}) async {
-    if (is_logged_in.$ == false) {
+    /*if (is_logged_in.$ == false) {
       ToastComponent.showDialog(
           AppLocalizations.of(context).common_login_warning, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return Login();
+      }));
 
       return;
-    }
+    }*/
 
-    print(widget.id);
+    productCartList.add(_productDetails.data[0]);
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Cart(has_bottomnav: true,);
+      }));
+
+   /* print(widget.id);
     print(_variant);
     print(user_id.$);
     print(_quantity);
@@ -350,7 +361,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           onPopped(value);
         });
       }
-    }
+    }*/
   }
 
   onPopped(value) async {
@@ -835,14 +846,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                 SliverList(
                     delegate: SliverChildListDelegate([
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          12.0,
-                          250.0,
-                          0.0,
+                        padding: const EdgeInsets.only(
+                          left: 16,top: 10
                         ),
-                        child: buildDescription(),
+                        child: Text("Description:", style: LatoHeavy.copyWith(fontSize: 20),),// buildDescription(),
+
                       ),
+                    ])),
+
+                SliverList(
+                    delegate: SliverChildListDelegate([
                       Padding(
                         padding: const EdgeInsets.fromLTRB(
                           8.0,
@@ -851,7 +864,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           5.0,
                         ),
                         child: _productDetails != null
-                            ? Text(_productDetails.data[0].description, style: LatoRegular,)
+                            ? Html(data: """${_productDetails.data[0].description}""" )
                             : Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8.0, vertical: 8.0),
@@ -860,6 +873,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             )),
                       ),
                     ])),
+
 
                 SliverList(
                   delegate: SliverChildListDelegate([
@@ -1205,19 +1219,19 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Row(
       children: [
 
-       Column(
-         children: [
-           Text("Discount Buying Remaining", style: LatoMedium.copyWith(color: Colors.grey),),
-           Text("00:00:00", style: LatoHeavy.copyWith(color: Colors.grey),),
-         ],
-       ),
-        Spacer(),
+       Expanded(child:  Column(
+       children: [
+       Text("Discount Remaining", style: LatoMedium.copyWith(color: Colors.grey),),
+        Text("00:00:00", style: LatoHeavy.copyWith(color: Colors.grey),),
+      ],
+    )),
+       // Spacer(),
 
         Row(
           children: [
             Container(
-              width: 100,
-              height: 80,
+              width: 80,
+              height: 70,
               decoration: BoxDecoration(
                 color: MyTheme.golden,
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), topLeft: Radius.circular(20))
@@ -1226,13 +1240,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("100", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 20),),
-                  Text("Individual", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 20),),
+                  Text("Individual", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 16),),
                 ],
               ),
             ),
             Container(
-              width: 100,
-              height: 80,
+              width: 80,
+              height: 70,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), topRight: Radius.circular(20)),
@@ -1243,15 +1257,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("60-80", style: LatoHeavy.copyWith(color: Colors.redAccent, fontSize: 20),),
-                  Text("Discount", style: LatoHeavy.copyWith(color: Colors.redAccent, fontSize: 20),),
+                  Text("Discount", style: LatoHeavy.copyWith(color: Colors.redAccent, fontSize: 16),),
                 ],
               ),
             ),
           ],
         )
-
-
-
       ],
     );
   }
@@ -1801,12 +1812,11 @@ class _ProductDetailsState extends State<ProductDetails> {
       children: [
         Text(
           _productDetails.data[0].mainPrice,
-          style: LatoBold.copyWith(
-              color: Colors.black, fontWeight: FontWeight.bold),
+          style: LatoMedium,
         ),
         Spacer(),
         RatingBar(
-          itemSize: 18.0,
+          itemSize: 14.0,
           ignoreGestures: true,
           initialRating:
               double.parse(_productDetails.data[0].rating.toString()),
@@ -2176,7 +2186,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     } else {
       return Container(
           width: double.infinity,
-          height: 250,
+          height: 200,
           child: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -2184,7 +2194,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               children: [
                 Center(
                   child: SizedBox(
-                    width: 40,
+                    width: 30,
                     child: _productDetails != null
                         ? (_colorList.length > 0
                             ? buildColorColumn()
@@ -2249,8 +2259,8 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),*/
 
                 Container(
-                    height: 250,
-                    width: 250,
+                    height: 200,
+                    width: 200,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(30),
@@ -2319,8 +2329,8 @@ class _ProductDetailsState extends State<ProductDetails> {
 
                 Center(
                   child: SizedBox(
-                    height: 250,
-                    width: 50,
+                    height: 200,
+                    width: 30,
                     child: _productDetails != null
                         ? buildChoiceOptionList()
                         : buildVariantShimmers(),

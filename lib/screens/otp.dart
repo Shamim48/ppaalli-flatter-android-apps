@@ -1,4 +1,5 @@
 import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
@@ -92,11 +93,11 @@ class _OtpState extends State<Otp> {
         backgroundColor: Colors.white,
         body: Stack(
           children: [
-            Container(
+            /*Container(
               width: _screen_width * (3 / 4),
               child: Image.asset(
                   "assets/splash_login_registration_background_image.png"),
-            ),
+            ),*/
             Container(
               width: double.infinity,
               child: SingleChildScrollView(
@@ -106,10 +107,10 @@ class _OtpState extends State<Otp> {
                   Padding(
                     padding: const EdgeInsets.only(top: 40.0, bottom: 15),
                     child: Container(
-                      width: 75,
-                      height: 75,
+                      width: 150,
+                      height: 50,
                       child:
-                          Image.asset('assets/login_registration_form_logo.png'),
+                          Image.asset(Images.logo),
                     ),
                   ),
                   Padding(
@@ -120,7 +121,7 @@ class _OtpState extends State<Otp> {
                               ? AppLocalizations.of(context).otp_screen_email_account
                               : AppLocalizations.of(context).otp_screen_phone_number),
                       style: TextStyle(
-                          color: MyTheme.accent_color,
+                          color: MyTheme.primary_Colour,
                           fontSize: 18,
                           fontWeight: FontWeight.w600),
                     ),
@@ -169,14 +170,23 @@ class _OtpState extends State<Otp> {
                           child: Container(
                             height: 45,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: MyTheme.textfield_grey, width: 1),
+                                /*border: Border.all(
+                                    color: MyTheme.textfield_grey, width: 1),*/
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 1,
+                                    offset: Offset(0, 1), // changes position of shadow
+                                  ),
+                                ],
+
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(12.0))),
                             child: FlatButton(
                               minWidth: MediaQuery.of(context).size.width,
                               //height: 50,
-                              color: MyTheme.accent_color,
+                              color: MyTheme.primary_Colour,
                               shape: RoundedRectangleBorder(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(12.0))),
@@ -205,7 +215,7 @@ class _OtpState extends State<Otp> {
                       child: Text(AppLocalizations.of(context).otp_screen_resend_code,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: MyTheme.accent_color,
+                              color: MyTheme.primary_Colour,
                               decoration: TextDecoration.underline,
                               fontSize: 13)),
                     ),

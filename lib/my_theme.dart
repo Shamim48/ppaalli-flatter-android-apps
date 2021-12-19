@@ -13,6 +13,7 @@ class MyTheme{
   static Color light_grey = Color.fromRGBO(239,239,239, 1);
   static Color dark_grey = Color.fromRGBO(112,112,112, 1);
   static Color primary_Colour = Color.fromRGBO(121,202,187, 1);
+  static Color black = Color.fromRGBO(0,0,0, 100);
   static Color medium_grey = Color.fromRGBO(132,132,132, 1);
   static Color medium_grey_50 = Color.fromRGBO(132,132,132, .5);
   static Color grey_153 = Color.fromRGBO(153,153,153, 1);

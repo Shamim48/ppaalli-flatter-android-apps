@@ -1,32 +1,30 @@
-import 'package:active_ecommerce_flutter/app_config.dart';
-import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/other_config.dart';
-import 'package:active_ecommerce_flutter/social_config.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'dart:convert';
+
+import 'package:active_ecommerce_flutter/addon_config.dart';
 import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/intl_phone_input.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:active_ecommerce_flutter/addon_config.dart';
-import 'package:active_ecommerce_flutter/screens/registration.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
+import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/other_config.dart';
+import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
-import 'package:active_ecommerce_flutter/custom/toast_component.dart';
-import 'package:toast/toast.dart';
-import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
-import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:async';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:active_ecommerce_flutter/screens/registration.dart';
+import 'package:active_ecommerce_flutter/social_config.dart';
+import 'package:active_ecommerce_flutter/utill/images.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'dart:io';
-import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:toast/toast.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -64,15 +62,18 @@ class _LoginState extends State<Login> {
     var password = _passwordController.text.toString();
 
     if (_login_by == 'email' && email == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context).login_screen_email_warning, context,
+      ToastComponent.showDialog(
+          AppLocalizations.of(context).login_screen_email_warning, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
       return;
     } else if (_login_by == 'phone' && _phone == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context).login_screen_phone_warning, context,
+      ToastComponent.showDialog(
+          AppLocalizations.of(context).login_screen_phone_warning, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
       return;
     } else if (password == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context).login_screen_password_warning, context,
+      ToastComponent.showDialog(
+          AppLocalizations.of(context).login_screen_password_warning, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
       return;
     }
@@ -140,7 +141,8 @@ class _LoginState extends State<Login> {
     final token = facebookLoginResult.accessToken.token;
 
     /// for profile details also use the below code
-    Uri url = Uri.parse('https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=$token');
+    Uri url = Uri.parse(
+        'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=$token');
     final graphResponse = await http.get(url);
     final profile = json.decode(graphResponse.body);
     //print(profile);
@@ -219,11 +221,11 @@ class _LoginState extends State<Login> {
         backgroundColor: Colors.white,
         body: Stack(
           children: [
-            Container(
+          /*  Container(
               width: _screen_width * (3 / 4),
               child: Image.asset(
                   "assets/splash_login_registration_background_image.png"),
-            ),
+            ),*/
             Container(
               width: double.infinity,
               child: SingleChildScrollView(
@@ -231,22 +233,18 @@ class _LoginState extends State<Login> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 40.0, bottom: 15),
+                    padding: const EdgeInsets.only(top: 40.0,),
                     child: Container(
-                      width: 75,
-                      height: 75,
-                      child:
-                          Image.asset('assets/login_registration_form_logo.png'),
+                      width: 120,
+                      height: 40,
+                      child: Image.asset(Images.logo),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
+                    padding: const EdgeInsets.only(bottom: 50.0),
                     child: Text(
-                      "${AppLocalizations.of(context).login_screen_login_to} " + AppConfig.app_name,
-                      style: TextStyle(
-                          color: MyTheme.accent_color,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600),
+                      "${AppLocalizations.of(context).login_screen_log_in} ",
+                      style: LatoHeavy.copyWith(fontSize: 22),
                     ),
                   ),
                   Container(
@@ -257,15 +255,17 @@ class _LoginState extends State<Login> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 4.0),
                           child: Text(
-                            _login_by == "email" ? AppLocalizations.of(context).login_screen_email : AppLocalizations.of(context).login_screen_phone,
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontWeight: FontWeight.w600),
+                            _login_by == "email"
+                                ? "Email/Phone"
+                                : AppLocalizations.of(context)
+                                    .login_screen_phone,
+                            style: LatoMedium,
                           ),
                         ),
                         if (_login_by == "email")
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
+                            padding:
+                                const EdgeInsets.only(bottom: 8.0, left: 20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
@@ -276,7 +276,8 @@ class _LoginState extends State<Login> {
                                     autofocus: false,
                                     decoration:
                                         InputDecorations.buildInputDecoration_1(
-                                            hint_text: "johndoe@example.com"),
+                                            hint_text:
+                                                "Type your Email / Phone"),
                                   ),
                                 ),
                                 AddonConfig.otp_addon_installed
@@ -287,7 +288,8 @@ class _LoginState extends State<Login> {
                                           });
                                         },
                                         child: Text(
-                                            AppLocalizations.of(context).login_screen_or_login_with_phone,
+                                          AppLocalizations.of(context)
+                                              .login_screen_or_login_with_phone,
                                           style: TextStyle(
                                               color: MyTheme.accent_color,
                                               fontStyle: FontStyle.italic,
@@ -318,7 +320,8 @@ class _LoginState extends State<Login> {
                                       print(value);
                                     },
                                     selectorConfig: SelectorConfig(
-                                      selectorType: PhoneInputSelectorType.DIALOG,
+                                      selectorType:
+                                          PhoneInputSelectorType.DIALOG,
                                     ),
                                     ignoreBlank: false,
                                     autoValidateMode: AutovalidateMode.disabled,
@@ -329,8 +332,9 @@ class _LoginState extends State<Login> {
                                     initialValue: phoneCode,
                                     textFieldController: _phoneNumberController,
                                     formatInput: true,
-                                    keyboardType: TextInputType.numberWithOptions(
-                                        signed: true, decimal: true),
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                            signed: true, decimal: true),
                                     inputDecoration: InputDecorations
                                         .buildInputDecoration_phone(
                                             hint_text: "01710 333 558"),
@@ -346,7 +350,8 @@ class _LoginState extends State<Login> {
                                     });
                                   },
                                   child: Text(
-                                    AppLocalizations.of(context).login_screen_or_login_with_email,
+                                    AppLocalizations.of(context)
+                                        .login_screen_or_login_with_email,
                                     style: TextStyle(
                                         color: MyTheme.accent_color,
                                         fontStyle: FontStyle.italic,
@@ -360,13 +365,11 @@ class _LoginState extends State<Login> {
                           padding: const EdgeInsets.only(bottom: 4.0),
                           child: Text(
                             "Password",
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontWeight: FontWeight.w600),
+                            style: LatoMedium,
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
+                          padding: const EdgeInsets.only(bottom: 8.0, left: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -391,9 +394,10 @@ class _LoginState extends State<Login> {
                                   }));
                                 },
                                 child: Text(
-                                    AppLocalizations.of(context).login_screen_forgot_password,
+                                  AppLocalizations.of(context)
+                                      .login_screen_forgot_password,
                                   style: TextStyle(
-                                      color: MyTheme.accent_color,
+                                      color: MyTheme.primary_Colour,
                                       fontStyle: FontStyle.italic,
                                       decoration: TextDecoration.underline),
                                 ),
@@ -403,43 +407,101 @@ class _LoginState extends State<Login> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 30.0),
-                          child: Container(
-                            height: 45,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: MyTheme.textfield_grey, width: 1),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(12.0))),
-                            child: FlatButton(
-                              minWidth: MediaQuery.of(context).size.width,
-                              //height: 50,
-                              color: MyTheme.golden,
-                              shape: RoundedRectangleBorder(
+                          child: Center(
+                            child: Container(
+                              height: 35,
+                              width: 80,
+                              alignment: Alignment.center,
+
+                              decoration: BoxDecoration(
+                                /*border: Border.all(
+                                    color: MyTheme.textfield_grey, width: 1),*/
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(12.0))),
-                              child: Text(
-                                AppLocalizations.of(context).login_screen_log_in,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                                      Radius.circular(12.0)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 1,
+                                    offset: Offset(0, 1), // changes position of shadow
+                                  ),
+                                ],
                               ),
-                              onPressed: () {
-                                onPressedLogin();
-                              },
+                              child: FlatButton(
+                                minWidth: MediaQuery.of(context).size.width,
+                                //height: 50,
+                                color: MyTheme.primary_Colour,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20.0))),
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                onPressed: () {
+                                  onPressedLogin();
+                                },
+                              ),
                             ),
-                          ),
+                          )
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20.0),
                           child: Center(
                               child: Text(
-                                AppLocalizations.of(context).login_screen_or_create_new_account,
-                            style: TextStyle(
-                                color: MyTheme.medium_grey, fontSize: 12),
+                            "Don't Have an account?",
+                            style: LatoMedium,
                           )),
                         ),
                         Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Create A ",
+                                style: LatoBold,
+                              ),
+                              Text(
+                                " New Account ",
+                                style: LatoBold.copyWith(
+                                    color: MyTheme.primary_Colour),
+                              ),
+                            ],
+                          )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Student ",
+                                style: LatoBold,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return Registration();
+                                  }));
+                                },
+                                child: Text(
+                                  " Registration ",
+                                  style: LatoBold.copyWith(
+                                      color: MyTheme.primary_Colour),
+                                ),
+                              )
+                            ],
+                          )),
+                        ),
+
+                        /* Padding(
                           padding: const EdgeInsets.only(top: 4.0),
                           child: Container(
                             height: 45,
@@ -451,7 +513,7 @@ class _LoginState extends State<Login> {
                             child: FlatButton(
                               minWidth: MediaQuery.of(context).size.width,
                               //height: 50,
-                              color: MyTheme.accent_color,
+                              color: MyTheme.primary_Colour,
                               shape: RoundedRectangleBorder(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(12.0))),
@@ -463,14 +525,11 @@ class _LoginState extends State<Login> {
                                     fontWeight: FontWeight.w600),
                               ),
                               onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return Registration();
-                                }));
+
                               },
                             ),
                           ),
-                        ),
+                        ),*/
                         Visibility(
                           visible: SocialConfig.allow_google_login ||
                               SocialConfig.allow_facebook_login,
@@ -478,7 +537,8 @@ class _LoginState extends State<Login> {
                             padding: const EdgeInsets.only(top: 20.0),
                             child: Center(
                                 child: Text(
-                                  AppLocalizations.of(context).login_screen_login_with,
+                              AppLocalizations.of(context)
+                                  .login_screen_login_with,
                               style: TextStyle(
                                   color: MyTheme.medium_grey, fontSize: 14),
                             )),
@@ -490,7 +550,8 @@ class _LoginState extends State<Login> {
                             child: Container(
                               width: 120,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Visibility(
                                     visible: SocialConfig.allow_google_login,
@@ -500,8 +561,8 @@ class _LoginState extends State<Login> {
                                       },
                                       child: Container(
                                         width: 28,
-                                        child:
-                                            Image.asset("assets/google_logo.png"),
+                                        child: Image.asset(
+                                            "assets/google_logo.png"),
                                       ),
                                     ),
                                   ),

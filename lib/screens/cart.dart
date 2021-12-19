@@ -1,3 +1,5 @@
+import 'package:active_ecommerce_flutter/data_model/cart_response.dart';
+import 'package:active_ecommerce_flutter/data_model/product_mini_response.dart';
 import 'package:active_ecommerce_flutter/screens/shipping_info.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
@@ -38,6 +40,7 @@ class _CartState extends State<Cart> {
     print(access_token.value);
     print(user_id.$);
     print(user_name.$);*/
+    fetchData();
 
     if (is_logged_in.$ == true) {
       fetchData();
@@ -52,15 +55,18 @@ class _CartState extends State<Cart> {
 
   fetchData() async {
 
-  var cartResponseList =
+/*  var cartResponseList =
         await CartRepository().getCartResponseList(user_id.$);
 
     if (cartResponseList != null && cartResponseList.length > 0) {
       _shopList = cartResponseList;
-    }
+    }*/
+  _shopList=cartList;
     _isInitial = false;
     getSetCartTotal();
-    setState(() {});
+    setState(() {
+
+    });
   }
 
   getSetCartTotal() {
@@ -498,7 +504,7 @@ backgroundColor: Colors.white,
 
 
   buildCartSellerList() {
-    if (is_logged_in.$ == false) {
+    /*if (is_logged_in.$ == false) {
       return Container(
           height: 100,
           child: Center(
@@ -506,7 +512,7 @@ backgroundColor: Colors.white,
                 AppLocalizations.of(context).cart_screen_please_log_in,
             style: TextStyle(color: MyTheme.font_grey),
           )));
-    } else if (_isInitial && _shopList.length == 0) {
+    } else*/ if (_isInitial && _shopList.length == 0) {
       return SingleChildScrollView(
           child: ShimmerHelper()
               .buildListShimmer(item_count: 5, item_height: 100.0));

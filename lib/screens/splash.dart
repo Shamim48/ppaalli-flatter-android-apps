@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
+import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'dart:async';
@@ -79,10 +80,9 @@ class _SplashState extends State<Splash> {
           color: Colors.white,
         ),
       ),
-      image: Image.asset("ssets/splasah_screen_logo.png"),
-      backgroundImage:
-          Image.asset("assets/splash_login_registration_background_image.png"),
-      backgroundColor: MyTheme.splash_screen_color,
+      image: Image.asset(Images.logo),
+    //  backgroundImage: Image.asset("assets/splash_login_registration_background_image.png"),
+      backgroundColor: MyTheme.white,
       photoSize: 60.0,
       backgroundPhotoSize: 140.0,
     );

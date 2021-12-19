@@ -22,29 +22,44 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   int _currentIndex = 0;
   var _children = [
+   // Cart(has_bottomnav: true),
+
     Home(),
     CategoryList(
       is_base_category: true,
     ),
-    Home(),
     Cart(has_bottomnav: true),
     Profile(),
-    CategoryList()
     // MyWidget()
   ];
 
   void onTapped(int i) {
     setState(() {
       _currentIndex = i;
-      /*switch(_currentIndex){
+      switch(_currentIndex){
         case 0:
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Home();
+          }));
            break;
-        case 3:
+        case 1:
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return CategoryList();
+          }));
+          break;
+          case 2:
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Cart();
+          }));
+          break;
+          case 3:
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return Profile();
           }));
           break;
-      }*/
+
+
+      }
     });
   }
 
@@ -79,14 +94,14 @@ class _MainState extends State<Main> {
                 right: 10,
                 child: FloatingActionButton(
                   backgroundColor: Colors.transparent,
-                  onPressed: () {
+                 /* onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return Filter(
                         selected_filter: "sellers",
                       );
                     }));
-                  },
+                  },*/
                   child: new Image.asset(
                     "assets/shop.png",
                     height: 100,
@@ -122,16 +137,26 @@ class _MainState extends State<Main> {
                 unselectedItemColor: MyTheme.grey_153,
                 items: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
-                    icon: Image.asset(
-                      "assets/home.png",
-                      color: _currentIndex == 0
-                          ? MyTheme.white
-                          : MyTheme.light_grey,
-                      /*  color: _currentIndex == 0
+                    icon: GestureDetector(
+                      onTap: () {
+                        onTapped(0);
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Home();
+                          print('Profle tab Click');
+                        }));
+                      },
+                      child: Image.asset(
+                        "assets/home.png",
+                        color: _currentIndex == 0
+                            ? MyTheme.white
+                            : MyTheme.light_grey,
+                        /*  color: _currentIndex == 0
                             ? Theme.of(context).accentColor
                             : Color.fromRGBO(153, 153, 153, 1),
                         */
-                      height: 25,
+                        height: 25,
+                      ),
                     ),
                     title: Text(
                       "",
@@ -139,12 +164,22 @@ class _MainState extends State<Main> {
                     ),
                   ),
                   BottomNavigationBarItem(
-                    icon: Image.asset(
-                      "assets/group.png",
-                      color: _currentIndex == 1
-                          ? MyTheme.white
-                          : MyTheme.light_grey,
-                      height: 25,
+                    icon: GestureDetector(
+                      onTap: () {
+                        onTapped(1);
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return CategoryList();
+                          print('Profle tab Click');
+                        }));
+                      },
+                      child: Image.asset(
+                        "assets/group.png",
+                        color: _currentIndex == 1
+                            ? MyTheme.white
+                            : MyTheme.light_grey,
+                        height: 25,
+                      ),
                     ),
                     title: Text(
                       "",
@@ -166,12 +201,22 @@ class _MainState extends State<Main> {
                     title: Text(""),
                   ),
                   BottomNavigationBarItem(
-                    icon: Image.asset(
-                      "assets/cart.png",
-                      color: _currentIndex == 3
-                          ? MyTheme.white
-                          : MyTheme.light_grey,
-                      height: 25,
+                    icon: GestureDetector(
+                      onTap: () {
+                        onTapped(2);
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Cart();
+                          print('Profle tab Click');
+                        }));
+                      },
+                      child: Image.asset(
+                        "assets/cart.png",
+                        color: _currentIndex == 3
+                            ? MyTheme.white
+                            : MyTheme.light_grey,
+                        height: 25,
+                      ),
                     ),
                     title: Text(
                       "",
