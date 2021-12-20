@@ -36,6 +36,8 @@ class _MainState extends State<Main> {
   void onTapped(int i) {
     setState(() {
       _currentIndex = i;
+
+/*
       switch(_currentIndex){
         case 0:
           Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -49,7 +51,7 @@ class _MainState extends State<Main> {
           break;
           case 2:
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Cart();
+            return Cart(has_bottomnav: true,);
           }));
           break;
           case 3:
@@ -60,6 +62,7 @@ class _MainState extends State<Main> {
 
 
       }
+*/
     });
   }
 
@@ -83,7 +86,7 @@ class _MainState extends State<Main> {
         child: Scaffold(
           extendBody: true,
           body: _children[_currentIndex],
-          floatingActionButtonLocation:
+          /*floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           //specify the location of the FAB
           floatingActionButton: Stack(
@@ -94,27 +97,23 @@ class _MainState extends State<Main> {
                 right: 10,
                 child: FloatingActionButton(
                   backgroundColor: Colors.transparent,
-                 /* onPressed: () {
+                  onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return Filter(
                         selected_filter: "sellers",
                       );
                     }));
-                  },*/
+                  },
                   child: new Image.asset(
                     "assets/shop.png",
                     height: 100,
                     width: 100,
                   ),
-                  /*IconButton(
-    icon:
-    tooltip: 'Action',
-   ),*/
                 ),
               ),
             ],
-          ),
+          ),*/
           bottomNavigationBar: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -140,11 +139,11 @@ class _MainState extends State<Main> {
                     icon: GestureDetector(
                       onTap: () {
                         onTapped(0);
-                        Navigator.push(context,
+                        /*Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return Home();
                           print('Profle tab Click');
-                        }));
+                        }));*/
                       },
                       child: Image.asset(
                         "assets/home.png",
@@ -167,11 +166,11 @@ class _MainState extends State<Main> {
                     icon: GestureDetector(
                       onTap: () {
                         onTapped(1);
-                        Navigator.push(context,
+                        /*Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return CategoryList();
                           print('Profle tab Click');
-                        }));
+                        }));*/
                       },
                       child: Image.asset(
                         "assets/group.png",
@@ -194,21 +193,14 @@ class _MainState extends State<Main> {
     )*/
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.circle,
-                      color: Colors.transparent,
-                    ),
-                    title: Text(""),
-                  ),
-                  BottomNavigationBarItem(
                     icon: GestureDetector(
                       onTap: () {
                         onTapped(2);
-                        Navigator.push(context,
+                      /*  Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return Cart();
+                          return Cart(has_bottomnav: true,);
                           print('Profle tab Click');
-                        }));
+                        }));*/
                       },
                       child: Image.asset(
                         "assets/cart.png",
@@ -227,11 +219,11 @@ class _MainState extends State<Main> {
                     icon: GestureDetector(
                       onTap: () {
                         onTapped(3);
-                        Navigator.push(context,
+                        /*Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return Profile();
                           print('Profle tab Click');
-                        }));
+                        }));*/
                       },
                       child: Image.asset(
                         "assets/profile.png",

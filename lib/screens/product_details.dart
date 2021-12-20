@@ -319,7 +319,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   addToCart({mode, context = null, snackbar = null}) async {
-    /*if (is_logged_in.$ == false) {
+    if (is_logged_in.$ == false) {
       ToastComponent.showDialog(
           AppLocalizations.of(context).common_login_warning, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
@@ -328,14 +328,14 @@ class _ProductDetailsState extends State<ProductDetails> {
       }));
 
       return;
-    }*/
+    }
 
-    productCartList.add(_productDetails.data[0]);
+    /*productCartList.add(_productDetails.data[0]);
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return Cart(has_bottomnav: true,);
-      }));
+      }));*/
 
-   /* print(widget.id);
+    print(widget.id);
     print(_variant);
     print(user_id.$);
     print(_quantity);
@@ -361,7 +361,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           onPopped(value);
         });
       }
-    }*/
+    }
   }
 
   onPopped(value) async {

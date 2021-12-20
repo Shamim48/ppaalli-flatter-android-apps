@@ -395,13 +395,13 @@ class _CheckoutState extends State<Checkout> {
   pay_by_cod() async {
     var orderCreateResponse = await PaymentRepository()
         .getOrderCreateResponseFromCod(_selected_payment_method_key);
-
+/*
     if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
       Navigator.of(context).pop();
       return;
-    }
+    }*/
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return OrderList(from_checkout: true);
@@ -411,7 +411,6 @@ class _CheckoutState extends State<Checkout> {
   pay_by_manual_payment() async {
     var orderCreateResponse = await PaymentRepository()
         .getOrderCreateResponseFromManualPayment(_selected_payment_method_key);
-
     if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
@@ -643,18 +642,19 @@ class _CheckoutState extends State<Checkout> {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        widget.manual_payment_from_order_details == false
+                       /* widget.manual_payment_from_order_details == false
                             ? Padding(
                                 padding: const EdgeInsets.only(bottom: 16.0),
                                 child: buildApplyCouponRow(context),
                               )
-                            : Container(),
+                            : Container(),*/
+/*
                         Container(
                           height: 40,
                           width: double.infinity,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
-                              color: MyTheme.soft_accent_color),
+                              color: MyTheme.primary_Colour),
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Row(
@@ -664,7 +664,7 @@ class _CheckoutState extends State<Checkout> {
                                   child: Text(
                                     AppLocalizations.of(context).checkout_screen_total_amount,
                                     style: TextStyle(
-                                        color: MyTheme.font_grey, fontSize: 14),
+                                        color: MyTheme.white, fontSize: 14),
                                   ),
                                 ),
                                 Padding(
@@ -676,7 +676,7 @@ class _CheckoutState extends State<Checkout> {
                                     child: Text(
                                       AppLocalizations.of(context).common_see_details,
                                       style: TextStyle(
-                                        color: MyTheme.font_grey,
+                                        color: MyTheme.white,
                                         fontSize: 12,
                                         decoration: TextDecoration.underline,
                                       ),
@@ -688,7 +688,7 @@ class _CheckoutState extends State<Checkout> {
                                   padding: const EdgeInsets.only(right: 16.0),
                                   child: Text(_totalString,
                                       style: TextStyle(
-                                          color: MyTheme.accent_color,
+                                          color: MyTheme.white,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600)),
                                 ),
@@ -696,6 +696,7 @@ class _CheckoutState extends State<Checkout> {
                             ),
                           ),
                         )
+*/
                       ],
                     ),
                   ),
@@ -942,7 +943,7 @@ backgroundColor: Colors.white,
             FlatButton(
               minWidth: MediaQuery.of(context).size.width,
               height: 50,
-              color: MyTheme.accent_color,
+              color: MyTheme.primary_Colour,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0.0),
               ),

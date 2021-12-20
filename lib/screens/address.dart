@@ -56,7 +56,7 @@ class _AddressState extends State<Address> {
   List<TextEditingController> _stateControllerListForUpdate = [];
   List<TextEditingController> _countryControllerListForUpdate = [];
   List<City> _selected_city_list_for_update = [];
-  List<MyState> _selected_state_list_for_update = [];
+ // List<MyState> _selected_state_list_for_update = [];
   List<Country> _selected_country_list_for_update = [];
 
   @override
@@ -78,7 +78,7 @@ class _AddressState extends State<Address> {
   fetchShippingAddressList() async {
     print("enter fetchShippingAddressList");
     var addressResponse = await AddressRepository().getAddressList();
-    _shippingAddressList.addAll(addressResponse.addresses);
+    _shippingAddressList.addAll(addressResponse.data);
     setState(() {
       _isInitial = false;
     });
@@ -86,30 +86,28 @@ class _AddressState extends State<Address> {
       //_default_shipping_address = _shippingAddressList[0].id;
 
       var count = 0;
-      _shippingAddressList.forEach((address) {
+      _shippingAddressList.forEach((data) {
         //var acity = getCityByPartialName(address.city);
         //var acountry = getCountryByPartialName(address.country);
-        if (address.set_default == 1) {
-          _default_shipping_address = address.id;
+        if (data.setDefault == 1) {
+          _default_shipping_address = data.id;
         }
         _addressControllerListForUpdate
-            .add(TextEditingController(text: address.address));
+            .add(TextEditingController(text: data.address));
         _postalCodeControllerListForUpdate
-            .add(TextEditingController(text: address.postal_code));
+            .add(TextEditingController(text: data.postal_code));
         _phoneControllerListForUpdate
-            .add(TextEditingController(text: address.phone));
+            .add(TextEditingController(text: data.phone));
         _countryControllerListForUpdate
-            .add(TextEditingController(text: address.country_name));
+            .add(TextEditingController(text: data.country_name));
         _stateControllerListForUpdate
-            .add(TextEditingController(text: address.state_name));
+            .add(TextEditingController(text: data.state_name));
         _cityControllerListForUpdate
-            .add(TextEditingController(text: address.city_name));
+            .add(TextEditingController(text: data.city_name));
         _selected_country_list_for_update
-            .add(Country(id: address.country_id, name: address.country_name));
-        _selected_state_list_for_update
-            .add(MyState(id: address.state_id, name: address.state_name));
+            .add(Country(id: data.country_id, name: data.country_name));
         _selected_city_list_for_update
-            .add(City(id: address.city_id, name: address.city_name));
+            .add(City(id: data.city_id, name: data.city_name));
       });
 
       print("fetchShippingAddressList");
@@ -137,7 +135,6 @@ class _AddressState extends State<Address> {
     _stateControllerListForUpdate.clear();
     _cityControllerListForUpdate.clear();
     _selected_city_list_for_update.clear();
-    _selected_state_list_for_update.clear();
     _selected_country_list_for_update.clear();
     setState(() {});
   }
@@ -317,12 +314,6 @@ class _AddressState extends State<Address> {
       return;
     }
 
-    if (_selected_state_list_for_update[index] == null) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context).address_screen_state_warning, context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-      return;
-    }
 
 
     if (_selected_city_list_for_update[index] == null) {
@@ -339,7 +330,6 @@ class _AddressState extends State<Address> {
             id: id,
             address: address,
             country_id: _selected_country_list_for_update[index].id,
-            state_id: _selected_state_list_for_update[index].id,
             city_id: _selected_city_list_for_update[index].id,
             postal_code: postal_code,
             phone: phone);
@@ -414,7 +404,6 @@ class _AddressState extends State<Address> {
       return;
     }
     _selected_country_list_for_update[index] = country;
-    _selected_state_list_for_update[index] = null;
     _selected_city_list_for_update[index] = null;
     setState(() {});
 
@@ -425,22 +414,7 @@ class _AddressState extends State<Address> {
     });
   }
 
-  onSelectStateDuringUpdate(index, state, setModalState) {
-    if (_selected_state_list_for_update[index] != null &&
-        state.id == _selected_state_list_for_update[index].id) {
-      setModalState(() {
-        _stateControllerListForUpdate[index].text = state.name;
-      });
-      return;
-    }
-    _selected_state_list_for_update[index] = state;
-    _selected_city_list_for_update[index] = null;
-    setState(() {});
-    setModalState(() {
-      _stateControllerListForUpdate[index].text = state.name;
-      _cityControllerListForUpdate[index].text = "";
-    });
-  }
+
 
   onSelectCityDuringUpdate(index, city, setModalState) {
     if (_selected_city_list_for_update[index] != null &&
@@ -1143,14 +1117,14 @@ class _AddressState extends State<Address> {
                           ),
                         ),
                       ),
-                      Padding(
+                     /* Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                             "${AppLocalizations.of(context).address_screen_state} *",
                             style: TextStyle(
                                 color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
+                      ),*/
+/*                      Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Container(
                           height: 40,
@@ -1204,8 +1178,7 @@ class _AddressState extends State<Address> {
                               );
                             },
                             onSuggestionSelected: (state) {
-                              onSelectStateDuringUpdate(
-                                  index, state, setModalState);
+
                             },
                             textFieldConfiguration: TextFieldConfiguration(
                               onTap: () {},
@@ -1243,7 +1216,7 @@ class _AddressState extends State<Address> {
                             ),
                           ),
                         ),
-                      ),
+                      ),*/
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
@@ -1256,17 +1229,6 @@ class _AddressState extends State<Address> {
                         child: Container(
                           height: 40,
                           child: TypeAheadField(
-                            suggestionsCallback: (name) async {
-                              if (_selected_state_list_for_update[index] == null) {
-                                var cityResponse = await AddressRepository()
-                                    .getCityListByState(); // blank response
-                                return cityResponse.cities;
-                              }
-                              var cityResponse = await AddressRepository()
-                                  .getCityListByState(
-                                      state_id: _selected_state_list_for_update[index].id, name: name);
-                              return cityResponse.cities;
-                            },
                             loadingBuilder: (context) {
                               return Container(
                                 height: 50,

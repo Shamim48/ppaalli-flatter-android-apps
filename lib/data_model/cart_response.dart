@@ -22,6 +22,15 @@ var cartList=[
         product_name: "jamdani saree",
         product_thumbnail_image : Images.logo,
         price: 1000.00,
+        quantity: 1,
+        variation: "ds",
+        currency_symbol: "\$",
+        tax: 12.00,
+        shipping_cost: 100.0,
+        lower_limit: 1,
+        upper_limit: 5,
+
+
       )
     ]
   ),
@@ -37,6 +46,13 @@ var cartList=[
         product_name: "Men's Athletic Tracksuit Full Zip Warm",
         product_thumbnail_image : Images.logo,
         price: 1000.00,
+        quantity: 1,
+        variation: "ds",
+        currency_symbol: "\$",
+        tax: 12.00,
+        shipping_cost: 100.0,
+        lower_limit: 1,
+        upper_limit: 5,
       )
     ]
   )

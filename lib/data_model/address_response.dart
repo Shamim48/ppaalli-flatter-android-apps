@@ -9,97 +9,75 @@ AddressResponse addressResponseFromJson(String str) => AddressResponse.fromJson(
 String addressResponseToJson(AddressResponse data) => json.encode(data.toJson());
 
 class AddressResponse {
-  AddressResponse({
-    this.addresses,
-    this.success,
-    this.status,
-  });
-
-  List<Address> addresses;
+  List<AddressData> data;
   bool success;
   int status;
 
-  factory AddressResponse.fromJson(Map<String, dynamic> json) => AddressResponse(
-    addresses: List<Address>.from(json["data"].map((x) => Address.fromJson(x))),
-    success: json["success"],
-    status: json["status"],
-  );
+  AddressResponse({this.data, this.success, this.status});
 
-  Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(addresses.map((x) => x.toJson())),
-    "success": success,
-    "status": status,
-  };
+  AddressResponse.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = new List<AddressData>();
+      json['data'].forEach((v) {
+        data.add(new AddressData.fromJson(v));
+      });
+    }
+    success = json['success'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    data['success'] = this.success;
+    data['status'] = this.status;
+    return data;
+  }
 }
 
-class Address {
-  Address({
-    this.id,
-    this.user_id,
-    this.address,
-    this.country_id,
-    this.state_id,
-    this.city_id,
-    this.country_name,
-    this.state_name,
-    this.city_name,
-    this.postal_code,
-    this.phone,
-    this.set_default,
-    this.location_available,
-    this.lat,
-    this.lang
-  });
-
+class AddressData {
   int id;
-  int user_id;
+  int userId;
   String address;
-  int country_id;
-  int state_id;
-  int city_id;
-  String country_name;
-  String state_name;
-  String city_name;
-  String postal_code;
+  String country;
+  String city;
+  String postalCode;
   String phone;
-  int set_default;
-  bool location_available;
-  double lat;
-  double lang;
+  int setDefault;
 
-  factory Address.fromJson(Map<String, dynamic> json) => Address(
-    id: json["id"],
-    user_id: json["user_id"],
-    address: json["address"],
-    country_id: json["country_id"],
-    state_id: json["state_id"],
-    city_id: json["city_id"],
-    country_name: json["country_name"],
-    state_name: json["state_name"],
-    city_name: json["city_name"],
-    postal_code: json["postal_code"] == null ? "" :  json["postal_code"],
-    phone: json["phone"]== null ? "" :  json["phone"],
-    set_default: json["set_default"],
-    location_available: json["location_available"],
-    lat: json["lat"],
-    lang: json["lang"],
-  );
+  AddressData(
+      {this.id,
+        this.userId,
+        this.address,
+        this.country,
+        this.city,
+        this.postalCode,
+        this.phone,
+        this.setDefault});
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "user_id": user_id,
-    "address": address,
-    "country_id": country_id,
-    "state_id": state_id,
-    "city_id": city_id,
-    "country_name": country_name,
-    "state_name": state_name,
-    "city_name": city_name,
-    "postal_code": postal_code,
-    "phone": phone,
-    "set_default": set_default,
-    "location_available": location_available,
-    "lat": lat,
-    "lang": lang,
-  };
+  AddressData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    address = json['address'];
+    country = json['country'];
+    city = json['city'];
+    postalCode = json['postal_code'];
+    phone = json['phone'];
+    setDefault = json['set_default'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['address'] = this.address;
+    data['country'] = this.country;
+    data['city'] = this.city;
+    data['postal_code'] = this.postalCode;
+    data['phone'] = this.phone;
+    data['set_default'] = this.setDefault;
+    return data;
+  }
 }

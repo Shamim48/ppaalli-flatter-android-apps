@@ -1,4 +1,7 @@
+import 'package:active_ecommerce_flutter/data_model/address_response.dart';
 import 'package:active_ecommerce_flutter/screens/checkout.dart';
+import 'package:active_ecommerce_flutter/utill/images.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +33,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
   int _seleted_shipping_address = 0;
 
   bool _isInitial = true;
-  List<dynamic> _shippingAddressList = [];
+  List<AddressData> _shippingAddressList = [];
   List<City> _cityList = [];
   List<Country> _countryList = [];
 
@@ -64,13 +67,13 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   fetchShippingAddressList() async {
     var addressResponse = await AddressRepository().getAddressList();
-    _shippingAddressList.addAll(addressResponse.addresses);
+    _shippingAddressList.addAll(addressResponse.data);
     if (_shippingAddressList.length > 0) {
       _seleted_shipping_address = _shippingAddressList[0].id;
 
-      _shippingAddressList.forEach((address) {
-        if (address.set_default == 1) {
-          _seleted_shipping_address = address.id;
+      _shippingAddressList.forEach((data) {
+        if (data.setDefault == 1) {
+          _seleted_shipping_address = data.id;
         }
       });
     }
@@ -168,7 +171,56 @@ class _ShippingInfoState extends State<ShippingInfo> {
       child: Scaffold(
           backgroundColor: Colors.white,
           appBar: buildAppBar(context),
-          bottomNavigationBar: buildBottomAppBar(context),
+     /*     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: Padding(
+            padding: EdgeInsets.all(10),
+            child: Container(
+              alignment: Alignment.center,
+              height: 30,
+              width: 30,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FlatButton(
+                    minWidth: MediaQuery.of(context).size.width,
+                    height: 30,
+                    color: MyTheme.primary_Colour,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: Text(
+                      "Continue",
+                      style: LatoHeavy.copyWith(color: MyTheme.white),
+                    ),
+                    onPressed: () {
+                      onPressProceed(context);
+                    },
+                  )
+                ],
+              ),
+            ),
+          ),*/
+          bottomNavigationBar:  Padding(
+            padding: EdgeInsets.only(left: 80, right: 80, bottom: 10),
+            child: Container(
+              height: 40,
+              width: 120,
+              decoration: BoxDecoration(
+                color: MyTheme.primary_Colour,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: FlatButton(
+                child: Text(
+                  "Continue",
+                  style: LatoHeavy.copyWith(color: MyTheme.white),
+                ),
+                onPressed: () {
+                  onPressProceed(context);
+                },
+              )
+            ),
+          ),
+          //buildBottomAppBar(context),
           body: RefreshIndicator(
             color: MyTheme.accent_color,
             backgroundColor: Colors.white,
@@ -179,6 +231,22 @@ class _ShippingInfoState extends State<ShippingInfo> {
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
               slivers: [
+
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                      Column(
+                        children: [
+                          Image.asset(Images.logo, height: 50, width: 150,),
+                          SizedBox(height: 10,),
+                          Text(
+                            "${AppLocalizations.of(context).shipping_info_screen_shipping_cost} ${_shipping_cost_string}",
+                            style: LatoHeavy.copyWith(color: MyTheme.primary_Colour, fontSize: 25),
+                          ),
+                        ],
+                      ),
+
+                    ])),
+
                 SliverList(
                     delegate: SliverChildListDelegate([
                   Padding(
@@ -206,14 +274,16 @@ class _ShippingInfoState extends State<ShippingInfo> {
                             style: TextStyle(
                               fontSize: 14,
                                 decoration: TextDecoration.underline,
-                                color: MyTheme.accent_color),
+                                color: MyTheme.primary_Colour),
                           ),
                         ),
                       ))),
                   SizedBox(
                     height: 100,
                   )
-                ]))
+                ])),
+
+
               ],
             ),
           )),
@@ -228,13 +298,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
       centerTitle: true,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 28, ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-      ),
-      title: Text(
-        "${AppLocalizations.of(context).shipping_info_screen_shipping_cost} ${_shipping_cost_string}",
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -293,7 +359,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
       child: Card(
         shape: RoundedRectangleBorder(
           side: _seleted_shipping_address == _shippingAddressList[index].id
-              ? BorderSide(color: MyTheme.accent_color, width: 2.0)
+              ? BorderSide(color: MyTheme.dark_grey.withOpacity(0.2), width: 2.0)
               : BorderSide(color: MyTheme.light_grey, width: 1.0),
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -352,35 +418,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                     Container(
                       width: 200,
                       child: Text(
-                        _shippingAddressList[index].city_name,
-                        maxLines: 2,
-                        style: TextStyle(
-                            color: MyTheme.dark_grey,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 75,
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .shipping_info_screen_state,
-                        style: TextStyle(
-                          color: MyTheme.grey_153,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 200,
-                      child: Text(
-                        _shippingAddressList[index].state_name,
+                        _shippingAddressList[index].city,
                         maxLines: 2,
                         style: TextStyle(
                             color: MyTheme.dark_grey,
@@ -408,7 +446,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                     Container(
                       width: 200,
                       child: Text(
-                        _shippingAddressList[index].country_name,
+                        _shippingAddressList[index].country,
                         maxLines: 2,
                         style: TextStyle(
                             color: MyTheme.dark_grey,
@@ -436,7 +474,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                     Container(
                       width: 200,
                       child: Text(
-                        _shippingAddressList[index].postal_code,
+                        _shippingAddressList[index].postalCode,
                         maxLines: 2,
                         style: TextStyle(
                             color: MyTheme.dark_grey,
@@ -497,34 +535,33 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   BottomAppBar buildBottomAppBar(BuildContext context) {
     return BottomAppBar(
-      child: Container(
-        color: Colors.transparent,
-        height: 50,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            FlatButton(
-              minWidth: MediaQuery.of(context).size.width,
-              height: 50,
-              color: MyTheme.accent_color,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0.0),
-              ),
-              child: Text(
-                AppLocalizations.of(context)
-                    .shipping_info_screen_btn_proceed_to_checkout,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
-              ),
-              onPressed: () {
-                onPressProceed(context);
-              },
-            )
-          ],
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Container(
+          height: 50,
+          width: 120,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              FlatButton(
+                minWidth: MediaQuery.of(context).size.width,
+                height: 50,
+                color: MyTheme.primary_Colour,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Text(
+                  "Continue",
+                  style: LatoHeavy.copyWith(color: MyTheme.white),
+                ),
+                onPressed: () {
+                  onPressProceed(context);
+                },
+              )
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:active_ecommerce_flutter/data_model/cart_response.dart';
 import 'package:active_ecommerce_flutter/data_model/product_mini_response.dart';
 import 'package:active_ecommerce_flutter/screens/shipping_info.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/ui_sections/drawer.dart';
@@ -55,13 +56,13 @@ class _CartState extends State<Cart> {
 
   fetchData() async {
 
-/*  var cartResponseList =
+  var cartResponseList =
         await CartRepository().getCartResponseList(user_id.$);
 
     if (cartResponseList != null && cartResponseList.length > 0) {
       _shopList = cartResponseList;
-    }*/
-  _shopList=cartList;
+    }
+ // _shopList=cartList;
     _isInitial = false;
     getSetCartTotal();
     setState(() {
@@ -317,91 +318,104 @@ class _CartState extends State<Cart> {
                 )*/
       ),
 
-      height: widget.has_bottomnav ? 200 : 120,
+      height: widget.has_bottomnav ? 230 : 120,
       //color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Container(
-              height: 40,
               width: double.infinity,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
-                  color: MyTheme.soft_accent_color),
+                  color: MyTheme.white,
+              boxShadow:[ BoxShadow(
+                color: MyTheme.dark_grey.withOpacity(0.3),
+                spreadRadius: 1.5,
+                blurRadius: 3
+              )]
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Row(
+                child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        AppLocalizations.of(context).cart_screen_total_amount,
-                        style:
-                            TextStyle(color: MyTheme.font_grey, fontSize: 14),
-                      ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
+                          child: Text(
+                            "Sub Total",
+                            style:
+                            LatoMedium,
+                          ),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text("$_cartTotalString",
+                              style: LatoMedium),
+                        ),
+                      ],
                     ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("$_cartTotalString",
-                          style: TextStyle(
-                              color: MyTheme.accent_color,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600)),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
+                          child: Text(
+                            "Shipping Charge",
+                            style:
+                            LatoMedium,
+                          ),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text("$_cartTotalString",
+                              style: LatoMedium),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+                          child: Text(
+                            AppLocalizations.of(context).cart_screen_total_amount,
+                            style:
+                            LatoHeavy,
+                          ),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text("$_cartTotalString",
+                              style: LatoHeavy),
+                        ),
+                      ],
                     ),
                   ],
-                ),
+                )
               ),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Container(
-                    width: (MediaQuery.of(context).size.width - 32) * (1 / 3),
-                    height: 38,
+                    alignment: Alignment.centerLeft,
+                    width: 120,
+                    height: 40,
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        border:
-                            Border.all(color: MyTheme.textfield_grey, width: 1),
-                        borderRadius: app_language_rtl.$ ?
-                        const BorderRadius.only(
-                          topLeft: const Radius.circular(0.0),
-                          bottomLeft: const Radius.circular(0.0),
-                          topRight: const Radius.circular(8.0),
-                          bottomRight: const Radius.circular(8.0),
-                        ): const BorderRadius.only(
-                          topLeft: const Radius.circular(8.0),
-                          bottomLeft: const Radius.circular(8.0),
-                          topRight: const Radius.circular(0.0),
-                          bottomRight: const Radius.circular(0.0),
-                        )),
+                        color: MyTheme.primary_Colour,
+                        borderRadius: BorderRadius.circular(25)),
                     child: FlatButton(
                       minWidth: MediaQuery.of(context).size.width,
                       //height: 50,
-                      color: MyTheme.light_grey,
-                      shape: app_language_rtl.$?
-                      RoundedRectangleBorder(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: const Radius.circular(0.0),
-                            bottomLeft: const Radius.circular(0.0),
-                            topRight: const Radius.circular(8.0),
-                            bottomRight: const Radius.circular(8.0),
-                          ))
-                          : RoundedRectangleBorder(
-                          borderRadius: const BorderRadius.only(
-                        topLeft: const Radius.circular(8.0),
-                        bottomLeft: const Radius.circular(8.0),
-                        topRight: const Radius.circular(0.0),
-                        bottomRight: const Radius.circular(0.0),
-                      )),
+
                       child: Text(
-                        AppLocalizations.of(context).cart_screen_update_cart,
-                        style: TextStyle(
-                            color: MyTheme.medium_grey,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600),
+                        "Continue",
+                        style: LatoHeavy.copyWith(color: MyTheme.white),
                       ),
                       onPressed: () {
                         onPressUpdate();
@@ -409,52 +423,22 @@ class _CartState extends State<Cart> {
                     ),
                   ),
                 ),
+                SizedBox(width: 60,),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Container(
-                    width: (MediaQuery.of(context).size.width - 32) * (2 / 3),
+                    width: 120,
                     height: 40,
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        border:
-                            Border.all(color: MyTheme.textfield_grey, width: 1),
-                        borderRadius:app_language_rtl.$ ?
-                        const BorderRadius.only(
-                          topLeft: const Radius.circular(8.0),
-                          bottomLeft: const Radius.circular(8.0),
-                          topRight: const Radius.circular(0.0),
-                          bottomRight: const Radius.circular(0.0),
-                        ): const BorderRadius.only(
-                          topLeft: const Radius.circular(0.0),
-                          bottomLeft: const Radius.circular(0.0),
-                          topRight: const Radius.circular(8.0),
-                          bottomRight: const Radius.circular(8.0),
-                        )),
+                        color: MyTheme.primary_Colour,
+                        borderRadius: BorderRadius.circular(25),
+                    ),
                     child: FlatButton(
                       minWidth: MediaQuery.of(context).size.width,
                       //height: 50,
-                      color: MyTheme.accent_color,
-                      shape: app_language_rtl.$ ?
-                      RoundedRectangleBorder(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: const Radius.circular(8.0),
-                            bottomLeft: const Radius.circular(8.0),
-                            topRight: const Radius.circular(0.0),
-                            bottomRight: const Radius.circular(0.0),
-                          ))
-                          : RoundedRectangleBorder(
-                          borderRadius: const BorderRadius.only(
-                        topLeft: const Radius.circular(0.0),
-                        bottomLeft: const Radius.circular(0.0),
-                        topRight: const Radius.circular(8.0),
-                        bottomRight: const Radius.circular(8.0),
-                      )),
                       child: Text(
-                        AppLocalizations.of(context).cart_screen_proceed_to_shipping,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600),
+                        "Checkout",
+                        style: LatoHeavy.copyWith(color: MyTheme.white),
                       ),
                       onPressed: () {
                         onPressProceedToShipping();
@@ -463,7 +447,8 @@ class _CartState extends State<Cart> {
                   ),
                 ),
               ],
-            )
+            ),
+            SizedBox(height: 50,)
           ],
         ),
       ),
@@ -494,7 +479,7 @@ backgroundColor: Colors.white,
       ),
       title: Text(
         AppLocalizations.of(context).cart_screen_shopping_cart,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: LatoHeavy.copyWith(color: MyTheme.primary_Colour, fontSize: 22),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -504,7 +489,7 @@ backgroundColor: Colors.white,
 
 
   buildCartSellerList() {
-    /*if (is_logged_in.$ == false) {
+    if (is_logged_in.$ == false) {
       return Container(
           height: 100,
           child: Center(
@@ -512,7 +497,7 @@ backgroundColor: Colors.white,
                 AppLocalizations.of(context).cart_screen_please_log_in,
             style: TextStyle(color: MyTheme.font_grey),
           )));
-    } else*/ if (_isInitial && _shopList.length == 0) {
+    } else if (_isInitial && _shopList.length == 0) {
       return SingleChildScrollView(
           child: ShimmerHelper()
               .buildListShimmer(item_count: 5, item_height: 100.0));
@@ -524,7 +509,8 @@ backgroundColor: Colors.white,
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            return Padding(
+            return buildCartSellerItemList(index);
+            /*Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -544,8 +530,8 @@ backgroundColor: Colors.white,
                         Spacer(),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            partialTotalString(index),
+                          child: Text("\$567",
+                           // partialTotalString(index),
                             style: TextStyle(
                                 color: MyTheme.accent_color, fontSize: 14),
                           ),
@@ -553,10 +539,9 @@ backgroundColor: Colors.white,
                       ],
                     ),
                   ),
-                  buildCartSellerItemList(index),
                 ],
               ),
-            );
+            );*/
           },
         ),
       );
@@ -591,14 +576,51 @@ backgroundColor: Colors.white,
   buildCartSellerItemCard(seller_index, item_index) {
     return Card(
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: MyTheme.light_grey, width: 1.0),
-        borderRadius: BorderRadius.circular(8.0),
+        side: BorderSide(color: MyTheme.primary_Colour.withOpacity(.2), width: 2),
+        borderRadius: BorderRadius.circular(12.0),
       ),
       elevation: 0.0,
       child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+
+        InkWell(
+          onTap: () {},
+          child: IconButton(
+            iconSize: 28,
+            onPressed: () {
+              onPressDelete(_shopList[seller_index]
+                  .cart_items[item_index]
+                  .id);
+            },
+            icon: Icon(
+              Icons.delete_forever_outlined,
+              color: MyTheme.primary_Colour,
+              size: 28,
+            ),
+          ),
+        ),
+
+        /*SizedBox(
+          height: 28,
+          width: 20,
+          child:
+        ),*/
         Container(
             width: 100,
             height: 100,
+            decoration: BoxDecoration(
+
+              borderRadius: BorderRadius.circular(15),
+              color: MyTheme.white,
+              boxShadow: [
+                BoxShadow(
+                  color: MyTheme.dark_grey.withOpacity(0.3),
+                  spreadRadius: 3,
+                  blurRadius: 4,
+                  offset: Offset(0, .5)
+
+                )
+              ]
+            ),
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: FadeInImage.assetNetwork(
@@ -609,8 +631,8 @@ backgroundColor: Colors.white,
                           .product_thumbnail_image,
                   fit: BoxFit.fitWidth,
                 ))),
-        Container(
-          width: 170,
+
+        Expanded(child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -624,122 +646,150 @@ backgroundColor: Colors.white,
                           .cart_items[item_index]
                           .product_name,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(
-                          color: MyTheme.font_grey,
-                          fontSize: 14,
-                          height: 1.6,
-                          fontWeight: FontWeight.w400),
+                      maxLines: 1,
+                      style: LatoHeavy,
                     ),
                     Row(
                       children: [
+                        Padding(padding: EdgeInsets.only(top: 8.0),
+                          child: Text("Price:  ", style: LatoMedium,),),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             _shopList[seller_index]
-                                    .cart_items[item_index]
-                                    .currency_symbol +
+                                .cart_items[item_index]
+                                .currency_symbol +
                                 (_shopList[seller_index]
-                                            .cart_items[item_index]
-                                            .price *
-                                        _shopList[seller_index]
-                                            .cart_items[item_index]
-                                            .quantity)
+                                    .cart_items[item_index]
+                                    .price *
+                                    _shopList[seller_index]
+                                        .cart_items[item_index]
+                                        .quantity)
                                     .toString(),
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontSize: 14,
-                                height: 1.6,
-                                fontWeight: FontWeight.w600),
+                            style: LatoMedium,
                           ),
                         ),
-                        Spacer(),
-                        SizedBox(
-                          height: 28,
-                          child: InkWell(
-                            onTap: () {},
-                            child: IconButton(
-                              onPressed: () {
-                                onPressDelete(_shopList[seller_index]
-                                    .cart_items[item_index]
-                                    .id);
-                              },
-                              icon: Icon(
-                                Icons.delete_forever_outlined,
-                                color: MyTheme.medium_grey,
-                                size: 24,
-                              ),
-                            ),
-                          ),
-                        )
+
                       ],
                     ),
+                    Row(
+                      children: [
+                        Padding(padding: EdgeInsets.only(top: 8.0),
+                          child: Text("Color:  ", style: LatoMedium,),),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text("Black",
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: LatoMedium,
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Padding(padding: EdgeInsets.only(top: 8.0),
+                          child: Text("Advance:  ", style: LatoMedium,),),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text("\$23(10%)",
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: LatoMedium,
+                          ),
+                        ),
+
+                      ],
+                    ),
+
+
                   ],
                 ),
               ),
             ],
           ),
-        ),
-        Spacer(),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              SizedBox(
-                width: 28,
-                height: 28,
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
-                  child: Icon(
-                    Icons.add,
-                    color: MyTheme.accent_color,
-                    size: 18,
-                  ),
-                  shape: CircleBorder(
-                    side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
-                  ),
-                  color: Colors.white,
-                  onPressed: () {
-                    onQuantityIncrease(seller_index, item_index);
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                child: Text(
-                  _shopList[seller_index]
-                      .cart_items[item_index]
-                      .quantity
-                      .toString(),
-                  style: TextStyle(color: MyTheme.accent_color, fontSize: 16),
-                ),
-              ),
-              SizedBox(
-                width: 28,
-                height: 28,
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
-                  child: Icon(
-                    Icons.remove,
-                    color: MyTheme.accent_color,
-                    size: 18,
-                  ),
-                  height: 30,
-                  shape: CircleBorder(
-                    side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
-                  ),
-                  color: Colors.white,
-                  onPressed: () {
-                    onQuantityDecrease(seller_index, item_index);
-                  },
-                ),
+        ),),
+
+        //Spacer(),
+
+        Container(
+          margin: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: MyTheme.white,
+            boxShadow: [
+              BoxShadow(
+                color: MyTheme.dark_grey.withOpacity(0.3),
+                spreadRadius: 1,
+                blurRadius: 1,
+                //offset: Offset(1,0)
               )
-            ],
+            ]
           ),
-        )
+          child:         Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    child: Icon(
+                      Icons.add,
+                      color: MyTheme.primary_Colour,
+                      size: 18,
+                    ),
+                    shape: CircleBorder(
+                      side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                    ),
+                    color: Colors.white,
+                    onPressed: () {
+                      onQuantityIncrease(seller_index, item_index);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  child: Text(
+                    _shopList[seller_index]
+                        .cart_items[item_index]
+                        .quantity
+                        .toString(),
+                    style: TextStyle(color: MyTheme.primary_Colour, fontSize: 16),
+                  ),
+                ),
+                SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    child: Icon(
+                      Icons.remove,
+                      color: MyTheme.primary_Colour,
+                      size: 18,
+                    ),
+                    height: 30,
+                    shape: CircleBorder(
+                      side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                    ),
+                    color: Colors.white,
+                    onPressed: () {
+                      onQuantityDecrease(seller_index, item_index);
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+
       ]),
     );
   }
