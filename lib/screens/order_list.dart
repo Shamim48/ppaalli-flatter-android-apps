@@ -307,7 +307,7 @@ class _OrderListState extends State<OrderList> {
                         BorderSide(color: MyTheme.light_grey, width: 1))),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             height: 36,
-            width: MediaQuery.of(context).size.width * .35,
+            width: MediaQuery.of(context).size.width * .40,
             child: new DropdownButton<DeliveryStatus>(
               icon: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -388,7 +388,7 @@ class _OrderListState extends State<OrderList> {
           ),
           Text(
             AppLocalizations.of(context).profile_screen_purchase_history,
-            style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+            style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
           ),
         ],
       ),
@@ -422,7 +422,7 @@ class _OrderListState extends State<OrderList> {
       ));
     } else if (_orderList.length > 0) {
       return RefreshIndicator(
-        color: MyTheme.accent_color,
+        color: MyTheme.primaryColor,
         backgroundColor: Colors.white,
         displacement: 0,
         onRefresh: _onRefresh,
@@ -445,6 +445,8 @@ class _OrderListState extends State<OrderList> {
                           MaterialPageRoute(builder: (context) {
                         return OrderDetails(
                           id: _orderList[index].id,
+                          go_back: true,
+                          from_notification: false,
                         );
                       }));
                     },
@@ -478,7 +480,7 @@ class _OrderListState extends State<OrderList> {
               child: Text(
                 _orderList[index].code,
                 style: TextStyle(
-                    color: MyTheme.accent_color,
+                    color: MyTheme.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
               ),
@@ -503,7 +505,7 @@ class _OrderListState extends State<OrderList> {
                   Text(
                     _orderList[index].grand_total,
                     style: TextStyle(
-                        color: MyTheme.accent_color,
+                        color: MyTheme.primaryColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w600),
                   )

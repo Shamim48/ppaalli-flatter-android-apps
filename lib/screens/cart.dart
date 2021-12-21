@@ -277,7 +277,7 @@ class _CartState extends State<Cart> {
           body: Stack(
             children: [
               RefreshIndicator(
-                color: MyTheme.accent_color,
+                color: MyTheme.primaryColor,
                 backgroundColor: Colors.white,
                 onRefresh: _onRefresh,
                 displacement: 0,
@@ -675,7 +675,7 @@ backgroundColor: Colors.white,
 
                       ],
                     ),
-                    Row(
+                    /*Row(
                       children: [
                         Padding(padding: EdgeInsets.only(top: 8.0),
                           child: Text("Color:  ", style: LatoMedium,),),
@@ -690,22 +690,24 @@ backgroundColor: Colors.white,
                         ),
 
                       ],
-                    ),
-                    Row(
+                    ),*/
+                   /* Row(
                       children: [
                         Padding(padding: EdgeInsets.only(top: 8.0),
-                          child: Text("Advance:  ", style: LatoMedium,),),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text("\$23(10%)",
-                            textAlign: TextAlign.left,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: LatoMedium,
-                          ),
-                        ),
+                          child: Text("Advance:", style: LatoMedium,),),
+
 
                       ],
+                    ),*/
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text("\$20(10%)"+" Advanced",
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: LatoMedium,
+                      ),
                     ),
 
 

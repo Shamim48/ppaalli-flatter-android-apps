@@ -125,7 +125,7 @@ class _SellerDetailsState extends State<SellerDetails> {
           appBar: buildAppBar(context),
           bottomNavigationBar: buildBottomAppBar(context),
           body: RefreshIndicator(
-            color: MyTheme.accent_color,
+            color: MyTheme.primaryColor,
             backgroundColor: Colors.white,
             onRefresh: _onPageRefresh,
             child: CustomScrollView(
@@ -362,7 +362,7 @@ class _SellerDetailsState extends State<SellerDetails> {
     return FlatButton(
       minWidth: MediaQuery.of(context).size.width,
       height: 50,
-      color: MyTheme.accent_color,
+      color: MyTheme.primaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0.0),
       ),

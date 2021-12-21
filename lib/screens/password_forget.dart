@@ -110,7 +110,7 @@ class _PasswordForgetState extends State<PasswordForget> {
                     child: Text(
                       "Forget Password ?",
                       style: TextStyle(
-                          color: MyTheme.accent_color,
+                          color: MyTheme.primaryColor,
                           fontSize: 18,
                           fontWeight: FontWeight.w600),
                     ),
@@ -125,7 +125,7 @@ class _PasswordForgetState extends State<PasswordForget> {
                           child: Text(
                             _send_code_by == "email" ? AppLocalizations.of(context).password_forget_screen_email : AppLocalizations.of(context).password_forget_screen_phone,
                             style: TextStyle(
-                                color: MyTheme.accent_color,
+                                color: MyTheme.primaryColor,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -155,7 +155,7 @@ class _PasswordForgetState extends State<PasswordForget> {
                                         child: Text(
                                           AppLocalizations.of(context).password_forget_screen_send_code_via_phone,
                                           style: TextStyle(
-                                              color: MyTheme.accent_color,
+                                              color: MyTheme.primaryColor,
                                               fontStyle: FontStyle.italic,
                                               decoration:
                                                   TextDecoration.underline),
@@ -212,7 +212,7 @@ class _PasswordForgetState extends State<PasswordForget> {
                                   child: Text(
                                     AppLocalizations.of(context).password_forget_screen_send_code_via_email,
                                     style: TextStyle(
-                                        color: MyTheme.accent_color,
+                                        color: MyTheme.primaryColor,
                                         fontStyle: FontStyle.italic,
                                         decoration: TextDecoration.underline),
                                   ),
@@ -232,7 +232,7 @@ class _PasswordForgetState extends State<PasswordForget> {
                             child: FlatButton(
                               minWidth: MediaQuery.of(context).size.width,
                               //height: 50,
-                              color: MyTheme.accent_color,
+                              color: MyTheme.primaryColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(12.0))),

@@ -38,6 +38,7 @@ class Images{
   static const String product_background_shape = 'assets/images/product_background_shape.png';
 
   static const String logo = 'dummy_assets/logo.png';
+  static const String ppaalli_icon = 'ppaalli_icon/logo.png';
 
 
   // Home Images

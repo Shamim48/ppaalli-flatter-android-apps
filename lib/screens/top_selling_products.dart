@@ -38,7 +38,7 @@ class _TopSellingProductsState extends State<TopSellingProducts> {
       ),
       title: Text(
         AppLocalizations.of(context).top_selling_products_screen_top_selling_products,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,

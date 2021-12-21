@@ -137,7 +137,7 @@ class _WalletState extends State<Wallet> {
             body: Stack(
               children: [
                 RefreshIndicator(
-                  color: MyTheme.accent_color,
+                  color: MyTheme.primaryColor,
                   backgroundColor: Colors.white,
                   onRefresh: _onPageRefresh,
                   displacement: 10,
@@ -220,7 +220,7 @@ backgroundColor: Colors.white,
       ),
       title: Text(
         AppLocalizations.of(context).wallet_screen_my_wallet,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -333,7 +333,7 @@ backgroundColor: Colors.white,
                     Text(
                       _rechargeList[index].amount,
                       style: TextStyle(
-                          color: MyTheme.accent_color,
+                          color: MyTheme.primaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w600),
                     ),
@@ -376,7 +376,7 @@ backgroundColor: Colors.white,
           width: double.infinity,
           height: 150,
           decoration: BoxDecoration(
-            color: MyTheme.accent_color,
+            color: MyTheme.primaryColor,
             borderRadius: BorderRadius.circular(8),
             border:
                 Border.all(color: Color.fromRGBO(112, 112, 112, .3), width: 1),
@@ -551,7 +551,7 @@ backgroundColor: Colors.white,
                         child: FlatButton(
                           minWidth: 75,
                           height: 30,
-                          color: MyTheme.accent_color,
+                          color: MyTheme.primaryColor,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                               side: BorderSide(

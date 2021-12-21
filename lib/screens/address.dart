@@ -443,7 +443,7 @@ class _AddressState extends State<Address> {
         appBar: buildAppBar(context),
         bottomNavigationBar: buildBottomAppBar(context),
         body: RefreshIndicator(
-          color: MyTheme.accent_color,
+          color: MyTheme.primaryColor,
           backgroundColor: Colors.white,
           onRefresh: _onRefresh,
           displacement: 0,
@@ -943,7 +943,7 @@ class _AddressState extends State<Address> {
                       child: FlatButton(
                         minWidth: 75,
                         height: 30,
-                        color: MyTheme.accent_color,
+                        color: MyTheme.primaryColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             side: BorderSide(
@@ -1422,7 +1422,7 @@ class _AddressState extends State<Address> {
                       child: FlatButton(
                         minWidth: 75,
                         height: 30,
-                        color: MyTheme.accent_color,
+                        color: MyTheme.primaryColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             side: BorderSide(
@@ -1463,7 +1463,7 @@ class _AddressState extends State<Address> {
         children: [
           Text(
             AppLocalizations.of(context).address_screen_addresses_of_user,
-            style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+            style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
           ),
           Text(
             "* ${AppLocalizations.of(context).address_screen_addresses_to_make_default}",
@@ -1526,7 +1526,7 @@ class _AddressState extends State<Address> {
       child: Card(
         shape: RoundedRectangleBorder(
           side: _default_shipping_address == _shippingAddressList[index].id
-              ? BorderSide(color: MyTheme.accent_color, width: 2.0)
+              ? BorderSide(color: MyTheme.primaryColor, width: 2.0)
               : BorderSide(color: MyTheme.light_grey, width: 1.0),
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -1818,7 +1818,7 @@ class _AddressState extends State<Address> {
               FlatButton(
                 minWidth: MediaQuery.of(context).size.width,
                 height: 50,
-                color: MyTheme.accent_color,
+                color: MyTheme.primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0.0),
                 ),

@@ -225,7 +225,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             body: Stack(
               children: [
                 RefreshIndicator(
-                  color: MyTheme.accent_color,
+                  color: MyTheme.primaryColor,
                   backgroundColor: Colors.white,
                   onRefresh: _onRefresh,
                   displacement: 0,
@@ -707,7 +707,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: TextStyle(
-                                  color: MyTheme.accent_color,
+                                  color: MyTheme.primaryColor,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -881,7 +881,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 child: Column(
                                   children: [
                                     Flexible(child: Text(
-                                      _bestSellingProductList[index].name,
+                                      _featuredProductList[index].name,
                                       textAlign: TextAlign.center,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,

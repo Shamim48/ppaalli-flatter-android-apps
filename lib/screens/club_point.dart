@@ -120,7 +120,7 @@ class _ClubpointState extends State<Clubpoint> {
             onPopped(value);
           });
         },
-        textColor: MyTheme.accent_color,
+        textColor: MyTheme.primaryColor,
         disabledTextColor: Colors.grey,
       ),
     );
@@ -133,7 +133,7 @@ class _ClubpointState extends State<Clubpoint> {
         body: Stack(
           children: [
             RefreshIndicator(
-              color: MyTheme.accent_color,
+              color: MyTheme.primaryColor,
               backgroundColor: Colors.white,
               onRefresh: _onRefresh,
               displacement: 0,
@@ -186,7 +186,7 @@ backgroundColor: Colors.white,
       ),
       title: Text(
         AppLocalizations.of(context).club_point_screen_earned_points,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -268,7 +268,7 @@ backgroundColor: Colors.white,
                     Text(
                       _list[index].points.toString(),
                       style: TextStyle(
-                          color: MyTheme.accent_color,
+                          color: MyTheme.primaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w600),
                     ),
@@ -285,7 +285,7 @@ backgroundColor: Colors.white,
                       width: 80,
 
                       child: FlatButton(
-                        color: MyTheme.accent_color,
+                        color: MyTheme.primaryColor,
                         child: Text(
                           AppLocalizations.of(context).club_point_screen_convert,
                           style: TextStyle(color: Colors.white),

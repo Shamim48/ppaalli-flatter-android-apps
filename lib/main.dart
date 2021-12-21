@@ -99,7 +99,7 @@ class _MyAppState extends State<MyApp> {
             theme: ThemeData(
               primaryColor: MyTheme.white,
               visualDensity: VisualDensity.adaptivePlatformDensity,
-              accentColor: MyTheme.accent_color,
+              accentColor: MyTheme.primaryColor,
               /*textTheme: TextTheme(
               bodyText1: TextStyle(),
               bodyText2: TextStyle(fontSize: 12.0),

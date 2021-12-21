@@ -83,9 +83,9 @@ dev_dependencies:
 
 
 flutter_icons:
-  android: true
+  android: "launcher_icon"
   ios: true
-  image_path: "assets/app_logo.png"
+  image_path: 'ppaalli_icon/logo.png'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

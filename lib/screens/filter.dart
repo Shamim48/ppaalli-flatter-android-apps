@@ -721,7 +721,7 @@ class _FilterState extends State<Filter> {
                   }
                   return ListTile(
                     dense: true,
-                    title: Text(suggestion.query,style: TextStyle(color:  suggestion.type != "search" ? MyTheme.accent_color : MyTheme.font_grey),),
+                    title: Text(suggestion.query,style: TextStyle(color:  suggestion.type != "search" ? MyTheme.primaryColor : MyTheme.font_grey),),
                     subtitle: Text(subtitle,style:TextStyle(color: suggestion.type != "search" ? MyTheme.font_grey: MyTheme.medium_grey)),
                   );
                 },
@@ -1068,7 +1068,7 @@ class _FilterState extends State<Filter> {
     } else if (_productList.length > 0) {
       return RefreshIndicator(
         color: Colors.white,
-        backgroundColor: MyTheme.accent_color,
+        backgroundColor: MyTheme.primaryColor,
         onRefresh: _onProductListRefresh,
         child: SingleChildScrollView(
           controller: _productScrollController,
@@ -1136,7 +1136,7 @@ class _FilterState extends State<Filter> {
     } else if (_brandList.length > 0) {
       return RefreshIndicator(
         color: Colors.white,
-        backgroundColor: MyTheme.accent_color,
+        backgroundColor: MyTheme.primaryColor,
         onRefresh: _onBrandListRefresh,
         child: SingleChildScrollView(
           controller: _brandScrollController,
@@ -1203,7 +1203,7 @@ class _FilterState extends State<Filter> {
     } else if (_shopList.length > 0) {
       return RefreshIndicator(
         color: Colors.white,
-        backgroundColor: MyTheme.accent_color,
+        backgroundColor: MyTheme.primaryColor,
         onRefresh: _onShopListRefresh,
         child: SingleChildScrollView(
           controller: _shopScrollController,

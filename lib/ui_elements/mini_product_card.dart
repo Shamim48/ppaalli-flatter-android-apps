@@ -69,7 +69,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: TextStyle(
-                      color: MyTheme.accent_color,
+                      color: MyTheme.primaryColor,
                       fontSize: 11,
                       fontWeight: FontWeight.w600),
                 ),

@@ -173,7 +173,7 @@ class _ChatState extends State<Chat> {
                       FlatButton(
                         minWidth: MediaQuery.of(context).size.width,
                         height: 36,
-                        color: MyTheme.accent_color,
+                        color: MyTheme.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0.0),
                         ),
@@ -413,7 +413,7 @@ backgroundColor: Colors.white,
               height: 40,
               margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
               decoration: BoxDecoration(
-                color: MyTheme.accent_color,
+                color: MyTheme.primaryColor,
                 borderRadius: BorderRadius.circular(35),
                 border: Border.all(
                     color: Color.fromRGBO(112, 112, 112, .3), width: 1),

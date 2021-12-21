@@ -122,7 +122,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
           body: Stack(
             children: [
               RefreshIndicator(
-                color: MyTheme.accent_color,
+                color: MyTheme.primaryColor,
                 backgroundColor: Colors.white,
                 onRefresh: _onRefresh,
                 displacement: 0,
@@ -159,7 +159,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
       ),
       title: Text(
         "${AppLocalizations.of(context).change_language_change_language} (${app_language.$}) - (${app_mobile_language.$})",
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -207,7 +207,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
           Card(
             shape: RoundedRectangleBorder(
               side: _selected_index == index
-                  ? BorderSide(color: MyTheme.accent_color, width: 2.0)
+                  ? BorderSide(color: MyTheme.primaryColor, width: 2.0)
                   : BorderSide(color: MyTheme.light_grey, width: 1.0),
               borderRadius: BorderRadius.circular(8.0),
             ),

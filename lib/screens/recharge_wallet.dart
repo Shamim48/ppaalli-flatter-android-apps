@@ -262,7 +262,7 @@ class _RechargeWalletState extends State<RechargeWallet> {
           body: Stack(
             children: [
               RefreshIndicator(
-                color: MyTheme.accent_color,
+                color: MyTheme.primaryColor,
                 backgroundColor: Colors.white,
                 onRefresh: _onRefresh,
                 displacement: 0,
@@ -299,7 +299,7 @@ class _RechargeWalletState extends State<RechargeWallet> {
       ),
       title: Text(
         AppLocalizations.of(context).recharge_wallet_screen_recharge_wallet,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -348,7 +348,7 @@ class _RechargeWalletState extends State<RechargeWallet> {
             shape: RoundedRectangleBorder(
               side: _selected_payment_method ==
                       _paymentTypeList[index].payment_type
-                  ? BorderSide(color: MyTheme.accent_color, width: 2.0)
+                  ? BorderSide(color: MyTheme.primaryColor, width: 2.0)
                   : BorderSide(color: MyTheme.light_grey, width: 1.0),
               borderRadius: BorderRadius.circular(8.0),
             ),
@@ -441,7 +441,7 @@ class _RechargeWalletState extends State<RechargeWallet> {
             FlatButton(
               minWidth: MediaQuery.of(context).size.width,
               height: 50,
-              color: MyTheme.accent_color,
+              color: MyTheme.primaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0.0),
               ),

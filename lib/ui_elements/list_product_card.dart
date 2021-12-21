@@ -74,7 +74,7 @@ class _ListProductCardState extends State<ListProductCard> {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
-                        color: MyTheme.accent_color,
+                        color: MyTheme.primaryColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w600),
                   ),

@@ -257,7 +257,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                       child: FlatButton(
                         minWidth: 75,
                         height: 30,
-                        color: MyTheme.accent_color,
+                        color: MyTheme.primaryColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             side: BorderSide(
@@ -329,7 +329,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             onPopped(value);
           });
         },
-        textColor: MyTheme.accent_color,
+        textColor: MyTheme.primaryColor,
         disabledTextColor: Colors.grey,
       ),
     ));
@@ -361,7 +361,7 @@ class _OrderDetailsState extends State<OrderDetails> {
           backgroundColor: Colors.white,
           appBar: buildAppBar(context),
           body: RefreshIndicator(
-            color: MyTheme.accent_color,
+            color: MyTheme.primaryColor,
             backgroundColor: Colors.white,
             onRefresh: _onPageRefresh,
             child: CustomScrollView(
@@ -425,9 +425,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                     ),
                   )
                 ])),
-                SliverList(
+               /* SliverList(
                     delegate:
                         SliverChildListDelegate([buildPaymentButtonSection()]))
+                */
               ],
             ),
           ),
@@ -561,7 +562,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         Text(
                           _orderDetails.grand_total,
                           style: TextStyle(
-                              color: MyTheme.accent_color,
+                              color: MyTheme.primaryColor,
                               fontSize: 14,
                               fontWeight: FontWeight.w600),
                         ),
@@ -920,7 +921,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Text(
                     _orderDetails.code,
                     style: TextStyle(
-                        color: MyTheme.accent_color,
+                        color: MyTheme.primaryColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w600),
                   ),
@@ -1113,7 +1114,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Text(
                     _orderDetails.grand_total,
                     style: TextStyle(
-                        color: MyTheme.accent_color,
+                        color: MyTheme.primaryColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w600),
                   ),
@@ -1179,7 +1180,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Text(
                     _orderedItemList[index].price,
                     style: TextStyle(
-                        color: MyTheme.accent_color,
+                        color: MyTheme.primaryColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w600),
                   ),
@@ -1203,7 +1204,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           Text(
                             AppLocalizations.of(context).order_details_screen_ask_for_refund,
                             style: TextStyle(
-                                color: MyTheme.accent_color,
+                                color: MyTheme.primaryColor,
                                 fontWeight: FontWeight.w600,
                                 decoration: TextDecoration.underline),
                           ),
@@ -1211,7 +1212,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                             padding: const EdgeInsets.only(left: 2.0),
                             child: Icon(
                               FontAwesome.rotate_left,
-                              color: MyTheme.accent_color,
+                              color: MyTheme.primaryColor,
                               size: 14,
                             ),
                           )
@@ -1298,7 +1299,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
       title: Text(
         AppLocalizations.of(context).order_details_screen_order_details,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,

@@ -151,7 +151,7 @@ class _ProfileState extends State<Profile> {
           )));
     } else {*/
     return RefreshIndicator(
-      color: MyTheme.accent_color,
+      color: MyTheme.primaryColor,
       backgroundColor: Colors.white,
       onRefresh: _onPageRefresh,
       displacement: 10,
@@ -1285,7 +1285,7 @@ class _ProfileState extends State<Profile> {
       ),
       title: Text(
         AppLocalizations.of(context).profile_screen_account,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,

@@ -177,7 +177,7 @@ backgroundColor: Colors.white,
       ),
       title: Text(
         AppLocalizations.of(context).paystack_screen_pay_with_paystack,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,

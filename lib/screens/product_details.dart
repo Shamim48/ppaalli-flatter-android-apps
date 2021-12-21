@@ -631,7 +631,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         child: FlatButton(
                           minWidth: 75,
                           height: 30,
-                          color: MyTheme.accent_color,
+                          color: MyTheme.primaryColor,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               side: BorderSide(
@@ -723,7 +723,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             onPopped(value);
           });
         },
-        textColor: MyTheme.accent_color,
+        textColor: MyTheme.primaryColor,
         disabledTextColor: Colors.grey,
       ),
     );
@@ -734,7 +734,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           backgroundColor: Colors.white,
           appBar: buildAppBar(statusBarHeight, context),
           body: RefreshIndicator(
-            color: MyTheme.accent_color,
+            color: MyTheme.primaryColor,
             backgroundColor: Colors.white,
             onRefresh: _onPageRefresh,
             child: CustomScrollView(

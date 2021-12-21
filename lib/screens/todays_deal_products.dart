@@ -40,7 +40,7 @@ class _TodaysDealProductsState extends State<TodaysDealProducts> {
       ),
       title: Text(
         AppLocalizations.of(context).todays_deal_products_screen_todays_deal,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,

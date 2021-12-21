@@ -152,7 +152,10 @@ class _ShippingInfoState extends State<ShippingInfo> {
         gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return Checkout();
+      return Checkout(
+        list: "offline",
+        manual_payment_from_order_details: true,
+      );
     })).then((value) {
       onPopped(value);
     });
@@ -222,7 +225,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
           ),
           //buildBottomAppBar(context),
           body: RefreshIndicator(
-            color: MyTheme.accent_color,
+            color: MyTheme.primaryColor,
             backgroundColor: Colors.white,
             onRefresh: _onRefresh,
             displacement: 0,

@@ -77,7 +77,7 @@ class _MessengerListState extends State<MessengerList> {
         body: Stack(
           children: [
             RefreshIndicator(
-              color: MyTheme.accent_color,
+              color: MyTheme.primaryColor,
               backgroundColor: Colors.white,
               onRefresh: _onRefresh,
               displacement: 0,
@@ -130,7 +130,7 @@ backgroundColor: Colors.white,
       ),
       title: Text(
         AppLocalizations.of(context).messenger_list_screen_messages,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,

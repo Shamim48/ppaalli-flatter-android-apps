@@ -261,7 +261,7 @@ class _RegistrationState extends State<Registration> {
                                   child: Text(
                                     AppLocalizations.of(context).registration_screen_or_register_with_email,
                                     style: TextStyle(
-                                        color: MyTheme.accent_color,
+                                        color: MyTheme.primaryColor,
                                         fontStyle: FontStyle.italic,
                                         decoration: TextDecoration.underline),
                                   ),

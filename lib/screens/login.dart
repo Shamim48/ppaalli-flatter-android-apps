@@ -291,7 +291,7 @@ class _LoginState extends State<Login> {
                                           AppLocalizations.of(context)
                                               .login_screen_or_login_with_phone,
                                           style: TextStyle(
-                                              color: MyTheme.accent_color,
+                                              color: MyTheme.primaryColor,
                                               fontStyle: FontStyle.italic,
                                               decoration:
                                                   TextDecoration.underline),
@@ -353,7 +353,7 @@ class _LoginState extends State<Login> {
                                     AppLocalizations.of(context)
                                         .login_screen_or_login_with_email,
                                     style: TextStyle(
-                                        color: MyTheme.accent_color,
+                                        color: MyTheme.primaryColor,
                                         fontStyle: FontStyle.italic,
                                         decoration: TextDecoration.underline),
                                   ),
@@ -414,6 +414,7 @@ class _LoginState extends State<Login> {
                               alignment: Alignment.center,
 
                               decoration: BoxDecoration(
+                                color: MyTheme.primary_Colour,
                                 /*border: Border.all(
                                     color: MyTheme.textfield_grey, width: 1),*/
                                   borderRadius: const BorderRadius.all(
@@ -423,17 +424,13 @@ class _LoginState extends State<Login> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 1,
                                     blurRadius: 1,
-                                    offset: Offset(0, 1), // changes position of shadow
+                                    // changes position of shadow
                                   ),
                                 ],
                               ),
                               child: FlatButton(
                                 minWidth: MediaQuery.of(context).size.width,
                                 //height: 50,
-                                color: MyTheme.primary_Colour,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(20.0))),
                                 child: Text(
                                   "Login",
                                   style: TextStyle(

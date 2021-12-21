@@ -185,7 +185,7 @@ class _OfflineState extends State<OfflineScreen> {
       ),
       title: Text(
         AppLocalizations.of(context).offline_screen_offline_payment,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -203,7 +203,7 @@ class _OfflineState extends State<OfflineScreen> {
           )));
     } else {
       return RefreshIndicator(
-        color: MyTheme.accent_color,
+        color: MyTheme.primaryColor,
         backgroundColor: Colors.white,
         onRefresh: _onPageRefresh,
         displacement: 10,
@@ -263,7 +263,7 @@ class _OfflineState extends State<OfflineScreen> {
               child: Text(
                 "${AppLocalizations.of(context).offline_screen_amount}*",
                 style: TextStyle(
-                    color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.primaryColor, fontWeight: FontWeight.w600),
               ),
             ),
             Padding(
@@ -283,7 +283,7 @@ class _OfflineState extends State<OfflineScreen> {
               child: Text(
                 "${AppLocalizations.of(context).offline_screen_name}*",
                 style: TextStyle(
-                    color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.primaryColor, fontWeight: FontWeight.w600),
               ),
             ),
             Padding(
@@ -303,7 +303,7 @@ class _OfflineState extends State<OfflineScreen> {
               child: Text(
                 "${AppLocalizations.of(context).offline_screen_transaction_id}*",
                 style: TextStyle(
-                    color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.primaryColor, fontWeight: FontWeight.w600),
               ),
             ),
             Padding(
@@ -323,7 +323,7 @@ class _OfflineState extends State<OfflineScreen> {
               child: Text(
                 "${AppLocalizations.of(context).offline_screen_photo_proof}* (${AppLocalizations.of(context).offline_screen_only_image_file_allowed})",
                 style: TextStyle(
-                    color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.primaryColor, fontWeight: FontWeight.w600),
               ),
             ),
             Row(
@@ -382,7 +382,7 @@ class _OfflineState extends State<OfflineScreen> {
                     child: FlatButton(
                       minWidth: MediaQuery.of(context).size.width,
                       //height: 50,
-                      color: MyTheme.accent_color,
+                      color: MyTheme.primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8.0))),

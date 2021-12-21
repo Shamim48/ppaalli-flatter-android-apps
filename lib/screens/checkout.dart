@@ -33,7 +33,7 @@ class Checkout extends StatefulWidget {
   Checkout(
       {Key key,
       this.order_id = 0,
-      this.manual_payment_from_order_details = false,
+      this.manual_payment_from_order_details = true,
       this.list = "both"})
       : super(key: key);
 
@@ -356,12 +356,14 @@ class _CheckoutState extends State<Checkout> {
     } else if (_selected_payment_method == "wallet_system") {
       pay_by_wallet();
     } else if (_selected_payment_method == "cash_payment") {
+      ToastComponent.showDialog("Pay By Code", context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
       pay_by_cod();
-    } else if (_selected_payment_method == "manual_payment" &&
+    }/* else if (_selected_payment_method == "manual_payment" &&
         widget.manual_payment_from_order_details == false) {
       pay_by_manual_payment();
-    } else if (_selected_payment_method == "manual_payment" &&
-        widget.manual_payment_from_order_details == true) {
+    }*/ else if (_selected_payment_method == "manual_payment" /*&&
+        widget.manual_payment_from_order_details == true*/) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return OfflineScreen(
           order_id: widget.order_id,
@@ -395,8 +397,7 @@ class _CheckoutState extends State<Checkout> {
   pay_by_cod() async {
     var orderCreateResponse = await PaymentRepository()
         .getOrderCreateResponseFromCod(_selected_payment_method_key);
-/*
-    if (orderCreateResponse.result == false) {
+   /* if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
       Navigator.of(context).pop();
@@ -569,7 +570,7 @@ class _CheckoutState extends State<Checkout> {
                               Text(
                                 _totalString,
                                 style: TextStyle(
-                                    color: MyTheme.accent_color,
+                                    color: MyTheme.primaryColor,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600),
                               ),
@@ -604,7 +605,7 @@ class _CheckoutState extends State<Checkout> {
           body: Stack(
             children: [
               RefreshIndicator(
-                color: MyTheme.accent_color,
+                color: MyTheme.primaryColor,
                 backgroundColor: Colors.white,
                 onRefresh: _onRefresh,
                 displacement: 0,
@@ -747,7 +748,7 @@ class _CheckoutState extends State<Checkout> {
                 child: FlatButton(
                   minWidth: MediaQuery.of(context).size.width,
                   //height: 50,
-                  color: MyTheme.accent_color,
+                  color: MyTheme.primaryColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: const BorderRadius.only(
                     topRight: const Radius.circular(8.0),
@@ -771,7 +772,7 @@ class _CheckoutState extends State<Checkout> {
                 child: FlatButton(
                   minWidth: MediaQuery.of(context).size.width,
                   //height: 50,
-                  color: MyTheme.accent_color,
+                  color: MyTheme.primaryColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: const BorderRadius.only(
                     topRight: const Radius.circular(8.0),
@@ -799,13 +800,13 @@ backgroundColor: Colors.white,
       centerTitle: true,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 26,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       title: Text(
         AppLocalizations.of(context).checkout_screen_checkout,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor, ),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -854,7 +855,7 @@ backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               side: _selected_payment_method_key ==
                       _paymentTypeList[index].payment_type_key
-                  ? BorderSide(color: MyTheme.accent_color, width: 2.0)
+                  ? BorderSide(color: MyTheme.primaryColor, width: 2.0)
                   : BorderSide(color: MyTheme.light_grey, width: 1.0),
               borderRadius: BorderRadius.circular(8.0),
             ),

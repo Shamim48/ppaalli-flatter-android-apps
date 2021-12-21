@@ -173,7 +173,7 @@ backgroundColor: Colors.white,
       ),
       title: Text(
         AppLocalizations.of(context).profile_edit_screen_edit_profile,
-        style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
+        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -191,7 +191,7 @@ backgroundColor: Colors.white,
           )));
     } else {
       return RefreshIndicator(
-        color: MyTheme.accent_color,
+        color: MyTheme.primaryColor,
         backgroundColor: Colors.white,
         onRefresh: _onPageRefresh,
         displacement: 10,
@@ -297,7 +297,7 @@ backgroundColor: Colors.white,
               child: Text(
                 AppLocalizations.of(context).profile_edit_screen_name,
                 style: TextStyle(
-                    color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.primaryColor, fontWeight: FontWeight.w600),
               ),
             ),
             Padding(
@@ -317,7 +317,7 @@ backgroundColor: Colors.white,
               child: Text(
                 AppLocalizations.of(context).profile_edit_screen_password,
                 style: TextStyle(
-                    color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.primaryColor, fontWeight: FontWeight.w600),
               ),
             ),
             Padding(
@@ -351,7 +351,7 @@ backgroundColor: Colors.white,
               child: Text(
                   AppLocalizations.of(context).profile_edit_screen_retype_password,
                 style: TextStyle(
-                    color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                    color: MyTheme.primaryColor, fontWeight: FontWeight.w600),
               ),
             ),
             Padding(
@@ -385,7 +385,7 @@ backgroundColor: Colors.white,
                     child: FlatButton(
                       minWidth: MediaQuery.of(context).size.width,
                       //height: 50,
-                      color: MyTheme.accent_color,
+                      color: MyTheme.primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8.0))),
