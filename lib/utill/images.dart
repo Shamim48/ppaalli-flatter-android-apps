@@ -10,7 +10,13 @@ class Images{
   static const String  motorcycle='assets/icon/motorcycle.png';
   static const String  bus='assets/icon/bus.png';
   static const String  jeep='assets/icon/jeep.png';
-
+  static const String  coupon='assets/icon/coupon.png';
+  static const String  flash_sale='assets/icon/flash_sale.png';
+  static const String  student='assets/icon/student.png';
+  static const String  group='assets/icon/group.png';
+  static const String  all_brand='assets/icon/all_brand.png';
+  static const String  heart='assets/icon/heart.png';
+  static const String  heart_outline='assets/icon/heart_outline.png';
 
   // Images
   static const String  qr_code='assets/images/qr-code .png';
@@ -24,7 +30,7 @@ class Images{
   static const String  no_data='assets/images/no_data.png';
   static const String  banner_one='assets/images/banner_one.jpg';
   static const String  banner_two='assets/images/banner_two.jpg';
-  static const String  banner_three='assets/images/banner_three.jpg';
+  static const String banner_three='assets/images/banner_three.jpg';
   static const String arabic = 'assets/image/arabic.png';
   static const String bangladesh = 'assets/image/bangladesh.png';
   static const String united_kindom = 'assets/image/united_kindom.png';

@@ -76,6 +76,8 @@ class _ProductDetailsState extends State<ProductDetails> {
   List<dynamic> _topProducts = [];
   bool _topProductInit = false;
 
+  String wishlistImage=Images.heart_outline;
+
   @override
   void initState() {
     fetchAll();
@@ -1206,6 +1208,17 @@ class _ProductDetailsState extends State<ProductDetails> {
 
         Spacer(),
 
+        IconButton(
+          icon: Image.asset(wishlistImage, color: Colors.redAccent,),
+          onPressed: (){
+            onWishTap();
+            setState(() {
+              wishlistImage=Images.heart;
+            });
+          },
+        ),
+
+       SizedBox(width: 20,),
         Icon(Icons.share, color: MyTheme.primary_Colour,)
 
 
@@ -1577,7 +1590,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
         ),
         Container(
-          height: 220,
+          height: 170,
           width: 40,
           child: Scrollbar(
             controller: _colorScrollController,
@@ -2194,7 +2207,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               children: [
                 Center(
                   child: SizedBox(
-                    width: 30,
+                    width: 50,
                     child: _productDetails != null
                         ? (_colorList.length > 0
                             ? buildColorColumn()

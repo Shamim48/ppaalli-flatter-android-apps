@@ -1,4 +1,5 @@
 import 'package:active_ecommerce_flutter/screens/checkout.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -458,26 +459,38 @@ class _AddressState extends State<Address> {
                   padding: const EdgeInsets.all(16.0),
                   child: buildAddressList(),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: FlatButton(
-                    minWidth: MediaQuery.of(context).size.width - 16,
-                    height: 60,
-                    color: Color.fromRGBO(252, 252, 252, 1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        side:
-                            BorderSide(color: MyTheme.light_grey, width: 1.0)),
-                    child: Icon(
-                      FontAwesome.plus,
-                      color: MyTheme.dark_grey,
-                      size: 16,
-                    ),
-                    onPressed: () {
-                      buildShowAddFormDialog(context);
-                    },
+
+                Center(
+                   child: FlatButton(
+                  minWidth: 100,
+                  height: 50,
+                  color: Color.fromRGBO(252, 252, 252, 1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      side:
+                      BorderSide(color: MyTheme.light_grey, width: 1.0)),
+                  child: Icon(
+                    FontAwesome.plus,
+                    color: MyTheme.primary_Colour,
+                    size: 16,
                   ),
+                  onPressed: () {
+                    buildShowAddFormDialog(context);
+                  },
                 ),
+                ),
+                 Center(
+                   child: FlatButton(
+                  minWidth: 80,
+                  height: 40,
+                  child: Text("Add New Address", style: LatoMedium,),
+                  onPressed: () {
+                    buildShowAddFormDialog(context);
+                  },
+                ),
+                ),
+
+
                 SizedBox(
                   height: 100,
                 )
@@ -508,56 +521,78 @@ class _AddressState extends State<Address> {
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                             "${AppLocalizations.of(context).address_screen_address} *",
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
+                            style: LatoMedium),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Container(
-                          height: 55,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: MyTheme.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: MyTheme.dark_grey.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 1.5
+                              )
+                            ]
+                          ),
                           child: TextField(
                             controller: _addressController,
                             autofocus: false,
                             maxLines: null,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
+                              border: InputBorder.none,
                                 hintText: AppLocalizations.of(context)
                                     .address_screen_enter_address,
                                 hintStyle: TextStyle(
                                     fontSize: 12.0,
-                                    color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
+                                    color: MyTheme.dark_grey),
+                              /*  enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: MyTheme.textfield_grey,
                                       width: 0.5),
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(8.0),
                                   ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
+                                ),*/
+                                /*focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: MyTheme.textfield_grey,
                                       width: 1.0),
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(8.0),
                                   ),
-                                ),
+                                ),*/
                                 contentPadding: EdgeInsets.only(
                                     left: 8.0, top: 16.0, bottom: 16.0)),
                           ),
                         ),
                       ),
+                      // Country Textfield
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                             "${AppLocalizations.of(context).address_screen_country} *",
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
+                            style: LatoMedium),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Container(
-                          height: 40,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: MyTheme.white,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: MyTheme.dark_grey.withOpacity(0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 1.5
+                                )
+                              ]
+                          ),
                           child: TypeAheadField(
                             suggestionsCallback: (name) async {
                               var countryResponse = await AddressRepository()
@@ -609,123 +644,12 @@ class _AddressState extends State<Address> {
                               decoration: InputDecoration(
                                   hintText: AppLocalizations.of(context)
                                       .address_screen_enter_country,
+                                  border: InputBorder.none,
                                   hintStyle: TextStyle(
                                       fontSize: 12.0,
                                       color: MyTheme.textfield_grey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: MyTheme.textfield_grey,
-                                        width: 0.5),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: MyTheme.textfield_grey,
-                                        width: 1.0),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 8.0)),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(
-                            "${AppLocalizations.of(context).address_screen_state} *",
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          height: 40,
-                          child: TypeAheadField(
-                            suggestionsCallback: (name) async {
-                              if (_selected_country == null) {
-                                var stateResponse = await AddressRepository()
-                                    .getStateListByCountry(); // blank response
-                                return stateResponse.states;
-                              }
-                              var stateResponse = await AddressRepository()
-                                  .getStateListByCountry(
-                                      country_id: _selected_country.id,
-                                      name: name);
-                              return stateResponse.states;
-                            },
-                            loadingBuilder: (context) {
-                              return Container(
-                                height: 50,
-                                child: Center(
-                                    child: Text(
-                                        AppLocalizations.of(context)
-                                            .address_screen_loading_states,
-                                        style: TextStyle(
-                                            color: MyTheme.medium_grey))),
-                              );
-                            },
-                            itemBuilder: (context, state) {
-                              //print(suggestion.toString());
-                              return ListTile(
-                                dense: true,
-                                title: Text(
-                                  state.name,
-                                  style: TextStyle(color: MyTheme.font_grey),
-                                ),
-                              );
-                            },
-                            noItemsFoundBuilder: (context) {
-                              return Container(
-                                height: 50,
-                                child: Center(
-                                    child: Text(
-                                        AppLocalizations.of(context)
-                                            .address_screen_no_state_available,
-                                        style: TextStyle(
-                                            color: MyTheme.medium_grey))),
-                              );
-                            },
-                            onSuggestionSelected: (state) {
-                              onSelectStateDuringAdd(state, setModalState);
-                            },
-                            textFieldConfiguration: TextFieldConfiguration(
-                              onTap: () {},
-                              //autofocus: true,
-                              controller: _stateController,
-                              onSubmitted: (txt) {
-                                // _searchKey = txt;
-                                // setState(() {});
-                                // _onSearchSubmit();
-                              },
-                              decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(context)
-                                      .address_screen_enter_state,
-                                  hintStyle: TextStyle(
-                                      fontSize: 12.0,
-                                      color: MyTheme.textfield_grey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: MyTheme.textfield_grey,
-                                        width: 0.5),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: MyTheme.textfield_grey,
-                                        width: 1.0),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 8.0)),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 8.0, top: 16.0, bottom: 16.0)),
                             ),
                           ),
                         ),
@@ -734,13 +658,23 @@ class _AddressState extends State<Address> {
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                             "${AppLocalizations.of(context).address_screen_city} *",
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
+                            style: LatoMedium),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Container(
-                          height: 40,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: MyTheme.white,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: MyTheme.dark_grey.withOpacity(0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 1.5
+                                )
+                              ]
+                          ),
                           child: TypeAheadField(
                             suggestionsCallback: (name) async {
                               if (_selected_state == null) {
@@ -796,29 +730,14 @@ class _AddressState extends State<Address> {
                                 // keep blank
                               },
                               decoration: InputDecoration(
+                                border: InputBorder.none,
                                   hintText: AppLocalizations.of(context)
                                       .address_screen_enter_city,
                                   hintStyle: TextStyle(
                                       fontSize: 12.0,
                                       color: MyTheme.textfield_grey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: MyTheme.textfield_grey,
-                                        width: 0.5),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: MyTheme.textfield_grey,
-                                        width: 1.0),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 8.0)),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 8.0, top: 16.0, bottom: 16.0)),
                             ),
                           ),
                         ),
@@ -828,40 +747,35 @@ class _AddressState extends State<Address> {
                         child: Text(
                             AppLocalizations.of(context)
                                 .address_screen_postal_code,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
+                            style: LatoMedium),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Container(
-                          height: 40,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: MyTheme.white,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: MyTheme.dark_grey.withOpacity(0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 1.5
+                                )
+                              ]
+                          ),
                           child: TextField(
                             controller: _postalCodeController,
                             autofocus: false,
                             decoration: InputDecoration(
+                              border: InputBorder.none,
                                 hintText: AppLocalizations.of(context)
                                     .address_screen_enter_postal_code,
                                 hintStyle: TextStyle(
                                     fontSize: 12.0,
                                     color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 8.0)),
+                                contentPadding: EdgeInsets.only(
+                                    left: 8.0, top: 16.0, bottom: 16.0)),
                           ),
                         ),
                       ),
@@ -869,40 +783,35 @@ class _AddressState extends State<Address> {
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                             AppLocalizations.of(context).address_screen_phone,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 12)),
+                            style: LatoMedium),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Container(
-                          height: 40,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: MyTheme.white,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: MyTheme.dark_grey.withOpacity(0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 1.5
+                                )
+                              ]
+                          ),
                           child: TextField(
                             controller: _phoneController,
                             autofocus: false,
                             decoration: InputDecoration(
+                              border: InputBorder.none,
                                 hintText: AppLocalizations.of(context)
                                     .address_screen_enter_phone,
                                 hintStyle: TextStyle(
                                     fontSize: 12.0,
                                     color: MyTheme.textfield_grey),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 0.5),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MyTheme.textfield_grey,
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(8.0),
-                                  ),
-                                ),
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 8.0)),
+                                contentPadding: EdgeInsets.only(
+                                    left: 8.0, top: 16.0, bottom: 16.0)),
                           ),
                         ),
                       )
@@ -1455,7 +1364,7 @@ class _AddressState extends State<Address> {
       centerTitle: true,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -1463,7 +1372,7 @@ class _AddressState extends State<Address> {
         children: [
           Text(
             AppLocalizations.of(context).address_screen_addresses_of_user,
-            style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
+            style: LatoHeavy.copyWith(color: MyTheme.primary_Colour),
           ),
           Text(
             "* ${AppLocalizations.of(context).address_screen_addresses_to_make_default}",
@@ -1582,34 +1491,7 @@ class _AddressState extends State<Address> {
                         Container(
                           width: 200,
                           child: Text(
-                            _shippingAddressList[index].city_name,
-                            maxLines: 2,
-                            style: TextStyle(
-                                color: MyTheme.dark_grey,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 75,
-                          child: Text(
-                            AppLocalizations.of(context).address_screen_state,
-                            style: TextStyle(
-                              color: MyTheme.grey_153,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 200,
-                          child: Text(
-                            _shippingAddressList[index].state_name,
+                            _shippingAddressList[index].city,
                             maxLines: 2,
                             style: TextStyle(
                                 color: MyTheme.dark_grey,
@@ -1636,7 +1518,7 @@ class _AddressState extends State<Address> {
                         Container(
                           width: 200,
                           child: Text(
-                            _shippingAddressList[index].country_name,
+                            _shippingAddressList[index].country,
                             maxLines: 2,
                             style: TextStyle(
                                 color: MyTheme.dark_grey,
@@ -1664,7 +1546,7 @@ class _AddressState extends State<Address> {
                         Container(
                           width: 200,
                           child: Text(
-                            _shippingAddressList[index].postal_code,
+                            _shippingAddressList[index].postalCode,
                             maxLines: 2,
                             style: TextStyle(
                                 color: MyTheme.dark_grey,

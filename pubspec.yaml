@@ -117,9 +117,5 @@ flutter:
         - asset: assets/fonts/Lato-Semibold.ttf
           weight: 600
 
-
-
-
-
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
