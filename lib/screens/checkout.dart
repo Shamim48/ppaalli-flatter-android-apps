@@ -397,12 +397,12 @@ class _CheckoutState extends State<Checkout> {
   pay_by_cod() async {
     var orderCreateResponse = await PaymentRepository()
         .getOrderCreateResponseFromCod(_selected_payment_method_key);
-   /* if (orderCreateResponse.result == false) {
+    if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
       Navigator.of(context).pop();
       return;
-    }*/
+    }
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return OrderList(from_checkout: true);

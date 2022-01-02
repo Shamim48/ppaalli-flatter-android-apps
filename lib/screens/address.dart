@@ -261,12 +261,6 @@ class _AddressState extends State<Address> {
       return;
     }
 
-    if (_selected_state == null) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context).address_screen_state_warning, context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-      return;
-    }
 
     if (_selected_city == null) {
       ToastComponent.showDialog(
@@ -277,9 +271,8 @@ class _AddressState extends State<Address> {
 
     var addressAddResponse = await AddressRepository().getAddressAddResponse(
         address: address,
-        country_id: _selected_country.id,
-        state_id: _selected_state.id,
-        city_id: _selected_city.id,
+        country: _selected_country.name,
+        city: _selected_city.name,
         postal_code: postal_code,
         phone: phone);
 
@@ -635,7 +628,9 @@ class _AddressState extends State<Address> {
                               onSelectCountryDuringAdd(country, setModalState);
                             },
                             textFieldConfiguration: TextFieldConfiguration(
-                              onTap: () {},
+                              onTap: () {
+
+                              },
                               //autofocus: true,
                               controller: _countryController,
                               onSubmitted: (txt) {

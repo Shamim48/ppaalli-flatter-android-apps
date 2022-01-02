@@ -368,9 +368,9 @@ class _ProfileState extends State<Profile> {
           Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
           InkWell(
             onTap: () {
-              ToastComponent.showDialog(
-                  AppLocalizations.of(context).common_coming_soon, context,
-                  gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return OrderList(from_checkout: false,);
+              }));
             },
             child: Visibility(
               visible: true,

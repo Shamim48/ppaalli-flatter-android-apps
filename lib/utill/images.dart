@@ -17,6 +17,8 @@ class Images{
   static const String  all_brand='assets/icon/all_brand.png';
   static const String  heart='assets/icon/heart.png';
   static const String  heart_outline='assets/icon/heart_outline.png';
+  static const String  chat='assets/icon/chat.png';
+  static const String  notifications='assets/icon/notifications.png';
 
   // Images
   static const String  qr_code='assets/images/qr-code .png';

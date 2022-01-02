@@ -625,8 +625,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: _orderDetails.delivery_status == "pending"? 36: 30,
-                    height: _orderDetails.delivery_status == "pending"? 36: 30,
+                    width: _orderDetails.delivery_status == "pending"? 26: 30,
+                    height: _orderDetails.delivery_status == "pending"? 26: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.redAccent, width: 2),
@@ -686,8 +686,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: _orderDetails.delivery_status == "confirmed"? 36: 30,
-                    height: _orderDetails.delivery_status == "confirmed"? 36: 30,
+                    width: _orderDetails.delivery_status == "confirmed"? 26: 30,
+                    height: _orderDetails.delivery_status == "confirmed"? 26: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.blue, width: 2),
@@ -756,8 +756,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: _orderDetails.delivery_status == "on_delivery"? 36: 30,
-                    height: _orderDetails.delivery_status == "on_delivery"? 36: 30,
+                    width: _orderDetails.delivery_status == "on_delivery"? 26: 30,
+                    height: _orderDetails.delivery_status == "on_delivery"? 26: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.amber, width: 2),
@@ -827,8 +827,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: _orderDetails.delivery_status == "delivered"? 36: 30,
-                    height: _orderDetails.delivery_status == "delivered"? 36: 30,
+                    width: _orderDetails.delivery_status == "delivered"? 26: 30,
+                    height: _orderDetails.delivery_status == "delivered"? 26: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.purple, width: 2),
@@ -1187,7 +1187,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                 ],
               ),
             ),
-            _orderedItemList[index].refund_section &&
+          /*  _orderedItemList[index].refund_section &&
                     _orderedItemList[index].refund_button
                 ? InkWell(
                     onTap: () {
@@ -1220,8 +1220,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                     ),
                   )
-                : Container(),
-            _orderedItemList[index].refund_section &&
+                : Container(),*/
+           /* _orderedItemList[index].refund_section &&
                     _orderedItemList[index].refund_label != ""
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -1244,7 +1244,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                     ],
                   )
-                : Container()
+                : Container()*/
           ],
         ),
       ),

@@ -87,6 +87,32 @@ class CartRepository {
     return cartAddResponseFromJson(response.body);
   }
 
+  Future<CartAddResponse> getCartAddResponseWithoutVariant(
+      @required int id,
+      @required int user_id,
+      @required int quantity) async {
+    var post_body = jsonEncode({
+      "id": "${id}",
+      "user_id": "$user_id",
+      "quantity": "$quantity",
+      "cost_matrix": AppConfig.purchase_code
+    });
+
+    print(post_body.toString());
+
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/carts/add");
+    final response = await http.post(url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$
+        },
+        body: post_body);
+
+    print(response.body.toString());
+    return cartAddResponseFromJson(response.body);
+  }
+
   Future<CartSummaryResponse> getCartSummaryResponse() async {
     Uri url = Uri.parse("${AppConfig.BASE_URL}/cart-summary/${user_id.$}");
     final response = await http.get(

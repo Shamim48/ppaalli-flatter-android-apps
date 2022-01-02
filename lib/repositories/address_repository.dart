@@ -34,17 +34,16 @@ class AddressRepository {
 
   Future<AddressAddResponse> getAddressAddResponse(
       {@required String address,
-      @required int country_id,
-      @required int state_id,
-      @required int city_id,
+      @required String country,
+      @required String city,
       @required String postal_code,
       @required String phone}) async {
     var post_body = jsonEncode({
       "user_id": "${user_id.$}",
       "address": "$address",
-      "country_id": "$country_id",
-      "state_id": "$state_id",
-      "city_id": "$city_id",
+      "country_id": "$country",
+      //"state_id": "$state_id",
+      "city_id": "$city",
       "postal_code": "$postal_code",
       "phone": "$phone"
     });

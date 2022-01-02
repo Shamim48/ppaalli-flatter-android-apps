@@ -293,7 +293,7 @@ class _CartState extends State<Cart> {
                           child: buildCartSellerList(),
                         ),
                         Container(
-                          height: widget.has_bottomnav ? 140 : 100,
+                          height: widget.has_bottomnav ? 140 : 10,
                         )
                       ]),
                     )
@@ -318,7 +318,7 @@ class _CartState extends State<Cart> {
                 )*/
       ),
 
-      height: widget.has_bottomnav ? 230 : 120,
+      height: widget.has_bottomnav ? 230 : 230,
       //color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -448,7 +448,7 @@ class _CartState extends State<Cart> {
                 ),
               ],
             ),
-            SizedBox(height: 50,)
+            SizedBox(height: widget.has_bottomnav ? 50 : 10 ,)
           ],
         ),
       ),

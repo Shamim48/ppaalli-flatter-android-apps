@@ -101,7 +101,7 @@ class PaymentRepository {
   Future<OrderCreateResponse> getOrderCreateResponseFromCod(
       @required payment_method) async {
     var post_body = jsonEncode(
-        {"user_id": "${user_id.$}", "payment_type": "${payment_method}"});
+        {"user_id": "${user_id.$}","owner_id":1, "payment_type": "${payment_method}"});
 
     Uri url = Uri.parse("${AppConfig.BASE_URL}/payments/pay/cod");
 

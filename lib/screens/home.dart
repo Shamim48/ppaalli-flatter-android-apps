@@ -271,6 +271,44 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               : Container(),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(
+                              30.0,
+                              0.0,
+                              30.0,
+                              0.0,
+                            ),
+                            child: Container(
+                              height: 70,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30)
+                              ),
+
+                             /* kToolbarHeight +
+                                  statusBarHeight -
+                                  (MediaQuery.of(context).viewPadding.top > 40 ? 16.0 : 16.0),*/
+                              //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30)
+                                ),
+                                child: Padding(
+                                    padding: app_language_rtl.$
+                                        ? const EdgeInsets.only(top: 14.0, bottom: 14, left: 12)
+                                        : const EdgeInsets.only(top: 14.0, bottom: 14, right: 12),
+                                    // when notification bell will be shown , the right padding will cease to exist.
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(builder: (context) {
+                                                return Filter();
+                                              }));
+                                        },
+                                        child: buildHomeSearchBox(context))),
+                              ),
+                            ),
+                          ),
+
+                           Padding(
+                            padding: const EdgeInsets.fromLTRB(
                               8.0,
                               16.0,
                               8.0,
@@ -278,6 +316,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             ),
                             child: buildHomeCarouselSlider(context),
                           ),
+
                           Padding(
                             padding: const EdgeInsets.fromLTRB(
                               8.0,
@@ -632,7 +671,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return ProductDetails(
-                      id: 1,
+                      id: _featuredProductList[index].id,
                     );
                   }));
                 },
@@ -816,7 +855,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return ProductDetails(
-                        id: _bestSellingProductList[index].id,
+                        id: _featuredProductList[index].id,
                       );
                     }));
                   },
@@ -2068,26 +2107,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 ),
               ),
       ),
-      title: Container(
-        height: kToolbarHeight +
-            statusBarHeight -
-            (MediaQuery.of(context).viewPadding.top > 40 ? 16.0 : 16.0),
-        //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
-        child: Container(
-          child: Padding(
-              padding: app_language_rtl.$
-                  ? const EdgeInsets.only(top: 14.0, bottom: 14, left: 12)
-                  : const EdgeInsets.only(top: 14.0, bottom: 14, right: 12),
-              // when notification bell will be shown , the right padding will cease to exist.
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return Filter();
-                    }));
-                  },
-                  child: buildHomeSearchBox(context))),
-        ),
+      title: Center(
+        child: Image.asset(Images.logo, height: 36, width: 120,),
       ),
       elevation: 0.0,
       // titleSpacing: 0,
@@ -2102,10 +2123,29 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             visible: true,
             child: Padding(
               padding:
+              const EdgeInsets.symmetric(vertical: 18.0, horizontal: 12.0),
+              child: Image.asset(
+                Images.chat,
+                height: 30,
+                color: MyTheme.primary_Colour,
+              ),
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            ToastComponent.showDialog(
+                AppLocalizations.of(context).common_coming_soon, context,
+                gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+          },
+          child: Visibility(
+            visible: true,
+            child: Padding(
+              padding:
                   const EdgeInsets.symmetric(vertical: 18.0, horizontal: 12.0),
               child: Image.asset(
-                'assets/bell.png',
-                height: 20,
+                Images.notifications,
+                height: 30,
                 color: MyTheme.primary_Colour,
               ),
             ),
@@ -2117,6 +2157,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   buildHomeSearchBox(BuildContext context) {
     return Container(
+      height: 10,
+      width: 10,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: MyTheme.primary_Colour,
@@ -2150,14 +2192,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               children: [
                 Positioned(
                     // padding: const EdgeInsets.all(5.0),
-                    right: -1,
+                    right: 5,
                     top: 4,
                     bottom: 4,
                     child: Padding(
                         padding: EdgeInsets.all(0),
                         child: Container(
-                          height: 40,
-                          width: 40,
+                          height: 30,
+                          width: 30,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white,

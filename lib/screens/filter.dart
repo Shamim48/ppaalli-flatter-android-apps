@@ -1,9 +1,17 @@
+import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/wishlist_repository.dart';
+import 'package:active_ecommerce_flutter/screens/cart.dart';
+import 'package:active_ecommerce_flutter/screens/product_details.dart';
 import 'package:active_ecommerce_flutter/screens/seller_details.dart';
+import 'package:active_ecommerce_flutter/utill/images.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/shop_square_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/brand_square_card.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:toast/toast.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
@@ -17,6 +25,8 @@ import 'package:active_ecommerce_flutter/repositories/search_repository.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:one_context/one_context.dart';
+
+import 'login.dart';
 
 class WhichFilter {
   String option_key;
@@ -97,6 +107,9 @@ class _FilterState extends State<Filter> {
   int _shopPage = 1;
   int _totalShopData = 0;
   bool _showShopLoadingContainer = false;
+
+  bool _isInWishList = false;
+
 
   //----------------------------------------
 
@@ -375,6 +388,9 @@ class _FilterState extends State<Filter> {
       ),
     );
   }
+  SnackBar _addedToCartSnackbar;
+  String wishlistImage=Images.heart_outline;
+
 
   //--------------------
 
@@ -383,6 +399,30 @@ class _FilterState extends State<Filter> {
     /*print(_appBar.preferredSize.height.toString()+" Appbar height");
     print(kToolbarHeight.toString()+" kToolbarHeight height");
     print(MediaQuery.of(context).padding.top.toString() +" MediaQuery.of(context).padding.top");*/
+
+    _addedToCartSnackbar = SnackBar(
+      content: Text(
+        AppLocalizations.of(context)
+            .product_details_screen_snackbar_added_to_cart,
+        style: TextStyle(color: MyTheme.font_grey),
+      ),
+      backgroundColor: MyTheme.soft_accent_color,
+      duration: const Duration(seconds: 3),
+      action: SnackBarAction(
+        label: AppLocalizations.of(context)
+            .product_details_screen_snackbar_show_cart,
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Cart(has_bottomnav: false,);
+          })).then((value) {
+            onPopped(value);
+          });
+        },
+        textColor: MyTheme.primaryColor,
+        disabledTextColor: Colors.grey,
+      ),
+    );
+
     return Directionality(
       textDirection: app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
@@ -1096,13 +1136,179 @@ class _FilterState extends State<Filter> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   // 3
-                  return ProductCard(
+                  return InkWell(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return ProductDetails(
+                              id: _productList[index].id,
+                            );
+                          }));
+                    },
+                    child: Card(
+                      color: Colors.white,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3)
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(child: Container(
+                              margin: EdgeInsets.all(5),
+                              child: Stack(
+                                children: [
+                                  FadeInImage.assetNetwork(
+                                    placeholder:
+                                    'assets/placeholder.png',
+                                    image: AppConfig.BASE_PATH +
+                                        _productList[index]
+                                            .thumbnailImage,
+                                    fit: BoxFit.cover,
+                                    height: MediaQuery.of(context).size.height,
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
+
+
+
+                                  Positioned(child: IconButton(
+                                    onPressed: (){
+                                      onWishTap(_productList[index].id);
+                                      setState(() {
+                                        wishlistImage=Images.heart;
+                                      });
+                                    },
+                                    icon: Image.asset(wishlistImage, color: Colors.redAccent, height: 25, width: 25,),
+                                  ),
+                                    right: 1,
+                                    bottom: 1,
+                                  ),
+                                  /* Positioned(child: Container( color: Colors.yellow, height: 40, width: 55,
+                                    child: Center(
+                                      child: Text(
+                                        "10% \nOFF", style: LatoMedium.copyWith(color: MyTheme.white),
+                                      ),
+                                    )
+                                ),
+                                  bottom: 1,
+                                  left: 1,
+                                ),
+
+                                Positioned(child: RatingBarIndicator(
+                                  rating: 2.75,
+                                  itemBuilder:
+                                      (context, index) => Icon(
+                                    Icons.star,
+                                    color: Colors.yellow,
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 14.0,
+                                  direction: Axis.horizontal,
+                                ),
+                                  right: 2,
+                                  bottom: 1,
+                                ),*/
+
+
+
+                                ],
+                              ),
+
+                            ),),
+                            Container(
+
+                              decoration: BoxDecoration(
+                                color: MyTheme.primary_Colour,
+                                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(3), bottomRight: Radius.circular(3)),
+                              ),
+                              height: 96,
+                              child: Column(
+                                children: [
+                                  Padding(padding: EdgeInsets.all(1),
+                                    child: Text(_productList[index].name, style: LatoBold.copyWith(overflow: TextOverflow.ellipsis, color: MyTheme.white ), maxLines: 1,),
+                                  ),
+                                  Padding(padding: EdgeInsets.all(1),
+                                    child: Row(
+                                      children: [
+                                        /*  RatingBar(
+                                      initialRating: 3,
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                      onRatingUpdate: (rating) {
+                                        print(rating);
+                                      },
+                                    ),*/
+
+                                        Expanded(
+                                          child: Padding(
+                                            padding:
+                                            EdgeInsets.only(left: 5),
+                                            child: RatingBarIndicator(
+                                              rating: 2.75,
+                                              itemBuilder:
+                                                  (context, index) => Icon(
+                                                Icons.star,
+                                                color: MyTheme.white,
+                                              ),
+                                              itemCount: 5,
+                                              itemSize: 12.0,
+                                              direction: Axis.horizontal,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(
+                                              5, 2, 5, 5),
+                                          child: Text(
+                                            _productList[index]
+                                                .basePrice,
+                                            style: LatoMedium.copyWith(color: MyTheme.white),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 5, right: 5),
+                                        child: FlatButton(onPressed: (){
+                                          onPressAddToCart(context, _addedToCartSnackbar,_productList[index].id);
+
+                                        },
+                                          minWidth: MediaQuery.of(context).size.width,
+                                          color: MyTheme.black,
+                                          textColor: MyTheme.white,
+                                          child: Center(
+                                            child: Text("Add to cart", style: LatoBold.copyWith(),),
+                                          ),
+
+                                        ),
+                                      )
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                    ),
+                  );
+                  /*ProductCard(
                       id: _productList[index].id,
-                      image: _productList[index].thumbnail_image,
+                      image: _productList[index].thumbnailImage,
                       name: _productList[index].name,
-                      main_price: _productList[index].main_price,
-                      stroked_price: _productList[index].stroked_price,
-                      has_discount: _productList[index].has_discount);
+                      main_price: _productList[index].basePrice,
+                  );*/
                 },
               )
             ],
@@ -1256,4 +1462,96 @@ class _FilterState extends State<Filter> {
       return Container(); // should never be happening
     }
   }
+  onPressAddToCart(context, snackbar, int id) {
+    addToCart(mode: "add_to_cart", context: context, snackbar: snackbar, id: id);
+  }
+
+  addToCart({mode, context = null, snackbar = null, int id}) async {
+    if (is_logged_in.$ == false) {
+      ToastComponent.showDialog(
+          AppLocalizations.of(context).common_login_warning, context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return Login();
+      }));
+
+      return;
+    }
+
+    /*productCartList.add(_productDetails.data[0]);
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Cart(has_bottomnav: true,);
+      }));*/
+
+    print(id);
+    // print(_variant);
+    print(user_id.$);
+    // print(_quantity);
+
+    var cartAddResponse = await CartRepository()
+        .getCartAddResponseWithoutVariant(id, /*_variant,*/ user_id.$,1);
+
+    if (cartAddResponse.result == false) {
+      ToastComponent.showDialog(cartAddResponse.message, context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      return;
+    } else {
+      if (mode == "add_to_cart") {
+        if (snackbar != null && context != null) {
+          Scaffold.of(context).showSnackBar(snackbar);
+        }
+        reset();
+      } else if (mode == 'buy_now') {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Cart(has_bottomnav: false,);
+        })).then((value) {
+          onPopped(value);
+        });
+      }
+    }
+  }
+
+  onPopped(value) async {
+    reset();
+
+  }
+
+  onWishTap(int id) {
+    if (is_logged_in.$ == false) {
+      ToastComponent.showDialog(
+          AppLocalizations.of(context).common_login_warning, context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      return;
+    }
+
+    if (_isInWishList) {
+      _isInWishList = false;
+      setState(() {});
+      removeFromWishList(id);
+    } else {
+      _isInWishList = true;
+      setState(() {});
+      addToWishList(id);
+    }
+  }
+
+  addToWishList(int id) async {
+    var wishListCheckResponse =
+    await WishListRepository().add(product_id: id);
+
+    //print("p&u:" + widget.id.toString() + " | " + _user_id.toString());
+    _isInWishList = wishListCheckResponse.is_in_wishlist;
+    setState(() {});
+  }
+
+  removeFromWishList(int id) async {
+    var wishListCheckResponse =
+    await WishListRepository().remove(product_id: id);
+
+    //print("p&u:" + widget.id.toString() + " | " + _user_id.toString());
+    _isInWishList = wishListCheckResponse.is_in_wishlist;
+    setState(() {});
+  }
+
+
 }
