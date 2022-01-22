@@ -18,6 +18,7 @@ import 'package:toast/toast.dart';
 import 'package:active_ecommerce_flutter/other_config.dart';
 import 'package:active_ecommerce_flutter/screens/map_location.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+//import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 

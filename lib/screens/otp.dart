@@ -153,13 +153,27 @@ class _OtpState extends State<Otp> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Container(
-                                height: 36,
+                                height: 45,
+                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: MyTheme.dark_grey.withOpacity(0.3),
+                                          spreadRadius: 1.5,
+                                          blurRadius: 3
+                                      )
+                                    ]
+                                ),
                                 child: TextField(
                                   controller: _verificationCodeController,
                                   autofocus: false,
-                                  decoration:
-                                      InputDecorations.buildInputDecoration_1(
-                                          hint_text: "A X B 4 J H"),
+                                    decoration: new InputDecoration.collapsed(
+                                      hintText:
+                                      "Verification Code ",
+                                    )
                                 ),
                               ),
                             ],

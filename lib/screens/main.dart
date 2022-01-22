@@ -4,6 +4,7 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/cart.dart';
 import 'package:active_ecommerce_flutter/screens/category_list.dart';
+import 'package:active_ecommerce_flutter/screens/congratulation.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/home.dart';
 import 'package:active_ecommerce_flutter/screens/profile.dart';
@@ -25,9 +26,10 @@ class _MainState extends State<Main> {
    // Cart(has_bottomnav: true),
 
     Home(),
-    CategoryList(
+    /*CategoryList(
       is_base_category: true,
-    ),
+    ),*/
+    Congratulations(),
     Cart(has_bottomnav: true),
     Profile(),
     // MyWidget()

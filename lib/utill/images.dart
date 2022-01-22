@@ -44,6 +44,8 @@ class Images{
   static const String account_profile = 'assets/images/account_profile.png';
   static const String lets_drive = 'assets/images/lest_drive.png';
   static const String product_background_shape = 'assets/images/product_background_shape.png';
+  static const String congress = 'assets/images/congress.png';
+  static const String complete = 'assets/images/complete.png';
 
   static const String logo = 'dummy_assets/logo.png';
   static const String ppaalli_icon = 'ppaalli_icon/logo.png';

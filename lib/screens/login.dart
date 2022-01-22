@@ -11,6 +11,7 @@ import 'package:active_ecommerce_flutter/other_config.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
+import 'package:active_ecommerce_flutter/screens/otp.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
 import 'package:active_ecommerce_flutter/screens/registration.dart';
 import 'package:active_ecommerce_flutter/social_config.dart';
@@ -253,13 +254,13 @@ class _LoginState extends State<Login> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
+                          padding: const EdgeInsets.only(bottom: 15.0),
                           child: Text(
                             _login_by == "email"
                                 ? "Email/Phone"
                                 : AppLocalizations.of(context)
                                     .login_screen_phone,
-                            style: LatoMedium,
+                            style: LatoBold,
                           ),
                         ),
                         if (_login_by == "email")
@@ -270,14 +271,31 @@ class _LoginState extends State<Login> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Container(
-                                  height: 36,
+                                  height: 45,
+                                  alignment: Alignment.centerLeft,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: MyTheme.dark_grey.withOpacity(0.3),
+                                        spreadRadius: 1.5,
+                                        blurRadius: 3
+                                      )
+                                    ]
+                                  ),
                                   child: TextField(
                                     controller: _emailController,
                                     autofocus: false,
-                                    decoration:
-                                        InputDecorations.buildInputDecoration_1(
+
+                                    decoration: new InputDecoration.collapsed(
+                                      hintText:
+                                      "Type your Email / Phone",
+                                    )
+                                        /*InputDecorations.buildInputDecoration_1(
                                             hint_text:
-                                                "Type your Email / Phone"),
+                                                "Type your Email / Phone"),*/
                                   ),
                                 ),
                                 AddonConfig.otp_addon_installed
@@ -362,10 +380,10 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
+                          padding: const EdgeInsets.only(bottom: 15.0,top: 5),
                           child: Text(
                             "Password",
-                            style: LatoMedium,
+                            style: LatoBold,
                           ),
                         ),
                         Padding(
@@ -374,16 +392,30 @@ class _LoginState extends State<Login> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Container(
-                                height: 36,
+                                height: 45,
+                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: MyTheme.dark_grey.withOpacity(0.3),
+                                          spreadRadius: 1.5,
+                                          blurRadius: 3
+                                      )
+                                    ]
+                                ),
                                 child: TextField(
                                   controller: _passwordController,
                                   autofocus: false,
                                   obscureText: true,
                                   enableSuggestions: false,
                                   autocorrect: false,
-                                  decoration:
-                                      InputDecorations.buildInputDecoration_1(
-                                          hint_text: "• • • • • • • •"),
+                                    decoration: new InputDecoration.collapsed(
+                                      hintText:
+                                      "Type your password ",
+                                    )
                                 ),
                               ),
                               GestureDetector(
