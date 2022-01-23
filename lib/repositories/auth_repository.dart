@@ -57,9 +57,7 @@ class AuthRepository {
         "App-Language": app_language.$,
       },
     );
-
     print(response.body);
-
     return logoutResponseFromJson(response.body);
   }
 

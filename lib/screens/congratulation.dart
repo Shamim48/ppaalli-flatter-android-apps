@@ -1,4 +1,6 @@
 import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/screens/main.dart';
+import 'package:active_ecommerce_flutter/screens/order_list.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,13 +32,18 @@ class _CongratulationsState extends State<Congratulations> {
                 width: double.infinity,
                 child: Stack(
                   children: [
-                    Image.asset(Images.congress, width: double.infinity,),
+                    AnimatedSwitcher(
+                        child: Image.asset(Images.congress, width: double.infinity,),
+                      duration: Duration(seconds: 5),
+                    ),
                     Positioned(
                       left: 50,
                       right: 50,
                       bottom: 0,
                       child: Center(
-                        child: Image.asset(Images.complete, color: MyTheme.primary_Colour, height: 90, width: 90,),
+                        child: Hero(child: Material(child: Image.asset(Images.complete, color: MyTheme.primary_Colour, height: 90, width: 90,)),
+                        tag: "Order Complete",
+                        ),
                       ),
                     )
                   ],
@@ -49,29 +56,63 @@ class _CongratulationsState extends State<Congratulations> {
               Text("Order", style:  LatoBold.copyWith(color: MyTheme.primary_Colour, fontSize: 22),),
               SizedBox(height: 50,),
 
-              Container(
-                height: 40,
-                width: 200,
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                decoration: BoxDecoration(
-                    color: MyTheme.white,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                          color: MyTheme.dark_grey.withOpacity(0.3),
-                          spreadRadius: 1.5,
-                          blurRadius: 3
-                      )
-                    ]
-                ),
-                child: Center(child: Text("Brows Product", style: LatoHeavy.copyWith(color: MyTheme.primary_Colour, fontSize: 20),))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return Main();
+                      }));
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 150,
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      decoration: BoxDecoration(
+                          color: MyTheme.white,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                                color: MyTheme.dark_grey.withOpacity(0.3),
+                                spreadRadius: 1.5,
+                                blurRadius: 3
+                            )
+                          ]
+                      ),
+                      child: Center(child: Text("Brows Product", style: LatoHeavy.copyWith(color: MyTheme.primary_Colour, fontSize: 18),))
+                    ),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return OrderList();
+                      }));
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 150,
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      decoration: BoxDecoration(
+                          color: MyTheme.white,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                                color: MyTheme.dark_grey.withOpacity(0.3),
+                                spreadRadius: 1.5,
+                                blurRadius: 3
+                            )
+                          ]
+                      ),
+                      child: Center(child: Text("Order History", style: LatoHeavy.copyWith(color: MyTheme.primary_Colour, fontSize: 18),))
+                    ),
+                  ),
+
+
+                ],
               ),
-
-
-
-
-
             ],
           ),
         ));

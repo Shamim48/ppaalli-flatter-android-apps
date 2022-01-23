@@ -13,7 +13,6 @@ import 'package:flutter/foundation.dart';
 
 class ProfileRepository {
 
-
   Future<ProfileCountersResponse> getProfileCountersResponse() async {
 
     Uri url = Uri.parse("${AppConfig.BASE_URL}/profile/counters/${user_id.$}");

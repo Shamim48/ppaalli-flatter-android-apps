@@ -47,8 +47,19 @@ class Images{
   static const String congress = 'assets/images/congress.png';
   static const String complete = 'assets/images/complete.png';
 
+
+  static const String hamburger = 'assets/hamburger.png';
+  static const String profile_Home = 'assets/profile.png';
+
   static const String logo = 'dummy_assets/logo.png';
   static const String ppaalli_icon = 'ppaalli_icon/logo.png';
+
+  static const String p1 = 'dummy_assets/p1.jpeg';
+  static const String p2 = 'dummy_assets/p2.jpeg';
+  static const String p3 = 'dummy_assets/p3.jpeg';
+  static const String p4 = 'dummy_assets/p4.jpeg';
+  static const String p5 = 'dummy_assets/p5.jpeg';
+
 
 
   // Home Images

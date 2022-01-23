@@ -8,8 +8,10 @@ import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/sliders_repository.dart';
 import 'package:active_ecommerce_flutter/screens/category_list.dart';
 import 'package:active_ecommerce_flutter/screens/category_products.dart';
+import 'package:active_ecommerce_flutter/screens/chat.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/flash_deal_list.dart';
+import 'package:active_ecommerce_flutter/screens/messenger_list.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
 import 'package:active_ecommerce_flutter/screens/todays_deal_products.dart';
 import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
@@ -77,6 +79,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       initPiratedAnimation();
     }
 
+    print("UserId: ${user_id.$}");
     fetchAll();
 
     _mainScrollController.addListener(() {
@@ -2115,9 +2118,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       actions: <Widget>[
         InkWell(
           onTap: () {
-            ToastComponent.showDialog(
-                AppLocalizations.of(context).common_coming_soon, context,
-                gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return MessengerList();
+            }));
           },
           child: Visibility(
             visible: true,

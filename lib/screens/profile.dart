@@ -3,9 +3,11 @@ import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/address.dart';
 import 'package:active_ecommerce_flutter/screens/club_point.dart';
+import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
 import 'package:active_ecommerce_flutter/screens/profile_edit.dart';
 import 'package:active_ecommerce_flutter/screens/refund_request.dart';
@@ -537,9 +539,15 @@ class _ProfileState extends State<Profile> {
           Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
           InkWell(
             onTap: () {
+              AuthRepository().getLogoutResponse();
               ToastComponent.showDialog(
-                  AppLocalizations.of(context).common_coming_soon, context,
+                  "Log Out", context,
                   gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return Main();
+              }));
+              setState(() {
+              });
             },
             child: Visibility(
               visible: true,
