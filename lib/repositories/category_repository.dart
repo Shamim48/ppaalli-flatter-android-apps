@@ -15,6 +15,25 @@ class CategoryRepository {
     print(response.body.toString());
     return categoryResponseFromJson(response.body);
   }
+ Future<CategoryResponse> getCategory() async {
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/categories");
+    final response =
+    await http.get(url,headers: {
+      "App-Language": app_language.$,
+    });
+    print(response.body.toString());
+    return categoryResponseFromJson(response.body);
+  }
+   Future<CategoryResponse> getSubCategory(int categoryId) async {
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/sub-categories/${categoryId}");
+    final response =
+    await http.get(url,headers: {
+      "App-Language": app_language.$,
+    });
+    print(response.body.toString());
+    return categoryResponseFromJson(response.body);
+  }
+
 
   Future<CategoryResponse> getFeturedCategories() async {
     Uri url = Uri.parse("${AppConfig.BASE_URL}/categories/featured");

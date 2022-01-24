@@ -1,6 +1,6 @@
+import 'package:active_ecommerce_flutter/screens/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/string_helper.dart';
@@ -171,9 +171,8 @@ backgroundColor: Colors.white,
                       id: _searchList[index].id,
                       image: _searchList[index].thumbnail_image,
                       name: _searchList[index].name,
-                      main_price: _searchList[index].main_price,
-                      stroked_price: _searchList[index].stroked_price,
-                      has_discount: _searchList[index].has_discount);
+                      main_price: _searchList[index].basePrice,
+                  );
                 },
               ),
             );

@@ -15,10 +15,8 @@ class ProductCard extends StatefulWidget {
   String image;
   String name;
   String main_price;
-  String stroked_price;
-  bool has_discount;
 
-  ProductCard({Key key,this.id, this.image, this.name, this.main_price,this.stroked_price,this.has_discount}) : super(key: key);
+  ProductCard({Key key,this.id, this.image, this.name, this.main_price,}) : super(key: key);
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -29,99 +27,99 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     print((MediaQuery.of(context).size.width - 48 ) / 2);
     return InkWell(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ProductDetails(id: widget.id,);
-        }));
-      },
-      child: Center(child: Column( mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                width: 200,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).accentColor,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 5, spreadRadius: 1)]
-                ),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                  Padding(
-                    padding: const EdgeInsets.all(25.0),
-                    child: Column(
-                      children: [
-                        Image.asset(Images.profile, height: 80, width: MediaQuery.of(context).size.width/4, fit: BoxFit.scaleDown,),
-                        SizedBox(height: 2),
-                        Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 10, spreadRadius: 1)]
-                            ))
-                      ],
-                    ),
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return ProductDetails(id: widget.id,);
+          }));
+        },
+        child: Center(child: Column( mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: 200,
+                  decoration: BoxDecoration(
+                      color: MyTheme.primary_Colour,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [BoxShadow(color: MyTheme.primary_Colour.withOpacity(0.3), blurRadius: 5, spreadRadius: 1)]
                   ),
-                  Container(
-                    padding:  EdgeInsets.symmetric(horizontal: 4, vertical: 10),
-                    decoration: BoxDecoration(
-                        color: ColorResources.getPrimaryColor(context),
-                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(8), bottomLeft: Radius.circular(8)),
-                        boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 5, spreadRadius: 1)]
-                    ),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(widget.name,
-                          style: SFSemiBold.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE, color: ColorResources.getBackgroundColor(context)),
-                          maxLines: 1, overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                    Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: Column(
                         children: [
-                          Expanded(
-                            child: RatingBar(
-                              rating: 4,
-                              size: 16,
-                            ),
-                          ),
-                          Text(
-                            '\$${widget.main_price} - \$${widget.main_price}',
-                            style: SFBold.copyWith(fontSize: Dimensions.FONT_SIZE_DEFAULT, color: ColorResources.getBackgroundColor(context)),  maxLines: 1, overflow: TextOverflow.ellipsis,
-                          )
+                          Image.asset(Images.profile, height: 80, width: MediaQuery.of(context).size.width/4, fit: BoxFit.scaleDown,),
+                          SizedBox(height: 2),
+                          Container(
+                              height: 10,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  color: MyTheme.primary_Colour.withOpacity(0.2),
+                                  boxShadow: [BoxShadow(color: MyTheme.primary_Colour.withOpacity(0.3), blurRadius: 10, spreadRadius: 1)]
+                              ))
                         ],
                       ),
-                    ]),
-                  ),
-
-                ]),
-              ),
-              Positioned(
-                right: -8,
-                top: -8,
-                child: Row(
-                  children: [
-                    Text('1h.30m.12s', style: SFSemiBold.copyWith(color: ColorResources.getPrimaryColor(context), fontSize: Dimensions.FONT_SIZE_LARGE)),
-                    SizedBox(width: 5,),
+                    ),
                     Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: ColorResources.getPrimaryColor(context)
+                      padding:  EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: ColorResources.getPrimaryColor(context),
+                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(8), bottomLeft: Radius.circular(8)),
+                          boxShadow: [BoxShadow(color: MyTheme.primary_Colour.withOpacity(0.3), blurRadius: 5, spreadRadius: 1)]
+                      ),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(widget.name,
+                            style: SFSemiBold.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE, color: ColorResources.getBackgroundColor(context)),
+                            maxLines: 1, overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        child: Icon(Icons.person_add_alt_1, color: ColorResources.getBackgroundColor(context),))
-                  ],
+                        SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: RatingBar(
+                                rating: 4,
+                                size: 16,
+                              ),
+                            ),
+                            Text(
+                              '\$${widget.main_price} - \$${widget.main_price}',
+                              style: SFBold.copyWith(fontSize: Dimensions.FONT_SIZE_DEFAULT, color: ColorResources.getBackgroundColor(context)),  maxLines: 1, overflow: TextOverflow.ellipsis,
+                            )
+                          ],
+                        ),
+                      ]),
+                    ),
+
+                  ]),
                 ),
-              )
-            ],
-          ),
-        ],
-      )
-      )
+                Positioned(
+                  right: -8,
+                  top: -8,
+                  child: Row(
+                    children: [
+                      Text('1h.30m.12s', style: SFSemiBold.copyWith(color: ColorResources.getPrimaryColor(context), fontSize: Dimensions.FONT_SIZE_LARGE)),
+                      SizedBox(width: 5,),
+                      Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: ColorResources.getPrimaryColor(context)
+                          ),
+                          child: Icon(Icons.person_add_alt_1, color: ColorResources.getBackgroundColor(context),))
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ],
+        )
+        )
     );
 /*
     return InkWell(
@@ -272,7 +270,6 @@ class _Clipper extends CustomClipper<Rect> {
       size.height,
     );
   }
-
   @override
   bool shouldReclip(CustomClipper<Rect> oldClipper) => true;
 }

@@ -1,6 +1,6 @@
+import 'package:active_ecommerce_flutter/screens/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
@@ -76,12 +76,9 @@ class _TodaysDealProductsState extends State<TodaysDealProducts> {
                   // 3
                   return ProductCard(
                     id: productResponse.products[index].id,
-                    image: productResponse.products[index].thumbnail_image,
+                    image: productResponse.products[index].thumbnailImage,
                     name: productResponse.products[index].name,
-                    main_price: productResponse.products[index].main_price,
-                    stroked_price:
-                        productResponse.products[index].stroked_price,
-                    has_discount: productResponse.products[index].has_discount,
+                    main_price: productResponse.products[index].basePrice,
                   );
                 },
               ),

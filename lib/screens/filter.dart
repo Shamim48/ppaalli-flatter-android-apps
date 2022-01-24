@@ -8,7 +8,6 @@ import 'package:active_ecommerce_flutter/screens/seller_details.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/shop_square_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/brand_square_card.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -47,9 +46,12 @@ class Filter extends StatefulWidget {
   Filter({
     Key key,
     this.selected_filter = "product",
+    this.link
   }) : super(key: key);
 
   final String selected_filter;
+  String link;
+
 
   @override
   _FilterState createState() => _FilterState();
@@ -165,7 +167,9 @@ class _FilterState extends State<Filter> {
     } else if (_selectedFilter.option_key == "brands") {
       fetchBrandData();
     } else {
-      fetchProductData();
+      widget.link!=null ?
+      fetchLinkProductData()
+      : fetchProductData();
     }
 
     //set scroll listeners
@@ -215,7 +219,16 @@ class _FilterState extends State<Filter> {
         categories: _selectedCategories.join(",").toString(),
         max: _maxPriceController.text.toString(),
         min: _minPriceController.text.toString());
-
+    _productList.addAll(productResponse.data);
+    _isProductInitial = false;
+    _totalProductData = productResponse.data.length;
+    _showProductLoadingContainer = false;
+    setState(() {});
+  }
+  fetchLinkProductData() async {
+    //print("sc:"+_selectedCategories.join(",").toString());
+    //print("sb:"+_selectedBrands.join(",").toString());
+    var productResponse = await ProductRepository().getLinkProducts(widget.link);
     _productList.addAll(productResponse.data);
     _isProductInitial = false;
     _totalProductData = productResponse.data.length;

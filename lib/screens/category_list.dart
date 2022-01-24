@@ -5,6 +5,7 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
 import 'package:active_ecommerce_flutter/screens/category_products.dart';
+import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/ui_elements/AppBar_Common.dart';
 import 'package:active_ecommerce_flutter/ui_sections/drawer.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
@@ -27,6 +28,8 @@ class CategoryList extends StatefulWidget {
   final bool is_base_category;
   final bool is_top_category;
 
+  int categoryId=4;
+
   @override
   _CategoryListState createState() => _CategoryListState();
 }
@@ -35,13 +38,40 @@ class _CategoryListState extends State<CategoryList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _selectedIndex = true;
 
+
+
+  var _categoryList=[];
+  var _subCategoryList=[];
+
+  bool _isCategoryInitial=true;
+  bool _isSubCategoryInitial=true;
+
   void toggle(){
     _selectedIndex = !_selectedIndex;
   }
   @override
   void initState() {
     super.initState();
+    fetchCategories();
+    fetchSubCategories(widget.categoryId);
   }
+
+  fetchCategories() async {
+    var categoryResponse = await CategoryRepository().getCategory();
+    _categoryList.addAll(categoryResponse.categories);
+    _isCategoryInitial = false;
+    setState(() {});
+  }
+
+ fetchSubCategories(int categoryId) async {
+    var categoryResponse = await CategoryRepository().getSubCategory(categoryId);
+    _subCategoryList=[];
+    _subCategoryList.addAll(categoryResponse.categories);
+    print("Sub Category:"+_subCategoryList.length.toString());
+    _isSubCategoryInitial = false;
+    setState(() {});
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,44 +88,15 @@ class _CategoryListState extends State<CategoryList> {
               SizedBox(height: 15,),
               Text('All Category', style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primary_Colour),),
               SizedBox(height: 15,),
+              SizedBox(
+                  height: 120,
+                  width: MediaQuery.of(context).size.width,
+                  child: buildCategory(),
+                //buildHomeFeaturedProduct(context),
+              ),
+              SizedBox(height: 15,),
               Expanded(
-                child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                    /*  Container(
-                        width: 130,
-                        height: double.infinity,
-                        margin: EdgeInsets.only(top: 3, left: 5, bottom: 100),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all( color: MyTheme.primary_Colour,width: 1),
-                        ),
-                        child: ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          itemCount: 10,
-                          shrinkWrap: true,
-                          padding: EdgeInsets.all(0),
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                toggle();
-                                setState(() {
-                                });
-                              },
-                              child: CategoryItem(
-                                title: 'Item',
-                                index: _selectedIndex,
-                              ),
-                            );
-                          },
-                        ),
-                      ),*/
-
-                      Expanded(
-                        child: buildCategoryList() ,
-                      ),
-                    ]),
+                child: buildCategoryList(),
               ),
             ],
           ),
@@ -292,55 +293,58 @@ class _CategoryListState extends State<CategoryList> {
   }
 
   buildCategoryList() {
-    var future = widget.is_top_category
-        ? CategoryRepository().getTopCategories()
-        : CategoryRepository()
-            .getCategories(parent_id: widget.parent_category_id);
-    return FutureBuilder(
-        future: future,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            //snapshot.hasError
-            print("category list error");
-            print(snapshot.error.toString());
-            return Container(
-              height: 10,
-            );
-          } else if (snapshot.hasData) {
-            //snapshot.hasData
-            var categoryResponse = snapshot.data;
-            return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 1/1.4,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 10),
-              itemCount: categoryResponse.categories.length,
-              padding: EdgeInsets.all(12),
-              shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index){
-                return Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey[200], width: 1),
-                        borderRadius: BorderRadius.circular(12),
-                        //boxShadow: [BoxShadow(color: Colors.grey[300], spreadRadius: 0.5, blurRadius: 0.1)],
-                      ),
-                      child: FadeInImage.assetNetwork( placeholder: 'assets/placeholder.png',
-                        image: AppConfig.BASE_PATH +
-                            categoryResponse.categories[index].banner,
-                        fit: BoxFit.scaleDown,height: 100, width: 100,),
-                    ),
-                    SizedBox(height:5,),
-                    Text(categoryResponse.categories[index].name,style: LatoMedium.copyWith(color: Colors.black), overflow: TextOverflow.ellipsis,)
-                  ],
-                );
-              },
 
-            );
-            /*GridView.builder(
+    if (_isSubCategoryInitial && _subCategoryList.length==0) {
+      //snapshot.hasError
+      print("Sub category list error");
+      return Container(
+        height: 10,
+      );
+    } else if (_subCategoryList.length>0) {
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1/1.4,
+            mainAxisSpacing: 20,
+            crossAxisSpacing: 10),
+        itemCount: _subCategoryList.length,
+        padding: EdgeInsets.all(12),
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (context, index){
+          return InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return Filter(link: _subCategoryList[index].links.products,);
+              }));
+            },
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: MyTheme.white,
+                   // border: Border.all(color: Colors.grey[200], width: 1),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [BoxShadow(color: MyTheme.dark_grey.withOpacity(0.2), spreadRadius: 1.5, blurRadius: 1)],
+
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: FadeInImage.assetNetwork( placeholder: 'assets/placeholder.png',
+                      image: AppConfig.BASE_PATH +
+                          _subCategoryList[index].banner,
+                      fit: BoxFit.scaleDown,height: 100, width: 100,),
+                  ),
+                ),
+                SizedBox(height:5,),
+                Text(_subCategoryList[index].name,style: LatoMedium.copyWith(color: Colors.black), overflow: TextOverflow.ellipsis,)
+              ],
+            ),
+          );
+        },
+
+      );
+      /*GridView.builder(
 
                   scrollDirection: Axis.vertical,
                  // physics: NeverScrollableScrollPhysics(),
@@ -393,7 +397,7 @@ class _CategoryListState extends State<CategoryList> {
                         )
                     );
                   });*/
-            /*SingleChildScrollView(
+      /*SingleChildScrollView(
               child: ListView.builder(
                 itemCount: categoryResponse.categories.length,
                 scrollDirection: Axis.vertical,
@@ -409,67 +413,186 @@ class _CategoryListState extends State<CategoryList> {
               ),
             );
             */
-          } else {
-            return SingleChildScrollView(
-              child: ListView.builder(
-                itemCount: 10,
-                scrollDirection: Axis.vertical,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                        top: 4.0, bottom: 4.0, left: 16.0, right: 16.0),
-                    child: Row(
-                      children: [
-                        Shimmer.fromColors(
+    } else {
+      return SingleChildScrollView(
+        child: ListView.builder(
+          itemCount: 10,
+          scrollDirection: Axis.vertical,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(
+                  top: 4.0, bottom: 4.0, left: 16.0, right: 16.0),
+              child: Row(
+                children: [
+                  Shimmer.fromColors(
+                    baseColor: MyTheme.shimmer_base,
+                    highlightColor: MyTheme.shimmer_highlighted,
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 16.0, bottom: 8.0),
+                        child: Shimmer.fromColors(
                           baseColor: MyTheme.shimmer_base,
                           highlightColor: MyTheme.shimmer_highlighted,
                           child: Container(
-                            height: 60,
-                            width: 60,
+                            height: 20,
+                            width: MediaQuery.of(context).size.width * .7,
                             color: Colors.white,
                           ),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 16.0, bottom: 8.0),
-                              child: Shimmer.fromColors(
-                                baseColor: MyTheme.shimmer_base,
-                                highlightColor: MyTheme.shimmer_highlighted,
-                                child: Container(
-                                  height: 20,
-                                  width: MediaQuery.of(context).size.width * .7,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16.0),
-                              child: Shimmer.fromColors(
-                                baseColor: MyTheme.shimmer_base,
-                                highlightColor: MyTheme.shimmer_highlighted,
-                                child: Container(
-                                  height: 20,
-                                  width: MediaQuery.of(context).size.width * .5,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Shimmer.fromColors(
+                          baseColor: MyTheme.shimmer_base,
+                          highlightColor: MyTheme.shimmer_highlighted,
+                          child: Container(
+                            height: 20,
+                            width: MediaQuery.of(context).size.width * .5,
+                            color: Colors.white,
+                          ),
                         ),
-                      ],
-                    ),
-                  );
-                },
+                      ),
+                    ],
+                  ),
+                ],
               ),
             );
-          }
-        });
+          },
+        ),
+      );
+    }
+
+
+  }
+   buildCategory() {
+    if (_isCategoryInitial && _categoryList.length==0) {
+      //snapshot.hasError
+      print("category list error");
+      return Container(
+        height: 10,// 01923531404
+      );
+    } else if (_categoryList.length>0) {
+
+      return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: _categoryList.length,
+          itemExtent: 90,
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: (){
+                setState(() {
+                  widget.categoryId=_categoryList[index].id;
+                  fetchSubCategories(_categoryList[index].id);
+                });
+
+              },
+              child: Container(
+                width: 100,
+                height: 100,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 70,
+                      width: 70,
+                      decoration: BoxDecoration(
+                          color:  MyTheme.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 1,
+                                spreadRadius: 1,
+                                color: MyTheme.dark_grey.withOpacity(0.2)
+                            )
+                          ]
+                      ),
+                      child: Padding( padding: EdgeInsets.all(10),
+                        child: FadeInImage.assetNetwork( placeholder: 'assets/placeholder.png',
+                          image: AppConfig.BASE_PATH +
+                              _categoryList[index].banner,
+                          fit: BoxFit.scaleDown,height: 50, width: 50,),),
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 10),
+                      child: Text(_categoryList[index].name, style: LatoHeavy,),
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
+
+    } else {
+      return SingleChildScrollView(
+        child: ListView.builder(
+          itemCount: 10,
+          scrollDirection: Axis.vertical,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(
+                  top: 4.0, bottom: 4.0, left: 16.0, right: 16.0),
+              child: Row(
+                children: [
+                  Shimmer.fromColors(
+                    baseColor: MyTheme.shimmer_base,
+                    highlightColor: MyTheme.shimmer_highlighted,
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 16.0, bottom: 8.0),
+                        child: Shimmer.fromColors(
+                          baseColor: MyTheme.shimmer_base,
+                          highlightColor: MyTheme.shimmer_highlighted,
+                          child: Container(
+                            height: 20,
+                            width: MediaQuery.of(context).size.width * .7,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Shimmer.fromColors(
+                          baseColor: MyTheme.shimmer_base,
+                          highlightColor: MyTheme.shimmer_highlighted,
+                          child: Container(
+                            height: 20,
+                            width: MediaQuery.of(context).size.width * .5,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    }
+
   }
 
   Card buildCategoryItemCard(categoryResponse, index) {

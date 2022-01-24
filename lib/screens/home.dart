@@ -1,21 +1,23 @@
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/dummy_data/brands.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/sliders_repository.dart';
+import 'package:active_ecommerce_flutter/screens/brand_products.dart';
 import 'package:active_ecommerce_flutter/screens/category_list.dart';
 import 'package:active_ecommerce_flutter/screens/category_products.dart';
 import 'package:active_ecommerce_flutter/screens/chat.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/flash_deal_list.dart';
 import 'package:active_ecommerce_flutter/screens/messenger_list.dart';
+import 'package:active_ecommerce_flutter/screens/product_card.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
 import 'package:active_ecommerce_flutter/screens/todays_deal_products.dart';
 import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
-import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:active_ecommerce_flutter/ui_sections/drawer.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
@@ -31,14 +33,6 @@ class Home extends StatefulWidget {
   Home({Key key, this.title, this.show_back_button = false, go_back = true})
       : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
   bool show_back_button;
@@ -810,8 +804,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               image: _featuredProductList[index].thumbnailImage,
               name: _featuredProductList[index].name,
               main_price: _featuredProductList[index].mainPrice,
-              stroked_price: _featuredProductList[index].strokedPrice,
-              has_discount: _featuredProductList[index].hasDiscount);
+              );
         },
       );
     } else if (_totalProductData == 0) {
@@ -1792,7 +1785,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return FlashDealList();
+                  return BrandProducts();
                 }));
               },
               child: Container(

@@ -1,6 +1,6 @@
+import 'package:active_ecommerce_flutter/screens/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
@@ -61,7 +61,7 @@ class _TopSellingProductsState extends State<TopSellingProducts> {
               child: GridView.builder(
                 // 2
                 //addAutomaticKeepAlives: true,
-                itemCount: productResponse.products.length,
+                itemCount: productResponse.data.length,
                 controller: _scrollController,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -74,13 +74,10 @@ class _TopSellingProductsState extends State<TopSellingProducts> {
                 itemBuilder: (context, index) {
                   // 3
                   return ProductCard(
-                    id: productResponse.products[index].id,
-                    image: productResponse.products[index].thumbnail_image,
-                    name: productResponse.products[index].name,
-                    main_price: productResponse.products[index].main_price,
-                    stroked_price:
-                        productResponse.products[index].stroked_price,
-                    has_discount: productResponse.products[index].has_discount,
+                    id: productResponse.data[index].id,
+                    image: productResponse.data[index].thumbnailImage,
+                    name: productResponse.data[index].name,
+                    main_price: productResponse.data[index].basePrice,
                   );
                 },
               ),

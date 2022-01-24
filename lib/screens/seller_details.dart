@@ -1,9 +1,9 @@
+import 'package:active_ecommerce_flutter/screens/product_card.dart';
 import 'package:active_ecommerce_flutter/screens/seller_products.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/list_product_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/mini_product_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -252,11 +252,10 @@ class _SellerDetailsState extends State<SellerDetails> {
           // 3
           return ProductCard(
               id: _featuredProducts[index].id,
-              image: _featuredProducts[index].thumbnail_image,
+              image: _featuredProducts[index].thumbnailImage,
               name: _featuredProducts[index].name,
-              main_price: _featuredProducts[index].main_price,
-              stroked_price: _featuredProducts[index].stroked_price,
-              has_discount: _featuredProducts[index].has_discount);
+              main_price: _featuredProducts[index].basePrice,
+          );
         },
       );
     } else {

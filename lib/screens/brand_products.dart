@@ -1,6 +1,6 @@
+import 'package:active_ecommerce_flutter/screens/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -198,11 +198,10 @@ class _BrandProductsState extends State<BrandProducts> {
               // 3
               return ProductCard(
                   id: _productList[index].id,
-                  image: _productList[index].thumbnail_image,
+                  image: _productList[index].thumbnailImage,
                   name: _productList[index].name,
                   main_price: _productList[index].main_price,
-                  stroked_price: _productList[index].stroked_price,
-                  has_discount: _productList[index].has_discount);
+              );
 
             },
           ),
