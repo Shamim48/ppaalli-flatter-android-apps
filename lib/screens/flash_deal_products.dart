@@ -144,8 +144,8 @@ backgroundColor: Colors.white,
           } else if (snapshot.hasData) {
             var productResponse = snapshot.data;
             if (_fullList.length == 0) {
-              _fullList.addAll(productResponse.products);
-              _searchList.addAll(productResponse.products);
+              _fullList.addAll(productResponse.data);
+              _searchList.addAll(productResponse.data);
               //print('xcalled');
             }
 
@@ -169,9 +169,10 @@ backgroundColor: Colors.white,
                   // 3
                   return ProductCard(
                       id: _searchList[index].id,
-                      image: _searchList[index].thumbnail_image,
+                      image: _searchList[index].thumbnailImage,
                       name: _searchList[index].name,
                       main_price: _searchList[index].basePrice,
+                    rating: _searchList[index].rating,
                   );
                 },
               ),

@@ -207,7 +207,9 @@ class _CategoryProductsState extends State<CategoryProducts> {
                   id: _productList[index].id,
                   image: _productList[index].thumbnail_image,
                   name: _productList[index].name,
-                  main_price: _productList[index].basePrice);
+                  main_price: _productList[index].basePrice,
+                  rating: _productList[index].rating
+              );
             },
           ),
         ),

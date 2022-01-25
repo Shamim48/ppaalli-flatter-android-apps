@@ -2008,11 +2008,11 @@ class _ProductDetailsState extends State<ProductDetails> {
               padding: const EdgeInsets.only(bottom: 3.0),
               child: ListProductCard(
                   id: _topProducts[index].id,
-                  image: _topProducts[index].thumbnail_image,
+                  image: _topProducts[index].thumbnailImage,
                   name: _topProducts[index].name,
-                  main_price: _topProducts[index].main_price,
-                  stroked_price: _topProducts[index].stroked_price,
-                  has_discount: _topProducts[index].has_discount),
+                  main_price: _topProducts[index].basePrice,
+                rating: _topProducts[index].rating,
+                  ),
             );
           },
         ),
@@ -2066,11 +2066,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                 padding: const EdgeInsets.only(right: 3.0),
                 child: MiniProductCard(
                     id: _relatedProducts[index].id,
-                    image: _relatedProducts[index].thumbnail_image,
+                    image: _relatedProducts[index].thumbnailImage,
                     name: _relatedProducts[index].name,
-                    main_price: _relatedProducts[index].main_price,
-                    stroked_price: _relatedProducts[index].stroked_price,
-                    has_discount: _relatedProducts[index].has_discount),
+                    main_price: _relatedProducts[index].basePrice,
+                  rating: _relatedProducts[index].rating,
+                   ),
               );
             },
           ),

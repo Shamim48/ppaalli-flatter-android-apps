@@ -207,6 +207,7 @@ backgroundColor: Colors.white,
                  image: _productList[index].thumbnailImage,
                  name: _productList[index].name,
                  main_price: _productList[index].basePrice,
+                 rating: _productList[index].rating,
                );
              },
            ),

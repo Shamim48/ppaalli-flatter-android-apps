@@ -26,6 +26,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:one_context/one_context.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:toast/toast.dart';
 
@@ -804,6 +805,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               image: _featuredProductList[index].thumbnailImage,
               name: _featuredProductList[index].name,
               main_price: _featuredProductList[index].mainPrice,
+            rating: _featuredProductList[index].rating,
               );
         },
       );
@@ -1785,7 +1787,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return BrandProducts();
+                  WhichFilter('brands', AppLocalizations.of(OneContext().context).filter_screen_brands);
+                  return Filter();
                 }));
               },
               child: Container(
@@ -1903,6 +1906,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  WhichFilter('sellers', AppLocalizations.of(OneContext().context).filter_screen_sellers);
                   return Filter(
                     selected_filter: "Top seller",
                   );

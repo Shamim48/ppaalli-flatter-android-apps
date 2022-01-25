@@ -78,6 +78,7 @@ class _TopSellingProductsState extends State<TopSellingProducts> {
                     image: productResponse.data[index].thumbnailImage,
                     name: productResponse.data[index].name,
                     main_price: productResponse.data[index].basePrice,
+                    rating: productResponse.data[index].rating,
                   );
                 },
               ),

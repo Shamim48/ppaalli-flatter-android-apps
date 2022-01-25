@@ -1,5 +1,6 @@
 import 'package:active_ecommerce_flutter/screens/product_card.dart';
 import 'package:active_ecommerce_flutter/screens/seller_products.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -154,22 +155,44 @@ class _SellerDetailsState extends State<SellerDetails> {
                       child: Text(
                         AppLocalizations.of(context)
                             .seller_details_screen_new_arrivals,
-                        style: TextStyle(
+                        style: LatoHeavy.copyWith(
                             color: MyTheme.font_grey,
                             fontSize: 16,
-                            fontWeight: FontWeight.w600),
+                            fontWeight: FontWeight.w700),
                       ),
                     ),
-                    Padding(
+                  /*  Padding(
                       padding: const EdgeInsets.fromLTRB(
                         8.0,
                         16.0,
                         0.0,
                         0.0,
                       ),
-                      child: buildNewArrivalList(),
-                    )
+                      child: SizedBox(
+                        height: 150,
+                        width: 150,
+                       child: buildNewArrivalList(),
+                      ),
+
+
+                    )*/
                   ]),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      16.0,
+                      16.0,
+                      0.0,
+                      0.0,
+                    ),
+                    child: SizedBox(
+                        height: 120,
+                        width: 170,
+                        child: buildNewArrivalList()
+                      //buildHomeFeaturedProduct(context),
+                    ),
+                  ),
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate([
@@ -182,11 +205,11 @@ class _SellerDetailsState extends State<SellerDetails> {
                       ),
                       child: Text(
                         AppLocalizations.of(context)
-                            .seller_details_screen_no_top_selling_products,
-                        style: TextStyle(
+                            .seller_details_screen_top_selling_products,
+                        style: LatoHeavy.copyWith(
                             color: MyTheme.font_grey,
                             fontSize: 16,
-                            fontWeight: FontWeight.w600),
+                            fontWeight: FontWeight.w700),
                       ),
                     ),
                     Padding(
@@ -255,6 +278,7 @@ class _SellerDetailsState extends State<SellerDetails> {
               image: _featuredProducts[index].thumbnailImage,
               name: _featuredProducts[index].name,
               main_price: _featuredProducts[index].basePrice,
+            rating: _featuredProducts[index].rating,
           );
         },
       );
@@ -415,11 +439,11 @@ class _SellerDetailsState extends State<SellerDetails> {
               padding: const EdgeInsets.only(bottom: 3.0),
               child: ListProductCard(
                   id: _topProducts[index].id,
-                  image: _topProducts[index].thumbnail_image,
+                  image: _topProducts[index].thumbnailImage,
                   name: _topProducts[index].name,
-                  main_price: _topProducts[index].main_price,
-                  stroked_price: _topProducts[index].stroked_price,
-                  has_discount: _topProducts[index].has_discount),
+                  main_price: _topProducts[index].basePrice,
+                rating: _topProducts[index].rating,
+                  ),
             );
           },
         ),
@@ -459,21 +483,21 @@ class _SellerDetailsState extends State<SellerDetails> {
     } else if (_newArrivalProducts.length > 0) {
       return SingleChildScrollView(
         child: SizedBox(
-          height: 175,
+          height: 120,
+          width: 170,
           child: ListView.builder(
             itemCount: _newArrivalProducts.length,
             scrollDirection: Axis.horizontal,
-            itemExtent: 120,
+            itemExtent: 150,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(right: 3.0),
                 child: MiniProductCard(
                   id: _newArrivalProducts[index].id,
-                  image: _newArrivalProducts[index].thumbnail_image,
+                  image: _newArrivalProducts[index].thumbnailImage,
                   name: _newArrivalProducts[index].name,
-                  main_price: _newArrivalProducts[index].main_price,
-                  stroked_price: _newArrivalProducts[index].stroked_price,
-                  has_discount: _newArrivalProducts[index].has_discount,
+                  main_price: _newArrivalProducts[index].basePrice,
+                  rating: _newArrivalProducts[index].rating,
                 ),
               );
             },
@@ -497,7 +521,7 @@ class _SellerDetailsState extends State<SellerDetails> {
       toolbarHeight: 75,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -580,8 +604,8 @@ class _SellerDetailsState extends State<SellerDetails> {
   buildAppbarShopDetails() {
     return Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
       Container(
-        width: 60,
-        height: 60,
+        width: 40,
+        height: 40,
         margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),

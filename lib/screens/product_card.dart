@@ -1,4 +1,6 @@
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
 import 'package:active_ecommerce_flutter/app_config.dart';
@@ -8,6 +10,12 @@ import 'package:active_ecommerce_flutter/utill/dimensions.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:toast/toast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'cart.dart';
+import 'login.dart';
 
 class ProductCard extends StatefulWidget {
 
@@ -15,17 +23,188 @@ class ProductCard extends StatefulWidget {
   String image;
   String name;
   String main_price;
+  int rating;
 
-  ProductCard({Key key,this.id, this.image, this.name, this.main_price,}) : super(key: key);
+  ProductCard({Key key,this.id, this.image, this.name, this.main_price,this.rating=0}) : super(key: key);
 
   @override
   _ProductCardState createState() => _ProductCardState();
 }
 
 class _ProductCardState extends State<ProductCard> {
+  SnackBar _addedToCartSnackbar;
+  String wishlistImage=Images.heart_outline;
+
   @override
   Widget build(BuildContext context) {
     print((MediaQuery.of(context).size.width - 48 ) / 2);
+
+    _addedToCartSnackbar = SnackBar(
+      content: Text(
+        AppLocalizations.of(context)
+            .product_details_screen_snackbar_added_to_cart,
+        style: TextStyle(color: MyTheme.font_grey),
+      ),
+      backgroundColor: MyTheme.soft_accent_color,
+      duration: const Duration(seconds: 3),
+      action: SnackBarAction(
+        label: AppLocalizations.of(context)
+            .product_details_screen_snackbar_show_cart,
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Cart(has_bottomnav: false,);
+          })).then((value) {
+
+          });
+        },
+        textColor: MyTheme.primaryColor,
+        disabledTextColor: Colors.grey,
+      ),
+    );
+
+    return InkWell(
+      onTap: (){
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) {
+              return ProductDetails(
+                id: widget.id,
+              );
+            }));
+      },
+      child: Card(
+        color: Colors.white,
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(3)
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+
+              borderRadius: BorderRadius.circular(10)
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(child: Container(
+                margin: EdgeInsets.all(5),
+                child: Stack(
+                  children: [
+                    FadeInImage.assetNetwork(
+                      placeholder:
+                      'assets/placeholder.png',
+                      image: AppConfig.BASE_PATH +
+                          widget.image,
+                      fit: BoxFit.cover,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+
+
+
+                    Positioned(child: IconButton(
+                      onPressed: (){
+                        onWishTap(widget.id);
+                        setState(() {
+                          wishlistImage=Images.heart;
+                        });
+                      },
+                      icon: Image.asset(wishlistImage, color: Colors.redAccent, height: 25, width: 25,),
+                    ),
+                      right: 1,
+                      bottom: 1,
+                    ),
+
+                  ],
+                ),
+
+              ),),
+              Container(
+
+                decoration: BoxDecoration(
+                  color: MyTheme.primary_Colour,
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(3), bottomRight: Radius.circular(3)),
+                ),
+                height: 96,
+                child: Column(
+                  children: [
+                    Padding(padding: EdgeInsets.all(1),
+                      child: Text(widget.name, style: LatoBold.copyWith(overflow: TextOverflow.ellipsis, color: MyTheme.white ), maxLines: 1,),
+                    ),
+                    Padding(padding: EdgeInsets.all(1),
+                      child: Row(
+                        children: [
+                          /*  RatingBar(
+                                      initialRating: 3,
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                      onRatingUpdate: (rating) {
+                                        print(rating);
+                                      },
+                                    ),*/
+
+                          Expanded(
+                            child: Padding(
+                              padding:
+                              EdgeInsets.only(left: 5),
+                              child: RatingBarIndicator(
+                                rating: widget.rating.toDouble(),
+                                itemBuilder:
+                                    (context, index) => Icon(
+                                  Icons.star,
+                                  color: MyTheme.white,
+                                ),
+                                itemCount: 5,
+                                itemSize: 12.0,
+                                direction: Axis.horizontal,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                5, 2, 5, 5),
+                            child: Text(
+                              widget.main_price,
+                              style: LatoMedium.copyWith(color: MyTheme.white),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 5, right: 5),
+                          child: FlatButton(onPressed: (){
+                            onPressAddToCart(context, _addedToCartSnackbar,widget.id);
+
+                          },
+                            minWidth: MediaQuery.of(context).size.width,
+                            color: MyTheme.black,
+                            textColor: MyTheme.white,
+                            child: Center(
+                              child: Text("Add to cart", style: LatoBold.copyWith(),),
+                            ),
+
+                          ),
+                        )
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+
+      ),
+    );
+
+
+
+
+/*
     return InkWell(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -121,6 +300,7 @@ class _ProductCardState extends State<ProductCard> {
         )
         )
     );
+*/
 /*
     return InkWell(
       onTap: () {
@@ -211,6 +391,77 @@ class _ProductCardState extends State<ProductCard> {
     );
 */
   }
+
+  onPressAddToCart(context, snackbar, int id) {
+    addToCart(mode: "add_to_cart", context: context, snackbar: snackbar, id: id);
+  }
+
+  addToCart({mode, context = null, snackbar = null, int id}) async {
+    if (is_logged_in.$ == false) {
+      ToastComponent.showDialog(
+          "You are not log in!", context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return Login();
+      }));
+
+      return;
+    }
+
+    /*productCartList.add(_productDetails.data[0]);
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Cart(has_bottomnav: true,);
+      }));*/
+
+    print(id);
+    // print(_variant);
+    print(user_id.$);
+    // print(_quantity);
+
+    var cartAddResponse = await CartRepository()
+        .getCartAddResponseWithoutVariant(id, /*_variant,*/ user_id.$,1);
+
+    if (cartAddResponse.result == false) {
+      ToastComponent.showDialog(cartAddResponse.message, context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      return;
+    } else {
+      if (mode == "add_to_cart") {
+        if (snackbar != null && context != null) {
+          Scaffold.of(context).showSnackBar(snackbar);
+        }
+      } else if (mode == 'buy_now') {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Cart(has_bottomnav: false,);
+        })).then((value) {
+
+        });
+      }
+    }
+  }
+
+  onWishTap(int id) {
+    if (is_logged_in.$ == false) {
+      ToastComponent.showDialog(
+          AppLocalizations.of(context).common_login_warning, context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      return;
+    }
+
+   /* if (_isInWishList) {
+      _isInWishList = false;
+      setState(() {});
+      removeFromWishList(id);
+    } else {
+      _isInWishList = true;
+      setState(() {});
+      addToWishList(id);
+    }
+    */
+  }
+
+
+
 }
 
 class RatingBar extends StatelessWidget {

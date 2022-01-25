@@ -404,7 +404,6 @@ class _FilterState extends State<Filter> {
   SnackBar _addedToCartSnackbar;
   String wishlistImage=Images.heart_outline;
 
-
   //--------------------
 
   @override
@@ -502,10 +501,7 @@ class _FilterState extends State<Filter> {
             ),
             hint: Text(
               AppLocalizations.of(context).filter_screen_products,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 13,
-              ),
+              style: LatoBold,
             ),
             iconSize: 14,
             underline: SizedBox(),
@@ -741,11 +737,12 @@ class _FilterState extends State<Filter> {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
         Widget>[
       IconButton(
-        icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+        icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 25,),
         onPressed: () => Navigator.of(context).pop(),
       ),
       Container(
         width: MediaQuery.of(context).size.width * .6,
+        height: 60,
         child: Container(
           child: Padding(
               padding: MediaQuery.of(context).viewPadding.top >
@@ -817,7 +814,7 @@ class _FilterState extends State<Filter> {
         ),
       ),
       IconButton(
-          icon: Icon(Icons.search, color: MyTheme.dark_grey),
+          icon: Icon(Icons.search, color: MyTheme.primary_Colour, size: 25,),
           onPressed: () {
             _searchKey = _searchController.text.toString();
             setState(() {});
