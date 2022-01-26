@@ -1,5 +1,6 @@
 import 'package:active_ecommerce_flutter/screens/order_details.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -371,10 +372,11 @@ class _OrderListState extends State<OrderList> {
   Container buildTopAppBarContainer() {
     return Container(
       child: Row(
+        mainAxisSize: MainAxisSize.max,
         children: [
           Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+              icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 25,),
               onPressed: () {
                 if (widget.from_checkout) {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -386,9 +388,12 @@ class _OrderListState extends State<OrderList> {
               },
             ),
           ),
-          Text(
-            AppLocalizations.of(context).profile_screen_purchase_history,
-            style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
+          SizedBox(width: 100,),
+          Center(
+            child: Text(
+              "Order History",
+              style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primaryColor, fontWeight: FontWeight.w900),
+            ),
           ),
         ],
       ),

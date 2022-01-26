@@ -55,7 +55,6 @@ class _CartState extends State<Cart> {
   }
 
   fetchData() async {
-
   var cartResponseList =
         await CartRepository().getCartResponseList(user_id.$);
 
@@ -96,7 +95,6 @@ class _CartState extends State<Cart> {
         partialTotalString = "${cart_item.currency_symbol}${partialTotal}";
       });
     }
-
     return partialTotalString;
   }
 
@@ -142,24 +140,25 @@ class _CartState extends State<Cart> {
                 child: Text(
                   AppLocalizations.of(context).cart_screen_sure_remove_item,
                   maxLines: 3,
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 14),
+                  style: LatoBold.copyWith(color: MyTheme.font_grey, fontSize: 14),
                 ),
               ),
               actions: [
                 FlatButton(
+                  color: Colors.deepOrangeAccent,
                   child: Text(
                     AppLocalizations.of(context).cart_screen_cancel,
-                    style: TextStyle(color: MyTheme.medium_grey),
+                    style: LatoMedium.copyWith(color: MyTheme.white),
                   ),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
                 FlatButton(
-                  color: MyTheme.soft_accent_color,
+                  color: MyTheme.primary_Colour,
                   child: Text(
                     AppLocalizations.of(context).cart_screen_confirm,
-                    style: TextStyle(color: MyTheme.dark_grey),
+                    style: LatoMedium.copyWith(color: MyTheme.white),
                   ),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
@@ -289,7 +288,7 @@ class _CartState extends State<Cart> {
                     SliverList(
                       delegate: SliverChildListDelegate([
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: buildCartSellerList(),
                         ),
                         Container(
@@ -510,38 +509,6 @@ backgroundColor: Colors.white,
           shrinkWrap: true,
           itemBuilder: (context, index) {
             return buildCartSellerItemList(index);
-            /*Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 0.0, top: 16.0),
-                    child: Row(
-                      children: [
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal:8.0),
-                          child: Text(
-                            _shopList[index].name,
-                            style: TextStyle(color: MyTheme.font_grey),
-                          ),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text("\$567",
-                           // partialTotalString(index),
-                            style: TextStyle(
-                                color: MyTheme.accent_color, fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );*/
           },
         ),
       );
@@ -565,7 +532,7 @@ backgroundColor: Colors.white,
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: 5.0),
             child: buildCartSellerItemCard(seller_index, index),
           );
         },
@@ -574,18 +541,11 @@ backgroundColor: Colors.white,
   }
 
   buildCartSellerItemCard(seller_index, item_index) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: MyTheme.primary_Colour.withOpacity(.2), width: 2),
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      elevation: 0.0,
-      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-
+    return Row(
+      children: [
         InkWell(
           onTap: () {},
           child: IconButton(
-            iconSize: 28,
             onPressed: () {
               onPressDelete(_shopList[seller_index]
                   .cart_items[item_index]
@@ -598,201 +558,214 @@ backgroundColor: Colors.white,
             ),
           ),
         ),
-
-        /*SizedBox(
-          height: 28,
-          width: 20,
-          child:
-        ),*/
-        Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-
-              borderRadius: BorderRadius.circular(15),
-              color: MyTheme.white,
-              boxShadow: [
-                BoxShadow(
-                  color: MyTheme.dark_grey.withOpacity(0.3),
-                  spreadRadius: 3,
-                  blurRadius: 4,
-                  offset: Offset(0, .5)
-
-                )
-              ]
+        Expanded(
+          child: Card(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: MyTheme.dark_grey.withOpacity(.2), width: 1.5),
+              borderRadius: BorderRadius.circular(12.0),
             ),
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/placeholder.png',
-                  image: AppConfig.BASE_PATH +
-                      _shopList[seller_index]
-                          .cart_items[item_index]
-                          .product_thumbnail_image,
-                  fit: BoxFit.fitWidth,
-                ))),
+            elevation: 3.0,
+            shadowColor: MyTheme.dark_grey.withOpacity(.4),
+            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
 
-        Expanded(child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 8.0),
+              /*SizedBox(
+                height: 28,
+                width: 20,
+                child:
+              ),*/
+              Container(
+                  width: 100,
+                  height: 100,
+                  margin: EdgeInsets.only(left: 10, right: 5),
+                  decoration: BoxDecoration(
+
+                    borderRadius: BorderRadius.circular(10),
+                    color: MyTheme.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: MyTheme.dark_grey.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 3,
+                        offset: Offset(0, .5)
+
+                      )
+                    ]
+                  ),
+                  child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
+                        image: AppConfig.BASE_PATH +
+                            _shopList[seller_index]
+                                .cart_items[item_index]
+                                .product_thumbnail_image,
+                        fit: BoxFit.fitWidth,
+                      ))),
+
+              Expanded(child: Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      _shopList[seller_index]
-                          .cart_items[item_index]
-                          .product_name,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: LatoHeavy,
-                    ),
-                    Row(
-                      children: [
-                        Padding(padding: EdgeInsets.only(top: 8.0),
-                          child: Text("Price:  ", style: LatoMedium,),),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
                             _shopList[seller_index]
                                 .cart_items[item_index]
-                                .currency_symbol +
-                                (_shopList[seller_index]
-                                    .cart_items[item_index]
-                                    .price *
-                                    _shopList[seller_index]
-                                        .cart_items[item_index]
-                                        .quantity)
-                                    .toString(),
-                            textAlign: TextAlign.left,
+                                .product_name,
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: LatoMedium,
+                            maxLines: 1,
+                            style: LatoHeavy,
                           ),
-                        ),
+                          Row(
+                            children: [
+                              Padding(padding: EdgeInsets.only(top: 8.0),
+                                child: Text("Price:  ", style: LatoMedium,),),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  _shopList[seller_index]
+                                      .cart_items[item_index]
+                                      .currency_symbol +
+                                      (_shopList[seller_index]
+                                          .cart_items[item_index]
+                                          .price *
+                                          _shopList[seller_index]
+                                              .cart_items[item_index]
+                                              .quantity)
+                                          .toString(),
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: LatoMedium,
+                                ),
+                              ),
 
-                      ],
-                    ),
-                    /*Row(
-                      children: [
-                        Padding(padding: EdgeInsets.only(top: 8.0),
-                          child: Text("Color:  ", style: LatoMedium,),),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text("Black",
-                            textAlign: TextAlign.left,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: LatoMedium,
+                            ],
                           ),
-                        ),
+                          /*Row(
+                            children: [
+                              Padding(padding: EdgeInsets.only(top: 8.0),
+                                child: Text("Color:  ", style: LatoMedium,),),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text("Black",
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: LatoMedium,
+                                ),
+                              ),
 
-                      ],
-                    ),*/
-                   /* Row(
-                      children: [
-                        Padding(padding: EdgeInsets.only(top: 8.0),
-                          child: Text("Advance:", style: LatoMedium,),),
+                            ],
+                          ),*/
+                         /* Row(
+                            children: [
+                              Padding(padding: EdgeInsets.only(top: 8.0),
+                                child: Text("Advance:", style: LatoMedium,),),
 
 
-                      ],
-                    ),*/
+                            ],
+                          ),*/
 
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text("\$20(10%)"+" Advanced",
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: LatoMedium,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text("\$20(10%)"+" Advanced",
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: LatoMedium,
+                            ),
+                          ),
+
+
+                        ],
                       ),
                     ),
-
-
                   ],
                 ),
+              ),),
+
+              //Spacer(),
+
+              Container(
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: MyTheme.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: MyTheme.dark_grey.withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      //offset: Offset(1,0)
+                    )
+                  ]
+                ),
+                child:         Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 28,
+                        height: 28,
+                        child: FlatButton(
+                          padding: EdgeInsets.all(0),
+                          child: Icon(
+                            Icons.add,
+                            color: MyTheme.primary_Colour,
+                            size: 18,
+                          ),
+                          shape: CircleBorder(
+                            side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                          ),
+                          color: Colors.white,
+                          onPressed: () {
+                            onQuantityIncrease(seller_index, item_index);
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        child: Text(
+                          _shopList[seller_index]
+                              .cart_items[item_index]
+                              .quantity
+                              .toString(),
+                          style: TextStyle(color: MyTheme.primary_Colour, fontSize: 16),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 28,
+                        height: 28,
+                        child: FlatButton(
+                          padding: EdgeInsets.all(0),
+                          child: Icon(
+                            Icons.remove,
+                            color: MyTheme.primary_Colour,
+                            size: 18,
+                          ),
+                          height: 30,
+                          shape: CircleBorder(
+                            side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                          ),
+                          color: Colors.white,
+                          onPressed: () {
+                            onQuantityDecrease(seller_index, item_index);
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ],
-          ),
-        ),),
 
-        //Spacer(),
-
-        Container(
-          margin: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: MyTheme.white,
-            boxShadow: [
-              BoxShadow(
-                color: MyTheme.dark_grey.withOpacity(0.3),
-                spreadRadius: 1,
-                blurRadius: 1,
-                //offset: Offset(1,0)
-              )
-            ]
-          ),
-          child:         Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 28,
-                  height: 28,
-                  child: FlatButton(
-                    padding: EdgeInsets.all(0),
-                    child: Icon(
-                      Icons.add,
-                      color: MyTheme.primary_Colour,
-                      size: 18,
-                    ),
-                    shape: CircleBorder(
-                      side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
-                    ),
-                    color: Colors.white,
-                    onPressed: () {
-                      onQuantityIncrease(seller_index, item_index);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                  child: Text(
-                    _shopList[seller_index]
-                        .cart_items[item_index]
-                        .quantity
-                        .toString(),
-                    style: TextStyle(color: MyTheme.primary_Colour, fontSize: 16),
-                  ),
-                ),
-                SizedBox(
-                  width: 28,
-                  height: 28,
-                  child: FlatButton(
-                    padding: EdgeInsets.all(0),
-                    child: Icon(
-                      Icons.remove,
-                      color: MyTheme.primary_Colour,
-                      size: 18,
-                    ),
-                    height: 30,
-                    shape: CircleBorder(
-                      side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
-                    ),
-                    color: Colors.white,
-                    onPressed: () {
-                      onQuantityDecrease(seller_index, item_index);
-                    },
-                  ),
-                )
-              ],
-            ),
+            ]),
           ),
         ),
-
-      ]),
+      ],
     );
   }
 }

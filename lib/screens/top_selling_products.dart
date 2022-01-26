@@ -1,4 +1,5 @@
 import 'package:active_ecommerce_flutter/screens/product_card.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
@@ -32,13 +33,13 @@ class _TopSellingProductsState extends State<TopSellingProducts> {
       centerTitle: true,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 25,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       title: Text(
         AppLocalizations.of(context).top_selling_products_screen_top_selling_products,
-        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
+        style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primaryColor, fontWeight: FontWeight.w900),
       ),
       elevation: 0.0,
       titleSpacing: 0,

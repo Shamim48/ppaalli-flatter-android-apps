@@ -11,6 +11,7 @@ import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
 import 'package:active_ecommerce_flutter/screens/profile_edit.dart';
 import 'package:active_ecommerce_flutter/screens/refund_request.dart';
+import 'package:active_ecommerce_flutter/screens/wishlist.dart';
 import 'package:active_ecommerce_flutter/utill/dimensions.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
@@ -426,9 +427,9 @@ class _ProfileState extends State<Profile> {
           Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
           InkWell(
             onTap: () {
-              ToastComponent.showDialog(
-                  AppLocalizations.of(context).common_coming_soon, context,
-                  gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+             Navigator.push(context, MaterialPageRoute(builder: (context){
+               return Wishlist();
+             }));
             },
             child: Visibility(
               visible: true,

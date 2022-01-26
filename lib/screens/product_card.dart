@@ -5,15 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_flutter/utill/color_resources.dart';
-import 'package:active_ecommerce_flutter/utill/dimensions.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'cart.dart';
 import 'login.dart';
 
@@ -29,6 +25,7 @@ class ProductCard extends StatefulWidget {
 
   @override
   _ProductCardState createState() => _ProductCardState();
+
 }
 
 class _ProductCardState extends State<ProductCard> {
@@ -101,7 +98,7 @@ class _ProductCardState extends State<ProductCard> {
 
 
 
-                    Positioned(child: IconButton(
+                   /* Positioned(child: IconButton(
                       onPressed: (){
                         onWishTap(widget.id);
                         setState(() {
@@ -112,7 +109,7 @@ class _ProductCardState extends State<ProductCard> {
                     ),
                       right: 1,
                       bottom: 1,
-                    ),
+                    ),*/
 
                   ],
                 ),
@@ -200,9 +197,6 @@ class _ProductCardState extends State<ProductCard> {
 
       ),
     );
-
-
-
 
 /*
     return InkWell(

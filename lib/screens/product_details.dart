@@ -1209,7 +1209,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         Spacer(),
 
         IconButton(
-          icon: Image.asset(wishlistImage, color: Colors.redAccent,),
+          icon: Image.asset(_isInWishList ? Images.heart : Images.heart_outline, color: Colors.redAccent,),
           onPressed: (){
             onWishTap();
             setState(() {
@@ -1219,9 +1219,11 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
 
        SizedBox(width: 20,),
-        Icon(Icons.share, color: MyTheme.primary_Colour,)
-
-
+        IconButton(icon: Icon(Icons.share, color: MyTheme.primary_Colour,),
+        onPressed: (){
+          onPressShare(context);
+        },
+        )
 
       ],
     );
@@ -1728,7 +1730,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       backgroundColor: Colors.white,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 25,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -1739,11 +1741,13 @@ class _ProductDetailsState extends State<ProductDetails> {
         //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
         child: Container(
             width: 300,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 22.0),
-              child: Text(
-                "_appbarPriceString",
-                style: TextStyle(fontSize: 16, color: MyTheme.font_grey),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 22.0),
+                child: Text(
+                  "Product Details",
+                  style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primary_Colour, fontWeight: FontWeight.w900),
+                ),
               ),
             )),
       ),
@@ -1753,7 +1757,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
           child: IconButton(
-            icon: Icon(Icons.share_outlined, color: MyTheme.dark_grey),
+            icon: Icon(Icons.share_outlined, color: MyTheme.primary_Colour),
             onPressed: () {
               onPressShare(context);
             },

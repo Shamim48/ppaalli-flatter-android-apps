@@ -442,7 +442,7 @@ class _LoginState extends State<Login> {
                           child: Center(
                             child: Container(
                               height: 35,
-                              width: 80,
+                              width: 100,
                               alignment: Alignment.center,
 
                               decoration: BoxDecoration(
@@ -450,10 +450,10 @@ class _LoginState extends State<Login> {
                                 /*border: Border.all(
                                     color: MyTheme.textfield_grey, width: 1),*/
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(12.0)),
+                                      Radius.circular(20.0)),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
+                                    color: MyTheme.dark_grey.withOpacity(0.3),
                                     spreadRadius: 1,
                                     blurRadius: 1,
                                     // changes position of shadow
@@ -467,8 +467,8 @@ class _LoginState extends State<Login> {
                                   "Login",
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800),
                                 ),
                                 onPressed: () {
                                   onPressedLogin();

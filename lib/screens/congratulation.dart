@@ -87,7 +87,7 @@ class _CongratulationsState extends State<Congratulations> {
                   InkWell(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return OrderList();
+                        return OrderList(from_checkout: true);
                       }));
                     },
                     child: Container(

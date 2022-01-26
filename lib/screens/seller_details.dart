@@ -529,7 +529,20 @@ class _SellerDetailsState extends State<SellerDetails> {
         child: Container(
             width: 350,
             child: _shopDetails != null
-                ? buildAppbarShopDetails()
+                ? Center(
+                  child: Padding(
+              padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+              child: Text(
+                  _shopDetails.name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: LatoHeavy.copyWith(
+                      color: MyTheme.primary_Colour,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900),
+              ),
+            ),
+                ) //buildAppbarShopDetails()
                 : Row(
                     children: [
                       ShimmerHelper()
@@ -558,7 +571,7 @@ class _SellerDetailsState extends State<SellerDetails> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
           child: IconButton(
-            icon: Icon(Icons.location_on, color: MyTheme.dark_grey),
+            icon: Icon(Icons.location_on, color: Colors.deepOrange),
             onPressed: () {
               showDialog(
                   context: context,

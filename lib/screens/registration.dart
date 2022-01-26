@@ -162,12 +162,29 @@ class _RegistrationState extends State<Registration> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Container(
-                            height: 36,
+                            height: 42,
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                            decoration: BoxDecoration(
+                                color: MyTheme.white,
+                                borderRadius: BorderRadius.circular(5),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: MyTheme.dark_grey.withOpacity(0.3),
+                                      spreadRadius: 1.5,
+                                      blurRadius: 3
+                                  )
+                                ]
+                            ),
                             child: TextField(
                               controller: _nameController,
                               autofocus: false,
-                              decoration: InputDecorations.buildInputDecoration_1(
-                                  hint_text: "Type Your name"),
+                              /*decoration: InputDecorations.buildInputDecoration_1(
+                                  hint_text: "Type Your name"),*/
+                                decoration: new InputDecoration.collapsed(
+                                  hintText:
+                                  "Type your name",
+                                )
                             ),
                           ),
                         ),
@@ -185,13 +202,26 @@ class _RegistrationState extends State<Registration> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Container(
-                                  height: 36,
+                                  height: 42,
+                                  alignment: Alignment.centerLeft,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                      color: MyTheme.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: MyTheme.dark_grey.withOpacity(0.3),
+                                            spreadRadius: 1.5,
+                                            blurRadius: 3
+                                        )
+                                      ]
+                                  ),
                                   child: TextField(
                                     controller: _emailController,
                                     autofocus: false,
                                     decoration:
-                                        InputDecorations.buildInputDecoration_1(
-                                            hint_text: "Type your Email"),
+                                        InputDecoration.collapsed(
+                                            hintText: "Type your email"),
                                   ),
                                 ),
                                 AddonConfig.otp_addon_installed
@@ -282,7 +312,20 @@ class _RegistrationState extends State<Registration> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Container(
-                                height: 36,
+                                height: 42,
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: MyTheme.dark_grey.withOpacity(0.3),
+                                          spreadRadius: 1.5,
+                                          blurRadius: 3
+                                      )
+                                    ]
+                                ),
                                 child: TextField(
                                   controller: _passwordController,
                                   autofocus: false,
@@ -290,14 +333,15 @@ class _RegistrationState extends State<Registration> {
                                   enableSuggestions: false,
                                   autocorrect: false,
                                   decoration:
-                                      InputDecorations.buildInputDecoration_1(
-                                          hint_text: "• • • • • • • •"),
+                                      InputDecoration.collapsed(
+                                          hintText: "• • • • • • • •"),
                                 ),
                               ),
                               Text(
                                 AppLocalizations.of(context).registration_screen_password_length_recommendation,
-                                style: TextStyle(
-                                    color: MyTheme.textfield_grey,
+                                style: LatoRegular.copyWith(
+                                    color: MyTheme.primary_Colour,
+                                    fontSize: 13,
                                     fontStyle: FontStyle.italic),
                               )
                             ],
@@ -313,15 +357,28 @@ class _RegistrationState extends State<Registration> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Container(
-                            height: 36,
+                            height: 42,
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                            decoration: BoxDecoration(
+                                color: MyTheme.white,
+                                borderRadius: BorderRadius.circular(5),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: MyTheme.dark_grey.withOpacity(0.3),
+                                      spreadRadius: 1.5,
+                                      blurRadius: 3
+                                  )
+                                ]
+                            ),
                             child: TextField(
                               controller: _passwordConfirmController,
                               autofocus: false,
                               obscureText: true,
                               enableSuggestions: false,
                               autocorrect: false,
-                              decoration: InputDecorations.buildInputDecoration_1(
-                                  hint_text: "• • • • • • • •"),
+                              decoration: InputDecoration.collapsed(
+                                  hintText: "• • • • • • • •"),
                             ),
                           ),
                         ),
@@ -330,17 +387,17 @@ class _RegistrationState extends State<Registration> {
                           child: Center(
                             child: Container(
 
-                              height: 45,
+                              height: 40,
                               width: 180,
                               decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(12.0)),
+                                      Radius.circular(20.0)),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 1,
-                                    offset: Offset(0, 1), // changes position of shadow
+                                    color: MyTheme.dark_grey.withOpacity(0.3),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    // changes position of shadow
                                   ),
                                 ],
                               ),

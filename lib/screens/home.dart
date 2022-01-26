@@ -7,6 +7,7 @@ import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/sliders_repository.dart';
+import 'package:active_ecommerce_flutter/screens/brand.dart';
 import 'package:active_ecommerce_flutter/screens/brand_products.dart';
 import 'package:active_ecommerce_flutter/screens/category_list.dart';
 import 'package:active_ecommerce_flutter/screens/category_products.dart';
@@ -17,6 +18,7 @@ import 'package:active_ecommerce_flutter/screens/messenger_list.dart';
 import 'package:active_ecommerce_flutter/screens/product_card.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
 import 'package:active_ecommerce_flutter/screens/todays_deal_products.dart';
+import 'package:active_ecommerce_flutter/screens/top_saller.dart';
 import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
 import 'package:active_ecommerce_flutter/ui_sections/drawer.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
@@ -1752,6 +1754,47 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CategoryList(
+                    is_top_category: true,
+                  );
+                }));
+              },
+              child: Container(
+                height: 100,
+                width: MediaQuery.of(context).size.width / 5 - 4,
+                child: Column(
+                  children: [
+                    Container(
+                      // All Category Container
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          //  shape: BoxShape.circle,
+                          color: MyTheme.primary_Colour,
+                          borderRadius: BorderRadius.circular(10),
+                          // border: Border.all(color: MyTheme.light_grey, width: 1)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Image.asset(Images.student),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        "Student Offer",
+                        //  AppLocalizations.of(context).home_screen_top_categories,
+                        textAlign: TextAlign.center,
+                        style: LatoBold,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return FlashDealList();
                 }));
               },
@@ -1784,11 +1827,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 ),
               ),
             ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  WhichFilter('brands', AppLocalizations.of(OneContext().context).filter_screen_brands);
-                  return Filter();
+                  return AllBrand();
                 }));
               },
               child: Container(
@@ -1819,53 +1868,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-            )
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return CategoryList(
-                    is_top_category: true,
-                  );
-                }));
-              },
-              child: Container(
-                height: 100,
-                width: MediaQuery.of(context).size.width / 5 - 4,
-                child: Column(
-                  children: [
-                    Container(
-                        // All Category Container
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          //  shape: BoxShape.circle,
-                          color: MyTheme.primary_Colour,
-                          borderRadius: BorderRadius.circular(10),
-                          // border: Border.all(color: MyTheme.light_grey, width: 1)
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Image.asset(Images.student),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Text(
-                        "Student",
-                        //  AppLocalizations.of(context).home_screen_top_categories,
-                        textAlign: TextAlign.center,
-                        style: LatoBold,
-                      ),
-                    )
-                  ],
-                ),
-              ),
             ),
+
+
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -1907,9 +1912,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   WhichFilter('sellers', AppLocalizations.of(OneContext().context).filter_screen_sellers);
-                  return Filter(
-                    selected_filter: "Top seller",
-                  );
+                  return TopSeller();
                 }));
               },
               child: Container(

@@ -1,3 +1,5 @@
+import 'package:active_ecommerce_flutter/screens/congratulation.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
@@ -390,7 +392,7 @@ class _CheckoutState extends State<Checkout> {
     }
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return OrderList(from_checkout: true);
+      return Congratulations();
     }));
   }
 
@@ -405,7 +407,7 @@ class _CheckoutState extends State<Checkout> {
     }
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return OrderList(from_checkout: true);
+      return Congratulations();
     }));
   }
 
@@ -806,7 +808,7 @@ backgroundColor: Colors.white,
       ),
       title: Text(
         AppLocalizations.of(context).checkout_screen_checkout,
-        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor, ),
+        style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primaryColor, fontWeight: FontWeight.w900),
       ),
       elevation: 0.0,
       titleSpacing: 0,

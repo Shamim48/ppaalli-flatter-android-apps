@@ -1,10 +1,32 @@
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../my_theme.dart';
+
+
+AppBar buildAppBarWithBackAndTitle(BuildContext context, String title) {
+  return AppBar(
+    backgroundColor: Colors.white,
+    centerTitle: true,
+    leading: Builder(
+      builder: (context) => IconButton(
+        icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 25,),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+    ),
+    title: Text(
+      title,
+      style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primaryColor, fontWeight: FontWeight.w900),
+    ),
+    elevation: 0.0,
+    titleSpacing: 0,
+  );
+}
 
 AppBar buildCommonAppBar(double statusBarHeight, BuildContext context) {
   return AppBar(
