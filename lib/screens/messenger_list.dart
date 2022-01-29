@@ -1,3 +1,4 @@
+import 'package:active_ecommerce_flutter/data_model/group_order.dart';
 import 'package:active_ecommerce_flutter/ui_elements/AppBar_Common.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
@@ -19,13 +20,19 @@ class MessengerList extends StatefulWidget {
 }
 
 class _MessengerListState extends State<MessengerList> {
-  ScrollController _xcrollController = ScrollController();
+  ScrollController _scrollController = ScrollController();
 
   List<dynamic> _list = [];
   bool _isInitial = true;
   int _page = 1;
   int _totalData = 0;
   bool _showLoadingContainer = false;
+
+ List<dynamic> _groupList = [];
+  bool _isGroupInitial = true;
+  int _groupPage = 1;
+  int _groupTotalData = 0;
+  bool _groupShowLoadingContainer = false;
 
   bool groupColor=true;
 
@@ -36,30 +43,49 @@ class _MessengerListState extends State<MessengerList> {
 
     fetchData();
 
-    _xcrollController.addListener(() {
+    _scrollController.addListener(() {
       //print("position: " + _xcrollController.position.pixels.toString());
       //print("max: " + _xcrollController.position.maxScrollExtent.toString());
 
-      if (_xcrollController.position.pixels ==
-          _xcrollController.position.maxScrollExtent) {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
         setState(() {
           _page++;
+          _groupPage++;
         });
         _showLoadingContainer = true;
-        fetchData();
+
       }
     });
+
   }
 
   fetchData() async {
+    getSellerList();
+    getGroupList();
+  }
+
+  getSellerList() async{
     var conversatonResponse =
-        await ChatRepository().getConversationResponse(page: _page);
+    await ChatRepository().getConversationResponse(page: _page);
     _list.addAll(conversatonResponse.conversation_item_list);
     _isInitial = false;
     _totalData = conversatonResponse.meta.total;
     _showLoadingContainer = false;
     setState(() {});
   }
+
+   getGroupList() async{
+    var conversatonResponse =
+    await ChatRepository().getGroupConversationResponse(page: _page);
+    _groupList.addAll(conversatonResponse.data);
+    _isGroupInitial = false;
+    _groupTotalData = conversatonResponse.meta.total;
+    _groupShowLoadingContainer = false;
+    print("Group Order length:"+_groupList.length.toString());
+    setState(() {});
+  }
+
 
   reset() {
     _list.clear();
@@ -74,7 +100,7 @@ class _MessengerListState extends State<MessengerList> {
     reset();
     fetchData();
   }
-
+  //01928376409
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -90,7 +116,7 @@ class _MessengerListState extends State<MessengerList> {
               onRefresh: _onRefresh,
               displacement: 0,
               child: CustomScrollView(
-                controller: _xcrollController,
+                controller: _scrollController,
                 physics: const BouncingScrollPhysics(
                     parent: AlwaysScrollableScrollPhysics()),
                 slivers: [
@@ -184,8 +210,7 @@ class _MessengerListState extends State<MessengerList> {
   buildMessengerList() {
     return SingleChildScrollView(
       child: ListView.builder(
-        itemCount: 16,
-        //_list.length,
+        itemCount: _groupList.length,
         scrollDirection: Axis.vertical,
         padding: EdgeInsets.all(0.0),
         physics: NeverScrollableScrollPhysics(),
@@ -380,18 +405,19 @@ class _MessengerListState extends State<MessengerList> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8) , topLeft: Radius.circular(8)),
-                      child: Image.asset(
-                        Images.p3, //AppConfig.BASE_PATH + _list[index].shop_logo,
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
+                        image:AppConfig.BASE_PATH + _groupList[index].productInfo.thumbnailImage,
                         fit: BoxFit.contain,
                         height: double.infinity,
                         width: double.infinity,
-                      ),
+                      )
                     )
                     /*ClipRRect(
                 //  borderRadius: BorderRadius.circular(35),
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/placeholder.png',
-                    image: Images.complete,//AppConfig.BASE_PATH + _list[index].shop_logo,
+                    image: Images.complete,//AppConfig.BASE_PATH + __groupList[index].productInfo.thumbnail_image,
                     fit: BoxFit.contain,
                     height: double.infinity,
                     width: double.infinity,
@@ -410,7 +436,7 @@ class _MessengerListState extends State<MessengerList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Parthona Super Shop", // _list[index].shop_name,
+                              _groupList[index].productInfo.name, // _list[index].shop_name,
                               textAlign: TextAlign.left,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
@@ -421,7 +447,7 @@ class _MessengerListState extends State<MessengerList> {
                                   fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "3 member Join", //_list[index].title,
+                              "${_groupList[index].totalMemberJoin} Member joined", //_list[index].title,
                               textAlign: TextAlign.left,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
@@ -443,7 +469,7 @@ class _MessengerListState extends State<MessengerList> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "\$454-\$480", // _list[index].shop_name,
+                        "${_groupList[index].productUnitPrice}", // _list[index].shop_name,
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,

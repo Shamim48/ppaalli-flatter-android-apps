@@ -5,10 +5,12 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/wallet_repository.dart';
 import 'package:active_ecommerce_flutter/screens/address.dart';
 import 'package:active_ecommerce_flutter/screens/club_point.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
+import 'package:active_ecommerce_flutter/screens/password_forget.dart';
 import 'package:active_ecommerce_flutter/screens/profile_edit.dart';
 import 'package:active_ecommerce_flutter/screens/refund_request.dart';
 import 'package:active_ecommerce_flutter/screens/wishlist.dart';
@@ -38,6 +40,10 @@ class _ProfileState extends State<Profile> {
   int _orderCounter = 0;
   String _orderCounterString = "...";
 
+  var _balanceDetails = null;
+
+  bool isTabCkick=false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -46,6 +52,15 @@ class _ProfileState extends State<Profile> {
     if (is_logged_in.$ == true) {
       fetchAll();
     }
+  }
+
+  fetchBalanceDetails() async {
+    var balanceDetailsResponse =
+    await WalletRepository().getBalance();
+
+    _balanceDetails = balanceDetailsResponse;
+
+    setState(() {});
   }
 
   void dispose() {
@@ -65,6 +80,7 @@ class _ProfileState extends State<Profile> {
 
   fetchAll() {
     fetchCounters();
+    fetchBalanceDetails();
   }
 
   fetchCounters() async {
@@ -81,7 +97,6 @@ class _ProfileState extends State<Profile> {
         counterText(_wishlistCounter.toString(), default_length: 2);
     _orderCounterString =
         counterText(_orderCounter.toString(), default_length: 2);
-
     setState(() {});
   }
 
@@ -343,9 +358,9 @@ class _ProfileState extends State<Profile> {
       Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
       InkWell(
             onTap: () {
-              ToastComponent.showDialog(
-                  AppLocalizations.of(context).common_coming_soon, context,
-                  gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return ProfileEdit();
+              }));
             },
             child: Visibility(
               visible: true,
@@ -356,7 +371,7 @@ class _ProfileState extends State<Profile> {
                     Image.asset("dummy_assets/icons/my_profile.png",color: MyTheme.primary_Colour, height: 30, width: 30,),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("My Profile",
+                      child: Text("Update Profile",
                       //  AppLocalizations.of(context)
                            // .profile_screen_notification,
                         textAlign: TextAlign.center,
@@ -456,9 +471,9 @@ class _ProfileState extends State<Profile> {
 
           InkWell(
             onTap: () {
-              ToastComponent.showDialog(
-                  AppLocalizations.of(context).common_coming_soon, context,
-                  gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return PasswordForget();
+              }));
             },
             child: Visibility(
               visible: true,
@@ -778,7 +793,7 @@ class _ProfileState extends State<Profile> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(padding: EdgeInsets.only(left: 10,top: 10),
-        child: Icon(Icons.arrow_back,color: MyTheme.primary_Colour,),),
+        child: Icon(Icons.arrow_back,color: MyTheme.primary_Colour, size: 30,),),
         Center(child:
         Padding(
           padding: EdgeInsets.all(10),
@@ -792,12 +807,13 @@ class _ProfileState extends State<Profile> {
           ),
         ),),
         Row(
+          mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 0.0, bottom: 8.0, left: 50),
               child: Container(
-                width: 50,
-                height: 50,
+                width: 70,
+                height: 70,
                 decoration: BoxDecoration(
                   color: MyTheme.primary_Colour,
                   borderRadius: BorderRadius.circular(100),
@@ -815,51 +831,53 @@ class _ProfileState extends State<Profile> {
                     )),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: Dimensions.PADDING_SIZE_DEFAULT  ),
-                  child: Text(
-                    "Shamim Ahmed",
-                    // "${user_name.$}",
-                    style: LatoHeavy.copyWith(
-                        fontSize: 18,
-                        color: MyTheme.font_grey,
-                        fontWeight: FontWeight.w800),
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: Dimensions.PADDING_SIZE_DEFAULT  ),
+                    child: Text(
+                      "Shamim Ahmed",
+                      // "${user_name.$}",
+                      style: LatoHeavy.copyWith(
+                          fontSize: 20,
+                          color: MyTheme.font_grey,
+                          fontWeight: FontWeight.w800),
+                    ),
                   ),
-                ),
-                /*Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: user_name.$ != "" && user_name.$ != null
-                    ? Text(
-                  "${user_name.$}",
-                  style: TextStyle(
-                    color: MyTheme.medium_grey,
-                  ),
-                )
-                    : Text(
-                  "${user_phone.$}",
-                  style: TextStyle(
-                    color: MyTheme.medium_grey,
-                  ),
-                )),*/
+                  /*Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: user_name.$ != "" && user_name.$ != null
+                      ? Text(
+                    "${user_name.$}",
+                    style: TextStyle(
+                      color: MyTheme.medium_grey,
+                    ),
+                  )
+                      : Text(
+                    "${user_phone.$}",
+                    style: TextStyle(
+                      color: MyTheme.medium_grey,
+                    ),
+                  )),*/
 
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: 5,
-                      left: Dimensions.PADDING_SIZE_DEFAULT),
-                  child: Text(
-                    "shamim@nextpage.com",
-                    style: LatoRegular.copyWith(color: Colors.black),
-                  ),
-                )
-              ],
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: 5,
+                        left: Dimensions.PADDING_SIZE_DEFAULT),
+                    child: Text(
+                      "shamim@nextpage.com",
+                      style: LatoRegular.copyWith(color: Colors.black),
+                    ),
+                  )
+                ],
+              ),
             )
 
-            /*Padding(
+         /*Padding(
           padding: const EdgeInsets.only(top: 16.0),
           child: Container(
             height: 24,
@@ -888,6 +906,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ),*/
+
           ],
         )
       ],
@@ -898,42 +917,50 @@ class _ProfileState extends State<Profile> {
     return Padding(padding: EdgeInsets.fromLTRB(30,10,30,10),
     child: Row(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-             Container(
-                height: 25,
-                width: 25,
-                decoration: BoxDecoration(
-                  color: MyTheme.golden,
-                  shape: BoxShape.circle,
+        InkWell(
+          onTap: (){
+            setState(() {
+              isTabCkick=!isTabCkick;
+            });
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+               Container(
+                  height: 25,
+                  width: 25,
+                  decoration: BoxDecoration(
+                    color: isTabCkick ? MyTheme.white:  MyTheme.golden,
+                    shape: BoxShape.circle,
 
-                ),
-                child: Center(
-                  child: Text("\$",style: LatoSemiBold.copyWith(color: Colors.white),),
-                )
-            ),
-            SizedBox(width: 5,),
-            Text("Check Balance"),
-            Container(
-                height: 25,
-                width: 25,
-                decoration: BoxDecoration(
-                  color: MyTheme.golden.withOpacity(0.3),
-                  shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text("\$",style: LatoSemiBold.copyWith(color: Colors.white),),
+                  )
+              ),
+              SizedBox(width: 5,),
+              Text( isTabCkick ? _balanceDetails.balance : "Check Balance"),
+              Container(
 
-                ),
-                child: Center(
-                  child: Text("\$",style: LatoSemiBold.copyWith(color: Colors.white),),
-                )
-            ),
-          ],
+                  height: 25,
+                  width: 25,
+                  decoration: BoxDecoration(
+                    color: isTabCkick ? MyTheme.golden: MyTheme.golden.withOpacity(0.3),
+                    shape: BoxShape.circle,
+
+                  ),
+                  child: Center(
+                    child: Text("\$",style: LatoSemiBold.copyWith(color: Colors.white),),
+                  )
+              ),
+            ],
+          ),
         ),
         Expanded(child: Container()),
         Row(
           children: [
 
-            Text("Student Program", style: LatoMedium.copyWith(fontWeight: FontWeight.bold),),
+            Text("Is Student", style: LatoMedium.copyWith(fontWeight: FontWeight.bold),),
             SizedBox(width: 5,),
             Container(
                 height: 18,

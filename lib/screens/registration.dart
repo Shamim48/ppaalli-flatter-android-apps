@@ -183,7 +183,7 @@ class _RegistrationState extends State<Registration> {
                                   hint_text: "Type Your name"),*/
                                 decoration: new InputDecoration.collapsed(
                                   hintText:
-                                  "Type your name",
+                                  "Type your name", hintStyle: TextStyle(color: MyTheme.grey_153)
                                 )
                             ),
                           ),
@@ -221,7 +221,7 @@ class _RegistrationState extends State<Registration> {
                                     autofocus: false,
                                     decoration:
                                         InputDecoration.collapsed(
-                                            hintText: "Type your email"),
+                                            hintText: "Type your email", hintStyle: TextStyle(color: MyTheme.grey_153, fontSize: 14)),
                                   ),
                                 ),
                                 AddonConfig.otp_addon_installed
@@ -251,7 +251,20 @@ class _RegistrationState extends State<Registration> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Container(
-                                  height: 36,
+                                  height: 42,
+                                  alignment: Alignment.centerLeft,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                      color: MyTheme.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: MyTheme.dark_grey.withOpacity(0.3),
+                                            spreadRadius: 1.5,
+                                            blurRadius: 3
+                                        )
+                                      ]
+                                  ),
                                   child: CustomInternationalPhoneNumberInput(
                                     onInputChanged: (PhoneNumber number) {
                                       print(number.phoneNumber);
@@ -274,9 +287,8 @@ class _RegistrationState extends State<Registration> {
                                     formatInput: true,
                                     keyboardType: TextInputType.numberWithOptions(
                                         signed: true, decimal: true),
-                                    inputDecoration: InputDecorations
-                                        .buildInputDecoration_phone(
-                                            hint_text: "01710 333 558"),
+                                    inputDecoration: InputDecoration.collapsed(
+                                            hintText: "01710 333 558", hintStyle: TextStyle(color: MyTheme.grey_153,fontSize: 14)),
                                     onSaved: (PhoneNumber number) {
                                       //print('On Saved: $number');
                                     },
@@ -334,7 +346,7 @@ class _RegistrationState extends State<Registration> {
                                   autocorrect: false,
                                   decoration:
                                       InputDecoration.collapsed(
-                                          hintText: "• • • • • • • •"),
+                                          hintText: "• • • • • • • •", hintStyle: TextStyle(color: MyTheme.grey_153, fontSize: 14)),
                                 ),
                               ),
                               Text(
@@ -378,7 +390,7 @@ class _RegistrationState extends State<Registration> {
                               enableSuggestions: false,
                               autocorrect: false,
                               decoration: InputDecoration.collapsed(
-                                  hintText: "• • • • • • • •"),
+                                  hintText: "• • • • • • • •", hintStyle: LatoRegular.copyWith(color: MyTheme.grey_153, fontSize: 14)),
                             ),
                           ),
                         ),

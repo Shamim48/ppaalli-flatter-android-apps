@@ -1,3 +1,5 @@
+import 'package:active_ecommerce_flutter/ui_elements/common_ui_element.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
@@ -167,13 +169,13 @@ backgroundColor: Colors.white,
       centerTitle: true,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 30,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       title: Text(
         AppLocalizations.of(context).profile_edit_screen_edit_profile,
-        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
+        style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -228,10 +230,18 @@ backgroundColor: Colors.white,
               Container(
                 width: 120,
                 height: 120,
+                margin: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                   border: Border.all(
-                      color: Color.fromRGBO(112, 112, 112, .3), width: 2),
+                      color: MyTheme.primary_Colour, width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: MyTheme.primary_Colour.withOpacity(0.3),
+                      blurRadius: 7,
+                      spreadRadius: 7,
+                    )
+                  ]
                   //shape: BoxShape.rectangle,
                 ),
                 child: ClipRRect(
@@ -244,23 +254,24 @@ backgroundColor: Colors.white,
                     )),
               ),
               Positioned(
-                right: 8,
-                bottom: 8,
+                right: 1,
+                bottom: 60,
+                top: 5,
                 child: SizedBox(
-                  width: 24,
-                  height: 24,
+                  width: 35,
+                  height: 35,
                   child: FlatButton(
                     padding: EdgeInsets.all(0),
                     child: Icon(
                       Icons.edit,
-                      color: MyTheme.font_grey,
-                      size: 14,
+                      color: MyTheme.white,
+                      size: 20,
                     ),
                     shape: CircleBorder(
                       side:
-                          new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                          new BorderSide(color: MyTheme.white, width: 2.0),
                     ),
-                    color: MyTheme.light_grey,
+                    color: MyTheme.primary_Colour,
                     onPressed: () {
                       chooseAndUploadImage(context);
                     },
@@ -286,38 +297,38 @@ backgroundColor: Colors.white,
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
                 AppLocalizations.of(context).profile_edit_screen_basic_information,
-                style: TextStyle(
+                style: LatoBold.copyWith(
                     color: MyTheme.grey_153,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w800,
                     fontSize: 14.0),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 4.0),
+              padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
                 AppLocalizations.of(context).profile_edit_screen_name,
-                style: TextStyle(
-                    color: MyTheme.primaryColor, fontWeight: FontWeight.w600),
+                style: labelTextFieldStyle(),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Container(
-                height: 36,
+                height: 42,
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                decoration: textFieldContainerDecoration(),
                 child: TextField(
                   controller: _nameController,
                   autofocus: false,
-                  decoration: InputDecorations.buildInputDecoration_1(
-                      hint_text: "John Doe"),
+                  decoration: textFieldDecoration(hindText: "User Name"),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 4.0),
+              padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
                 AppLocalizations.of(context).profile_edit_screen_password,
-                style: TextStyle(
-                    color: MyTheme.primaryColor, fontWeight: FontWeight.w600),
+                style: labelTextFieldStyle(),
               ),
             ),
             Padding(
@@ -326,46 +337,49 @@ backgroundColor: Colors.white,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
-                    height: 36,
+                    height: 42,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    decoration: textFieldContainerDecoration(),
                     child: TextField(
                       controller: _passwordController,
                       autofocus: false,
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
-                      decoration: InputDecorations.buildInputDecoration_1(
-                          hint_text: "• • • • • • • •"),
+                      decoration: textFieldDecoration(hindText: "• • • • • • • •")
                     ),
                   ),
                   Text(
                     AppLocalizations.of(context).profile_edit_screen_password_length_recommendation,
-                    style: TextStyle(
-                        color: MyTheme.textfield_grey,
+                    style: LatoRegular.copyWith(
+                        color: MyTheme.primary_Colour,
                         fontStyle: FontStyle.italic),
                   )
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 4.0),
+              padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
                   AppLocalizations.of(context).profile_edit_screen_retype_password,
-                style: TextStyle(
-                    color: MyTheme.primaryColor, fontWeight: FontWeight.w600),
+                style: labelTextFieldStyle(),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Container(
-                height: 36,
+                height: 42,
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                decoration: textFieldContainerDecoration(),
                 child: TextField(
                   controller: _passwordConfirmController,
                   autofocus: false,
                   obscureText: true,
                   enableSuggestions: false,
                   autocorrect: false,
-                  decoration: InputDecorations.buildInputDecoration_1(
-                      hint_text: "• • • • • • • •"),
+                  decoration: textFieldDecoration(hindText: "• • • • • • • •")
                 ),
               ),
             ),
@@ -376,19 +390,19 @@ backgroundColor: Colors.white,
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Container(
                     width: 120,
-                    height: 36,
+                    height: 40,
                     decoration: BoxDecoration(
                         border:
                             Border.all(color: MyTheme.textfield_grey, width: 1),
                         borderRadius:
-                            const BorderRadius.all(Radius.circular(8.0))),
+                            const BorderRadius.all(Radius.circular(30.0))),
                     child: FlatButton(
                       minWidth: MediaQuery.of(context).size.width,
                       //height: 50,
                       color: MyTheme.primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(8.0))),
+                              const BorderRadius.all(Radius.circular(30.0))),
                       child: Text(
                         AppLocalizations.of(context).profile_edit_screen_btn_update_profile,
                         style: TextStyle(

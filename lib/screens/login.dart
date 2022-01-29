@@ -291,7 +291,7 @@ class _LoginState extends State<Login> {
 
                                     decoration: new InputDecoration.collapsed(
                                       hintText:
-                                      "Type your Email / Phone",
+                                      "Type your Email / Phone",hintStyle: TextStyle(color: MyTheme.grey_153, fontSize: 14)
                                     )
                                         /*InputDecorations.buildInputDecoration_1(
                                             hint_text:
@@ -353,9 +353,8 @@ class _LoginState extends State<Login> {
                                     keyboardType:
                                         TextInputType.numberWithOptions(
                                             signed: true, decimal: true),
-                                    inputDecoration: InputDecorations
-                                        .buildInputDecoration_phone(
-                                            hint_text: "01710 333 558"),
+                                    inputDecoration: InputDecoration.collapsed(
+                                            hintText: "01710 333 558", hintStyle: TextStyle(color: MyTheme.grey_153, fontSize: 14)),
                                     onSaved: (PhoneNumber number) {
                                       print('On Saved: $number');
                                     },
@@ -414,7 +413,8 @@ class _LoginState extends State<Login> {
                                   autocorrect: false,
                                     decoration: new InputDecoration.collapsed(
                                       hintText:
-                                      "Type your password ",
+                                      "Type your password ", hintStyle: TextStyle(color: MyTheme.grey_153, fontSize: 14)
+
                                     )
                                 ),
                               ),

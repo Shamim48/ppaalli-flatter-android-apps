@@ -1,4 +1,6 @@
 import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/utill/images.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
@@ -86,11 +88,6 @@ class _PasswordForgetState extends State<PasswordForget> {
         body: Stack(
           children: [
             Container(
-              width: _screen_width * (3 / 4),
-              child: Image.asset(
-                  "assets/splash_login_registration_background_image.png"),
-            ),
-            Container(
               width: double.infinity,
               child: SingleChildScrollView(
                   child: Column(
@@ -99,20 +96,20 @@ class _PasswordForgetState extends State<PasswordForget> {
                   Padding(
                     padding: const EdgeInsets.only(top: 40.0, bottom: 15),
                     child: Container(
-                      width: 75,
+                      width: 200,
                       height: 75,
                       child:
-                          Image.asset('assets/login_registration_form_logo.png'),
+                          Image.asset(Images.logo, width: 200,),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Text(
                       "Forget Password ?",
-                      style: TextStyle(
+                      style: LatoBold.copyWith(
                           color: MyTheme.primaryColor,
                           fontSize: 18,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w800),
                     ),
                   ),
                   Container(
@@ -121,11 +118,11 @@ class _PasswordForgetState extends State<PasswordForget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
+                          padding: const EdgeInsets.only(bottom: 8.0),
                           child: Text(
                             _send_code_by == "email" ? AppLocalizations.of(context).password_forget_screen_email : AppLocalizations.of(context).password_forget_screen_phone,
-                            style: TextStyle(
-                                color: MyTheme.primaryColor,
+                            style: LatoMedium.copyWith(
+                                color: MyTheme.black,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -136,13 +133,26 @@ class _PasswordForgetState extends State<PasswordForget> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Container(
-                                  height: 36,
+                                  height: 42,
+                                  alignment: Alignment.centerLeft,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                      color: MyTheme.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: MyTheme.dark_grey.withOpacity(0.3),
+                                            spreadRadius: 1.5,
+                                            blurRadius: 3
+                                        )
+                                      ]
+                                  ),
                                   child: TextField(
                                     controller: _emailController,
                                     autofocus: false,
                                     decoration:
-                                        InputDecorations.buildInputDecoration_1(
-                                            hint_text: "johndoe@example.com"),
+                                        InputDecoration.collapsed(
+                                            hintText: "your-email@example.com"),
                                   ),
                                 ),
                                 AddonConfig.otp_addon_installed
@@ -228,20 +238,20 @@ class _PasswordForgetState extends State<PasswordForget> {
                                 border: Border.all(
                                     color: MyTheme.textfield_grey, width: 1),
                                 borderRadius: const BorderRadius.all(
-                                    Radius.circular(12.0))),
+                                    Radius.circular(30.0))),
                             child: FlatButton(
                               minWidth: MediaQuery.of(context).size.width,
                               //height: 50,
                               color: MyTheme.primaryColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(12.0))),
+                                      Radius.circular(30.0))),
                               child: Text(
                                 "Send Code",
-                                style: TextStyle(
+                                style: LatoMedium.copyWith(
                                     color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w800),
                               ),
                               onPressed: () {
                                 onPressSendCode();

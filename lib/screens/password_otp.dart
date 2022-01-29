@@ -1,4 +1,6 @@
 import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/utill/images.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
@@ -110,11 +112,6 @@ class _PasswordOtpState extends State<PasswordOtp> {
         body: Stack(
           children: [
             Container(
-              width: _screen_width * (3 / 4),
-              child: Image.asset(
-                  "assets/splash_login_registration_background_image.png"),
-            ),
-            Container(
               width: double.infinity,
               child: SingleChildScrollView(
                   child: Column(
@@ -123,20 +120,20 @@ class _PasswordOtpState extends State<PasswordOtp> {
                   Padding(
                     padding: const EdgeInsets.only(top: 40.0, bottom: 15),
                     child: Container(
-                      width: 75,
+                      width: 200,
                       height: 75,
                       child:
-                          Image.asset('assets/login_registration_form_logo.png'),
+                          Image.asset(Images.logo, width: 200,),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Text(
                       AppLocalizations.of(context).password_otp_screen_enter_the_code_sent,
-                      style: TextStyle(
+                      style: LatoBold.copyWith(
                           color: MyTheme.primaryColor,
                           fontSize: 18,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w800),
                     ),
                   ),
                   Padding(
@@ -147,12 +144,12 @@ class _PasswordOtpState extends State<PasswordOtp> {
                             ? Text(
                             AppLocalizations.of(context).password_otp_screen_enter_verification_code_to_email,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: LatoRegular.copyWith(
                                     color: MyTheme.dark_grey, fontSize: 14))
                             : Text(
                             AppLocalizations.of(context).password_otp_screen_enter_verification_code_to_phone,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: LatoRegular.copyWith(
                                     color: MyTheme.dark_grey, fontSize: 14))),
                   ),
                   Container(
@@ -166,24 +163,37 @@ class _PasswordOtpState extends State<PasswordOtp> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Container(
-                                height: 36,
+                                height: 42,
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: MyTheme.dark_grey.withOpacity(0.3),
+                                          spreadRadius: 1.5,
+                                          blurRadius: 3
+                                      )
+                                    ]
+                                ),
                                 child: TextField(
                                   controller: _codeController,
                                   autofocus: false,
                                   decoration:
-                                      InputDecorations.buildInputDecoration_1(
-                                          hint_text: "A X B 4 J H"),
+                                      InputDecoration.collapsed(
+                                          hintText: "A X B 4 J H", hintStyle: TextStyle(color: MyTheme.grey_153, fontSize: 14)),
                                 ),
                               ),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
+                          padding: const EdgeInsets.only(bottom: 8.0),
                           child: Text(
                             AppLocalizations.of(context).password_otp_screen_password,
-                            style: TextStyle(
-                                color: MyTheme.primaryColor,
+                            style: LatoMedium.copyWith(
+                                color: MyTheme.black,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -193,7 +203,20 @@ class _PasswordOtpState extends State<PasswordOtp> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Container(
-                                height: 36,
+                                height: 42,
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: MyTheme.dark_grey.withOpacity(0.3),
+                                          spreadRadius: 1.5,
+                                          blurRadius: 3
+                                      )
+                                    ]
+                                ),
                                 child: TextField(
                                   controller: _passwordController,
                                   autofocus: false,
@@ -201,40 +224,54 @@ class _PasswordOtpState extends State<PasswordOtp> {
                                   enableSuggestions: false,
                                   autocorrect: false,
                                   decoration:
-                                      InputDecorations.buildInputDecoration_1(
-                                          hint_text: "• • • • • • • •"),
+                                      InputDecoration.collapsed(
+                                          hintText: "• • • • • • • •", hintStyle: TextStyle(color: MyTheme.grey_153)),
                                 ),
                               ),
                               Text(
                                 AppLocalizations.of(context).password_otp_screen_password_length_recommendation,
-                                style: TextStyle(
-                                    color: MyTheme.textfield_grey,
+                                style: LatoRegular.copyWith(
+                                    color: MyTheme.primary_Colour,
+                                    fontSize: 14,
                                     fontStyle: FontStyle.italic),
                               )
                             ],
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
+                          padding: const EdgeInsets.only(bottom: 8.0),
                           child: Text(
                             AppLocalizations.of(context).password_otp_screen_retype_password,
-                            style: TextStyle(
-                                color: MyTheme.primaryColor,
+                            style: LatoMedium.copyWith(
+                                color: MyTheme.black,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Container(
-                            height: 36,
+                            height: 42,
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                            decoration: BoxDecoration(
+                                color: MyTheme.white,
+                                borderRadius: BorderRadius.circular(5),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: MyTheme.dark_grey.withOpacity(0.3),
+                                      spreadRadius: 1.5,
+                                      blurRadius: 3
+                                  )
+                                ]
+                            ),
                             child: TextField(
                               controller: _passwordConfirmController,
                               autofocus: false,
                               obscureText: true,
                               enableSuggestions: false,
                               autocorrect: false,
-                              decoration: InputDecorations.buildInputDecoration_1(
-                                  hint_text: "• • • • • • • •"),
+                              decoration: InputDecoration.collapsed(
+                                  hintText: "• • • • • • • •", hintStyle: TextStyle(color: MyTheme.grey_153)),
                             ),
                           ),
                         ),
@@ -246,20 +283,20 @@ class _PasswordOtpState extends State<PasswordOtp> {
                                 border: Border.all(
                                     color: MyTheme.textfield_grey, width: 1),
                                 borderRadius: const BorderRadius.all(
-                                    Radius.circular(12.0))),
+                                    Radius.circular(30.0))),
                             child: FlatButton(
                               minWidth: MediaQuery.of(context).size.width,
                               //height: 50,
                               color: MyTheme.primaryColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(12.0))),
+                                      Radius.circular(30.0))),
                               child: Text(
                                 AppLocalizations.of(context).common_confirm_ucfirst,
-                                style: TextStyle(
+                                style: LatoBold.copyWith(
                                     color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w800),
                               ),
                               onPressed: () {
                                 onPressConfirm();
@@ -278,7 +315,7 @@ class _PasswordOtpState extends State<PasswordOtp> {
                       },
                       child: Text(AppLocalizations.of(context).password_otp_screen_resend_code,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: LatoRegular.copyWith(
                               color: MyTheme.primaryColor,
                               decoration: TextDecoration.underline,
                               fontSize: 13)),

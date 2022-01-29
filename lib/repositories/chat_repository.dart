@@ -1,4 +1,5 @@
 import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/group_order.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -9,6 +10,7 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter/foundation.dart';
 
 class ChatRepository {
+
   Future<ConversationResponse> getConversationResponse(
       {@required page = 1}) async {
     Uri url = Uri.parse(
@@ -22,6 +24,23 @@ class ChatRepository {
     );
     return conversationResponseFromJson(response.body);
   }
+
+  Future<GroupOrder> getGroupConversationResponse(
+      {@required page = 1}) async {
+    Uri url = Uri.parse(
+        "${AppConfig.BASE_URL}/group/orders/${user_id.$}");
+    final response = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$,
+      },
+    );
+    print("Group Order length:"+response.body.toString());
+    return groupOrderResponse(response.body);
+  }
+
+
 
   Future<MessageResponse> getMessageResponse(
       {@required conversation_id, @required page = 1}) async {
