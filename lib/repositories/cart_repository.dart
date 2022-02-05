@@ -29,7 +29,8 @@ class CartRepository {
   Future<CartDeleteResponse> getCartDeleteResponse(
     @required int cart_id,
   ) async {
-    Uri url = Uri.parse("${AppConfig.BASE_URL}/carts/$cart_id");
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/carts/$cart_id")
+    ;
     final response = await http.delete(
       url,
       headers: {
@@ -41,6 +42,7 @@ class CartRepository {
 
     return cartDeleteResponseFromJson(response.body);
   }
+
 
   Future<CartProcessResponse> getCartProcessResponse(
       @required String cart_ids, @required String cart_quantities) async {

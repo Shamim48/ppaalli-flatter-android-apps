@@ -6,6 +6,7 @@ class MyTheme{
   static Color primaryColor = Color.fromRGBO(121,202,187, 1);
   static Color soft_accent_color = Color.fromRGBO(247,189,168, 1);
   static Color splash_screen_color = Color.fromRGBO(230,46,4, 1); // if not sure , use the same color as accent color
+  static Color red_div = Color.fromRGBO(191,74,67, 1); // if not sure , use the same color as accent color
   /*configurable colors ends*/
 
 

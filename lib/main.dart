@@ -24,6 +24,7 @@ main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
+
   ]);
 
   fetch_user() async {

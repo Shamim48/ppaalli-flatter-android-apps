@@ -1,10 +1,12 @@
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/data_model/group_buying/group_buying_product.dart';
 import 'package:active_ecommerce_flutter/dummy_data/brands.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/group_buying_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/sliders_repository.dart';
 import 'package:active_ecommerce_flutter/screens/brand.dart';
@@ -57,12 +59,18 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   var _carouselImageList = [];
   var _featuredCategoryList = [];
   var _featuredProductList = [];
+  var _groupBuyingProductList = [];
+  var _groupOnGoingProductList = [];
   var _bestSellingProductList = [];
   bool _isProductInitial = true;
+  bool _isGBProductInitial = true;
+  bool _isOnGoingProductInitial = true;
   bool _isBestSellingProductInitial = true;
   bool _isCategoryInitial = true;
   bool _isCarouselInitial = true;
   int _totalProductData = 0;
+  int _totalGBProductData = 0;
+  int _totalOnGoingProductData = 0;
   int _totalBestSellingProductData = 0;
   int _productPage = 1;
   bool _showProductLoadingContainer = false;
@@ -99,6 +107,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     fetchCarouselImages();
     fetchFeaturedCategories();
     fetchFeaturedProducts();
+    fetchGroupBuyingProducts();
+    fetchOnGoingProducts();
     fetchBestSellingProducts();
   }
 
@@ -115,7 +125,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     var categoryResponse = await CategoryRepository().getFeturedCategories();
     _featuredCategoryList.addAll(categoryResponse.categories);
     _isCategoryInitial = false;
-    setState(() {});
+    setState(() {
+
+    });
   }
 
   fetchFeaturedProducts() async {
@@ -130,6 +142,31 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     _showProductLoadingContainer = false;
     setState(() {});
   }
+ fetchGroupBuyingProducts() async {
+    var productResponse = await GroupBuyingRepo().getGroupProduct();
+    //_featuredProductList=productList_;
+    _groupBuyingProductList.addAll(productResponse.data);
+    _isGBProductInitial = false;
+    _totalGBProductData = _groupBuyingProductList.length;
+    _showProductLoadingContainer = false;
+    setState(() {
+
+    });
+  }
+
+  fetchOnGoingProducts() async {
+    var productResponse = await GroupBuyingRepo().getOnGoingProduct();
+    //_featuredProductList=productList_;
+    _groupOnGoingProductList.addAll(productResponse.data);
+    _isOnGoingProductInitial = false;
+    _totalOnGoingProductData = _groupOnGoingProductList.length;
+    _showProductLoadingContainer = false;
+    print("OnGoingProduct Size:"+ _groupOnGoingProductList.length.toString());
+    setState(() {
+
+    });
+  }
+
 
   fetchBestSellingProducts() async {
     var productResponse = await ProductRepository().getBestSellingProducts();
@@ -1155,8 +1192,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     }
   }
 
-  buildGroupBuyingProduct(context) {
-    if (_isCategoryInitial && _featuredCategoryList.length == 0) {
+   buildGroupBuyingProduct(context) {
+    if (_isGBProductInitial && _groupBuyingProductList.length == 0) {
       return Row(
         children: [
           Padding(
@@ -1176,11 +1213,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   width: (MediaQuery.of(context).size.width - 32) / 3)),
         ],
       );
-    } else if (_featuredCategoryList.length > 0) {
+    } else if (_groupBuyingProductList.length > 0) {
       //snapshot.hasData
       return ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: _featuredCategoryList.length,
+          itemCount: _groupBuyingProductList.length,
           itemExtent: 130,
           itemBuilder: (context, index) {
             return Center(
@@ -1197,10 +1234,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             onTap: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return CategoryProducts(
-                                  category_id: _featuredCategoryList[index].id,
-                                  category_name:
-                                      _featuredCategoryList[index].name,
+                                return ProductDetails(
+                                  id: _groupBuyingProductList[index].id,
                                 );
                               }));
                             },
@@ -1238,8 +1273,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                               placeholder:
                                                   'assets/placeholder.png',
                                               image: AppConfig.BASE_PATH +
-                                                  _featuredCategoryList[index]
-                                                      .banner,
+                                                  _groupBuyingProductList[index].thumbnailImage,
                                             ),
                                           )),
 
@@ -1255,11 +1289,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                           child: Column(
                                             children: [
                                               Text(
-                                                _featuredCategoryList[index]
-                                                    .name,
+                                                _groupBuyingProductList[index].name,
                                                 textAlign: TextAlign.center,
                                                 overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
+                                                maxLines: 1,
                                                 style: TextStyle(
                                                     fontSize: 14,
                                                     color: MyTheme.white),
@@ -1278,7 +1311,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                       },
                                     ),*/
 
-                                                  Padding(
+                                                  /*Padding(
                                                     padding: EdgeInsets.only(
                                                         left: 5),
                                                     child: RatingBarIndicator(
@@ -1294,15 +1327,25 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                       direction:
                                                           Axis.horizontal,
                                                     ),
+                                                  ),*/
+                                                  Padding(padding: EdgeInsets.all(3 ),
+                                                  child: Text(_groupBuyingProductList[index].rating.toString(), style: LatoMedium.copyWith(color: MyTheme.white, fontSize: 13),)),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(top:3, bottom: 3, right: 3),
+                                                    child: Icon(
+                                                      Icons.star,
+                                                      color: Colors.white,
+                                                      size: 13,
+                                                    ),
                                                   ),
                                                   Expanded(child: Container()),
                                                   Padding(
                                                     padding:
                                                         EdgeInsets.fromLTRB(
-                                                            5, 0, 10, 5),
+                                                            5, 0, 10, 3),
                                                     child: Text(
-                                                      "\$3440",
-                                                      style: TextStyle(
+                                                      _groupBuyingProductList[index].basePrice.toString(),
+                                                      style: LatoMedium.copyWith(
                                                           fontSize: 12,
                                                           color: MyTheme.white),
                                                     ),
@@ -1337,6 +1380,206 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   )
                 ]));
           });
+    } else if (!_isGBProductInitial && _groupBuyingProductList.length == 0) {
+      return Container(
+          height: 100,
+          child: Center(
+              child: Text(
+            AppLocalizations.of(context).home_screen_no_category_found,
+            style: TextStyle(color: MyTheme.font_grey),
+          )));
+    } else {
+      // should not be happening
+      return Container(
+        height: 100,
+      );
+    }
+  }
+/*
+   buildGroupBuyingProduct(context) {
+    if (_isOnGoingProductInitial && _groupOnGoingProductList.length == 0) {
+      return Row(
+        children: [
+          Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ShimmerHelper().buildBasicShimmer(
+                  height: 120.0,
+                  width: (MediaQuery.of(context).size.width - 32) / 3)),
+          Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ShimmerHelper().buildBasicShimmer(
+                  height: 120.0,
+                  width: (MediaQuery.of(context).size.width - 32) / 3)),
+          Padding(
+              padding: const EdgeInsets.only(right: 0.0),
+              child: ShimmerHelper().buildBasicShimmer(
+                  height: 120.0,
+                  width: (MediaQuery.of(context).size.width - 32) / 3)),
+        ],
+      );
+    } else if (_groupOnGoingProductList.length > 0) {
+      //snapshot.hasData
+      return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: _groupOnGoingProductList.length,
+          itemExtent: 130,
+          itemBuilder: (context, index) {
+            return Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return ProductDetails(
+                                  id: _groupOnGoingProductList[index].id,
+                                );
+                              }));
+                            },
+                            child: Container(
+                                // clipBehavior: Clip.antiAlias,
+                                height: 100,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  // color: MyTheme.primary_Colour,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: MyTheme.primary_Colour
+                                          .withOpacity(0.4),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                      offset: Offset(
+                                          0, 1), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                          width: 130,
+                                          height: 60,
+                                          color: MyTheme.white,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(5),
+                                            child: FadeInImage.assetNetwork(
+                                              placeholder:
+                                                  'assets/placeholder.png',
+                                              image: AppConfig.BASE_PATH +
+                                                  _groupOnGoingProductList[index].productInfo.thumbnailImage,
+                                            ),
+                                          )),
+
+                                      */
+/*ClipRRect(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(16),
+                                    bottom: Radius.zero),
+                                )),*//*
+
+                                      Container(
+                                          width: 130,
+                                          height: 40,
+                                          color: MyTheme.primary_Colour,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                _groupOnGoingProductList[index].productInfo.name,
+                                                textAlign: TextAlign.center,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: MyTheme.white),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  */
+/*  RatingBar(
+                                      initialRating: 3,
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                      onRatingUpdate: (rating) {
+                                        print(rating);
+                                      },
+                                    ),*//*
+
+
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 5),
+                                                    child: RatingBarIndicator(
+                                                      rating: 2.75,
+                                                      itemBuilder:
+                                                          (context, index) =>
+                                                              Icon(
+                                                        Icons.star,
+                                                        color: Colors.white,
+                                                      ),
+                                                      itemCount: 5,
+                                                      itemSize: 12.0,
+                                                      direction:
+                                                          Axis.horizontal,
+                                                    ),
+                                                  ),
+                                                  Expanded(child: Container()),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            5, 0, 10, 5),
+                                                    child: Text(
+                                                      _groupOnGoingProductList[index].productUnitPrice.toString(),
+                                                      style: LatoMedium.copyWith(
+                                                          fontSize: 12,
+                                                          color: MyTheme.white),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          )),
+                                    ],
+                                  ),
+                                ))),
+                      ),
+                      */
+/*  Positioned(
+                  right: 3,
+                  top: 3,
+                  child: Row(
+                    children: [
+                      Text('1h.30m.12s', style: SFSemiBold.copyWith(color: ColorResources.getPrimaryColor(context), fontSize: Dimensions.FONT_SIZE_LARGE)),
+                      SizedBox(width: 5,),
+                      Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: ColorResources.getPrimaryColor(context)
+                          ),
+                          child: Icon(Icons.person_add_alt_1, color: ColorResources.getBackgroundColor(context),))
+                    ],
+                  ),
+                )*//*
+
+                    ],
+                  )
+                ]));
+          });
     } else if (!_isCategoryInitial && _featuredCategoryList.length == 0) {
       return Container(
           height: 100,
@@ -1352,6 +1595,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       );
     }
   }
+*/
 
   buildHomeGroupBuyingProduct(context) {
     if (_isProductInitial && _featuredProductList.length == 0) {

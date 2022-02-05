@@ -1,3 +1,4 @@
+import 'package:active_ecommerce_flutter/data_model/conversation_response.dart';
 import 'package:active_ecommerce_flutter/data_model/group_order.dart';
 import 'package:active_ecommerce_flutter/ui_elements/AppBar_Common.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
@@ -68,7 +69,7 @@ class _MessengerListState extends State<MessengerList> {
   getSellerList() async{
     var conversatonResponse =
     await ChatRepository().getConversationResponse(page: _page);
-    _list.addAll(conversatonResponse.conversation_item_list);
+    _list.addAll(conversatonResponse.data);
     _isInitial = false;
     _totalData = conversatonResponse.meta.total;
     _showLoadingContainer = false;
@@ -257,10 +258,11 @@ class _MessengerListState extends State<MessengerList> {
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Chat(
-            conversation_id: 1, //_list[index].id,
-            messenger_name: "Parthona Store", //_list[index].shop_name,
-            messenger_title: "Cloth", //_list[index].title,
-            messenger_image: Images.complete, //_list[index].shop_logo,
+            conversation_id: _list[index].id, //_list[index].id,
+            messenger_name: _list[index].receiverName, //_list[index].shop_name,
+            messenger_title: _list[index].title, //_list[index].title,
+            messenger_image: Images.complete,
+            isGroup: false,//_list[index].shop_logo,
           );
         }));
       },
@@ -308,43 +310,46 @@ class _MessengerListState extends State<MessengerList> {
                     width: double.infinity,
                   )),*/
                     ),
-                Container(
-                  height: 50,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "All rounder shop", // _list[index].shop_name,
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  color: MyTheme.font_grey,
-                                  fontSize: 13,
-                                  height: 1.6,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              "Cloth", //_list[index].title,
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  color: MyTheme.medium_grey,
-                                  height: 1.6,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                Expanded(
+                  child: Container(
+                    height: 50,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                _list[index].title, // _list[index].shop_name,
+                                textAlign: TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: LatoHeavy.copyWith(
+                                    color: MyTheme.black,
+                                    fontSize: 16,
+                                    height: 1.6,
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              Text(
+                                _list[index].receiverName, //_list[index].title,
+                                textAlign: TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: LatoRegular.copyWith(
+                                    color: MyTheme.medium_grey,
+                                    height: 1.6,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Spacer(),
@@ -371,10 +376,11 @@ class _MessengerListState extends State<MessengerList> {
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Chat(
-            conversation_id: 1, //_list[index].id,
-            messenger_name: "Parthona Store", //_list[index].shop_name,
-            messenger_title: "Cloth", //_list[index].title,
-            messenger_image: Images.complete, //_list[index].shop_logo,
+            conversation_id: _groupList[index].id, //_list[index].id,
+            messenger_name: " Store Name", //_list[index].shop_name,
+            messenger_title: _groupList[index].productInfo.name, //_list[index].title,
+            messenger_image: _groupList[index].productInfo.thumbnailImage,
+            isGroup: true,//_list[index].shop_logo,
           );
         }));
       },

@@ -9,77 +9,107 @@ MessageResponse messageResponseFromJson(String str) => MessageResponse.fromJson(
 String messageResponseToJson(MessageResponse data) => json.encode(data.toJson());
 
 class MessageResponse {
-  MessageResponse({
-    this.messages,
-    this.meta,
-    this.success,
-    this.status,
-  });
-
-  List<Message> messages;
+  List<Data> data;
+  Links links;
   Meta meta;
   bool success;
   int status;
-
-  factory MessageResponse.fromJson(Map<String, dynamic> json) => MessageResponse(
-    messages: List<Message>.from(json["data"].map((x) => Message.fromJson(x))),
-    meta: Meta.fromJson(json["meta"]),
-    success: json["success"],
-    status: json["status"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(messages.map((x) => x.toJson())),
-    "meta": meta.toJson(),
-    "success": success,
-    "status": status,
-  };
-}
-
-class Message {
-  Message({
-    this.id,
-    this.user_id,
-    this.message,
-    this.date,
-    this.time,
-  });
-
-  int id;
-  int user_id;
   String message;
-  String date;
-  String time;
 
-  factory Message.fromJson(Map<String, dynamic> json) => Message(
-    id: json["id"],
-    user_id: json["user_id"],
-    message: json["message"],
-    date: json["date"],
-    time: json["time"],
-  );
+  MessageResponse(
+      {this.data,
+        this.links,
+        this.meta,
+        this.success,
+        this.status,
+        this.message});
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "user_id": user_id,
-    "message": message,
-    "date": date,
-    "time": time,
-  };
+  MessageResponse.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = new List<Data>();
+      json['data'].forEach((v) {
+        data.add(new Data.fromJson(v));
+      });
+    }
+    links = json['links'] != null ? new Links.fromJson(json['links']) : null;
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+    success = json['success'];
+    status = json['status'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    if (this.links != null) {
+      data['links'] = this.links.toJson();
+    }
+    if (this.meta != null) {
+      data['meta'] = this.meta.toJson();
+    }
+    data['success'] = this.success;
+    data['status'] = this.status;
+    data['message'] = this.message;
+    return data;
+  }
 }
 
+class Data {
+  int id;
+  int userId;
+  String customerName;
+  String message;
+  String createdAt;
+
+  Data({this.id, this.userId, this.customerName, this.message, this.createdAt});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    customerName = json['customer_name'];
+    message = json['message'];
+    createdAt = json['created_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['customer_name'] = this.customerName;
+    data['message'] = this.message;
+    data['created_at'] = this.createdAt;
+    return data;
+  }
+}
+
+class Links {
+  String first;
+  String last;
+  String prev;
+  String next;
+
+  Links({this.first, this.last, this.prev, this.next});
+
+  Links.fromJson(Map<String, dynamic> json) {
+    first = json['first'];
+    last = json['last'];
+    prev = json['prev'];
+    next = json['next'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['first'] = this.first;
+    data['last'] = this.last;
+    data['prev'] = this.prev;
+    data['next'] = this.next;
+    return data;
+  }
+}
 
 class Meta {
-  Meta({
-    this.currentPage,
-    this.from,
-    this.lastPage,
-    this.path,
-    this.perPage,
-    this.to,
-    this.total,
-  });
-
   int currentPage;
   int from;
   int lastPage;
@@ -88,23 +118,34 @@ class Meta {
   int to;
   int total;
 
-  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-    currentPage: json["current_page"],
-    from: json["from"],
-    lastPage: json["last_page"],
-    path: json["path"],
-    perPage: json["per_page"],
-    to: json["to"],
-    total: json["total"],
-  );
+  Meta(
+      {this.currentPage,
+        this.from,
+        this.lastPage,
+        this.path,
+        this.perPage,
+        this.to,
+        this.total});
 
-  Map<String, dynamic> toJson() => {
-    "current_page": currentPage,
-    "from": from,
-    "last_page": lastPage,
-    "path": path,
-    "per_page": perPage,
-    "to": to,
-    "total": total,
-  };
+  Meta.fromJson(Map<String, dynamic> json) {
+    currentPage = json['current_page'];
+    from = json['from'];
+    lastPage = json['last_page'];
+    path = json['path'];
+    perPage = json['per_page'];
+    to = json['to'];
+    total = json['total'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['current_page'] = this.currentPage;
+    data['from'] = this.from;
+    data['last_page'] = this.lastPage;
+    data['path'] = this.path;
+    data['per_page'] = this.perPage;
+    data['to'] = this.to;
+    data['total'] = this.total;
+    return data;
+  }
 }

@@ -25,6 +25,7 @@ import 'package:active_ecommerce_flutter/ui_elements/mini_product_card.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -36,17 +37,16 @@ import 'package:toast/toast.dart';
 
 import 'group_buying_product_details.dart';
 
-class ProductDetails extends StatefulWidget {
+class GroupBuyingProductDetails extends StatefulWidget {
   int id;
- bool fromGroupBuying;
 
-  ProductDetails({Key key, this.id, this.fromGroupBuying=false}) : super(key: key);
+  GroupBuyingProductDetails({Key key, this.id}) : super(key: key);
 
   @override
-  _ProductDetailsState createState() => _ProductDetailsState();
+  _GroupBuyingProductDetailsState createState() => _GroupBuyingProductDetailsState();
 }
 
-class _ProductDetailsState extends State<ProductDetails> {
+class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
   bool isGroup=false;
   bool _showCopied = false;
   String _appbarPriceString = ". . .";
@@ -74,6 +74,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   var _singlePriceString;
   int _quantity = 1;
   int _stock = 0;
+  var list=[1,2,3,4];
 
   List<dynamic> _relatedProducts = [];
   bool _relatedProductInit = false;
@@ -114,7 +115,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   fetchProductDetails() async {
     var productDetailsResponse =
-        await ProductRepository().getProductDetails(id: widget.id);
+    await ProductRepository().getProductDetails(id: widget.id);
 
     // var productDetailsResponse =_productImageList.ge;
     // if (productDetailsResponse.data.length > 0) {
@@ -140,7 +141,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   fetchRelatedProducts() async {
     var relatedProductResponse =
-        await ProductRepository().getRelatedProducts(id: widget.id);
+    await ProductRepository().getRelatedProducts(id: widget.id);
     _relatedProducts.addAll(relatedProductResponse.data);
     _relatedProductInit = true;
 
@@ -149,7 +150,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   fetchTopProducts() async {
     var topProductResponse =
-        await ProductRepository().getTopFromThisSellerProducts(id: widget.id);
+    await ProductRepository().getTopFromThisSellerProducts(id: widget.id);
     _topProducts.addAll(topProductResponse.data);
     _topProductInit = true;
   }
@@ -191,7 +192,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   fetchWishListCheckInfo() async {
     var wishListCheckResponse =
-        await WishListRepository().isProductInUserWishList(
+    await WishListRepository().isProductInUserWishList(
       product_id: widget.id,
     );
 
@@ -202,7 +203,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   addToWishList() async {
     var wishListCheckResponse =
-        await WishListRepository().add(product_id: widget.id);
+    await WishListRepository().add(product_id: widget.id);
 
     //print("p&u:" + widget.id.toString() + " | " + _user_id.toString());
     _isInWishList = wishListCheckResponse.is_in_wishlist;
@@ -211,7 +212,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   removeFromWishList() async {
     var wishListCheckResponse =
-        await WishListRepository().remove(product_id: widget.id);
+    await WishListRepository().remove(product_id: widget.id);
 
     //print("p&u:" + widget.id.toString() + " | " + _user_id.toString());
     _isInWishList = wishListCheckResponse.is_in_wishlist;
@@ -423,7 +424,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               side:
-                                  BorderSide(color: Colors.black, width: 1.0)),
+                              BorderSide(color: Colors.black, width: 1.0)),
                           child: Text(
                             AppLocalizations.of(context)
                                 .product_details_screen_copy_product_link,
@@ -439,13 +440,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       _showCopied
                           ? Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: Text(
-                                AppLocalizations.of(context).common_copied,
-                                style: TextStyle(
-                                    color: MyTheme.medium_grey, fontSize: 12),
-                              ),
-                            )
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          AppLocalizations.of(context).common_copied,
+                          style: TextStyle(
+                              color: MyTheme.medium_grey, fontSize: 12),
+                        ),
+                      )
                           : Container(),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
@@ -456,7 +457,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               side:
-                                  BorderSide(color: Colors.black, width: 1.0)),
+                              BorderSide(color: Colors.black, width: 1.0)),
                           child: Text(
                             AppLocalizations.of(context)
                                 .product_details_screen_share_options,
@@ -510,168 +511,168 @@ class _ProductDetailsState extends State<ProductDetails> {
     return showDialog(
         context: context,
         builder: (_) => Directionality(
-              textDirection:
-                  app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
-              child: AlertDialog(
-                insetPadding: EdgeInsets.symmetric(horizontal: 10),
-                contentPadding: EdgeInsets.only(
-                    top: 36.0, left: 36.0, right: 36.0, bottom: 2.0),
-                content: Container(
-                  width: 400,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Text(
-                              AppLocalizations.of(context)
-                                  .product_details_screen_seller_chat_title,
-                              style: TextStyle(
-                                  color: MyTheme.font_grey, fontSize: 12)),
+          textDirection:
+          app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
+          child: AlertDialog(
+            insetPadding: EdgeInsets.symmetric(horizontal: 10),
+            contentPadding: EdgeInsets.only(
+                top: 36.0, left: 36.0, right: 36.0, bottom: 2.0),
+            content: Container(
+              width: 400,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text(
+                          AppLocalizations.of(context)
+                              .product_details_screen_seller_chat_title,
+                          style: TextStyle(
+                              color: MyTheme.font_grey, fontSize: 12)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: Container(
+                        height: 40,
+                        child: TextField(
+                          controller: sellerChatTitleController,
+                          autofocus: false,
+                          decoration: InputDecoration(
+                              hintText: AppLocalizations.of(context)
+                                  .product_details_screen_seller_chat_enter_title,
+                              hintStyle: TextStyle(
+                                  fontSize: 12.0,
+                                  color: MyTheme.textfield_grey),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: MyTheme.textfield_grey,
+                                    width: 0.5),
+                                borderRadius: const BorderRadius.all(
+                                  const Radius.circular(8.0),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: MyTheme.textfield_grey,
+                                    width: 1.0),
+                                borderRadius: const BorderRadius.all(
+                                  const Radius.circular(8.0),
+                                ),
+                              ),
+                              contentPadding:
+                              EdgeInsets.symmetric(horizontal: 8.0)),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: Container(
-                            height: 40,
-                            child: TextField(
-                              controller: sellerChatTitleController,
-                              autofocus: false,
-                              decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(context)
-                                      .product_details_screen_seller_chat_enter_title,
-                                  hintStyle: TextStyle(
-                                      fontSize: 12.0,
-                                      color: MyTheme.textfield_grey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: MyTheme.textfield_grey,
-                                        width: 0.5),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: MyTheme.textfield_grey,
-                                        width: 1.0),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 8.0)),
-                            ),
-                          ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text(
+                          "${AppLocalizations.of(context).product_details_screen_seller_chat_messasge} *",
+                          style: TextStyle(
+                              color: MyTheme.font_grey, fontSize: 12)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: Container(
+                        height: 55,
+                        child: TextField(
+                          controller: sellerChatMessageController,
+                          autofocus: false,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                              hintText: AppLocalizations.of(context)
+                                  .product_details_screen_seller_chat_enter_messasge,
+                              hintStyle: TextStyle(
+                                  fontSize: 12.0,
+                                  color: MyTheme.textfield_grey),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: MyTheme.textfield_grey,
+                                    width: 0.5),
+                                borderRadius: const BorderRadius.all(
+                                  const Radius.circular(8.0),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: MyTheme.textfield_grey,
+                                    width: 1.0),
+                                borderRadius: const BorderRadius.all(
+                                  const Radius.circular(8.0),
+                                ),
+                              ),
+                              contentPadding: EdgeInsets.only(
+                                  right: 16.0,
+                                  left: 8.0,
+                                  top: 16.0,
+                                  bottom: 16.0)),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Text(
-                              "${AppLocalizations.of(context).product_details_screen_seller_chat_messasge} *",
-                              style: TextStyle(
-                                  color: MyTheme.font_grey, fontSize: 12)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: FlatButton(
+                      minWidth: 75,
+                      height: 30,
+                      color: Color.fromRGBO(253, 253, 253, 1),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          side: BorderSide(
+                              color: MyTheme.light_grey, width: 1.0)),
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .common_close_in_all_capital,
+                        style: TextStyle(
+                          color: MyTheme.font_grey,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: Container(
-                            height: 55,
-                            child: TextField(
-                              controller: sellerChatMessageController,
-                              autofocus: false,
-                              maxLines: null,
-                              keyboardType: TextInputType.multiline,
-                              decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(context)
-                                      .product_details_screen_seller_chat_enter_messasge,
-                                  hintStyle: TextStyle(
-                                      fontSize: 12.0,
-                                      color: MyTheme.textfield_grey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: MyTheme.textfield_grey,
-                                        width: 0.5),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: MyTheme.textfield_grey,
-                                        width: 1.0),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  contentPadding: EdgeInsets.only(
-                                      right: 16.0,
-                                      left: 8.0,
-                                      top: 16.0,
-                                      bottom: 16.0)),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
                     ),
                   ),
-                ),
-                actions: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: FlatButton(
-                          minWidth: 75,
-                          height: 30,
-                          color: Color.fromRGBO(253, 253, 253, 1),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              side: BorderSide(
-                                  color: MyTheme.light_grey, width: 1.0)),
-                          child: Text(
-                            AppLocalizations.of(context)
-                                .common_close_in_all_capital,
-                            style: TextStyle(
-                              color: MyTheme.font_grey,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop();
-                          },
-                        ),
+                  SizedBox(
+                    width: 1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                    child: FlatButton(
+                      minWidth: 75,
+                      height: 30,
+                      color: MyTheme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          side: BorderSide(
+                              color: MyTheme.light_grey, width: 1.0)),
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .common_send_in_all_capital,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
                       ),
-                      SizedBox(
-                        width: 1,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                        child: FlatButton(
-                          minWidth: 75,
-                          height: 30,
-                          color: MyTheme.primaryColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              side: BorderSide(
-                                  color: MyTheme.light_grey, width: 1.0)),
-                          child: Text(
-                            AppLocalizations.of(context)
-                                .common_send_in_all_capital,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          onPressed: () {
-                            onPressSendMessage();
-                          },
-                        ),
-                      )
-                    ],
+                      onPressed: () {
+                        onPressSendMessage();
+                      },
+                    ),
                   )
                 ],
-              ),
-            ));
+              )
+            ],
+          ),
+        ));
   }
 
   onPressSendMessage() async {
@@ -690,7 +691,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
     var conversationCreateResponse = await ChatRepository()
         .getCreateConversationResponse(
-            product_id: widget.id, title: title, message: message);
+        product_id: widget.id, title: title, message: message);
 
     if (conversationCreateResponse.result == false) {
       ToastComponent.showDialog(
@@ -723,6 +724,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+
     SnackBar _addedToCartSnackbar = SnackBar(
       content: Text(
         AppLocalizations.of(context)
@@ -745,6 +747,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         disabledTextColor: Colors.grey,
       ),
     );
+
     return Directionality(
       textDirection: app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
@@ -762,26 +765,26 @@ class _ProductDetailsState extends State<ProductDetails> {
               slivers: <Widget>[
                 SliverList(
                     delegate: SliverChildListDelegate([
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        16.0,
-                        8.0,
-                        16.0,
-                        0.0,
-                      ),
-                      child: _productDetails != null
-                          ? Text(
-                              _productDetails.data[0].name,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: MyTheme.font_grey,
-                                  fontWeight: FontWeight.w600),
-                              maxLines: 2,
-                            )
-                          : ShimmerHelper().buildBasicShimmer(
-                              height: 30.0,
-                            )),
-                ])),
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            16.0,
+                            8.0,
+                            16.0,
+                            0.0,
+                          ),
+                          child: _productDetails != null
+                              ? Text(
+                            _productDetails.data[0].name,
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: MyTheme.font_grey,
+                                fontWeight: FontWeight.w600),
+                            maxLines: 2,
+                          )
+                              : ShimmerHelper().buildBasicShimmer(
+                            height: 30.0,
+                          )),
+                    ])),
                 SliverList(
                   delegate: SliverChildListDelegate([
                     Padding(
@@ -792,7 +795,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         0.0,
                       ),
                       child: //buildProductImagePart(),
-                          buildProductImageSection(),
+                      buildProductImageSection(),
                     ),
                     Divider(
                       height: 24.0,
@@ -800,31 +803,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ]),
                 ),
 
-
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      16.0,
-                      8.0,
-                      16.0,
-                      0.0,
-                    ),
-                    child: _productDetails != null
-                        ? Row(
-                      children: [
-                        SizedBox(width: 10,),
-                        buildQuantityRow(),
-                        Expanded(child: Container()),
-                        buildMainPriceRow(),
-                        SizedBox(width: 10,),
-                      ],
-                    )
-                        : ShimmerHelper().buildBasicShimmer(
-                            height: 30.0,
-                          ),
-                  ),
-                ])),
 
                 SliverList(
                     delegate: SliverChildListDelegate([
@@ -843,350 +821,31 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                     ])),
 
-                 SliverList(
-                    delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          16.0,
-                          16.0,
-                          0.0,
-                        ),
-                        child: isGroup
-                            ? buildDiscountRow(context)
-                            : Container(),
-                      ),
-                    ])),
-
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 16,top: 10
-                        ),
-                        child: Text("Description:", style: LatoHeavy.copyWith(fontSize: 20),),// buildDescription(),
-
-                      ),
-                    ])),
-
                 SliverList(
                     delegate: SliverChildListDelegate([
                       Padding(
                         padding: const EdgeInsets.fromLTRB(
-                          8.0,
-                          5.0,
-                          8.0,
-                          5.0,
+                          16.0,
+                          16.0,
+                          16.0,
+                          10.0,
                         ),
                         child: _productDetails != null
-                            ? Html(data: """${_productDetails.data[0].description}""" )
-                            : Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 8.0),
-                            child: ShimmerHelper().buildBasicShimmer(
-                              height: 60.0,
-                            )),
+                            ? priceRangeRow(context)
+                            : ShimmerHelper().buildBasicShimmer(
+                          height: 50.0,
+                        ),
                       ),
                     ])),
 
 
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    InkWell(
-                      onTap: () {
-                        if (_productDetails.data[0].videoLink == "") {
-                          ToastComponent.showDialog(
-                              AppLocalizations.of(context)
-                                  .product_details_screen_video_not_available,
-                              context,
-                              gravity: Toast.CENTER,
-                              duration: Toast.LENGTH_LONG);
-                          return;
-                        }
 
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return VideoDescription(
-                            url: _productDetails.video_link,
-                          );
-                        })).then((value) {
-                          onPopped(value);
-                        });
-                      },
-                      child: Container(
-                        height: 40,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            16.0,
-                            0.0,
-                            8.0,
-                            0.0,
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)
-                                    .product_details_screen_video,
-                                style: TextStyle(
-                                    color: MyTheme.font_grey,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Spacer(),
-                              Icon(
-                                Ionicons.ios_add,
-                                color: MyTheme.font_grey,
-                                size: 24,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return ProductReviews(id: widget.id);
-                        })).then((value) {
-                          onPopped(value);
-                        });
-                      },
-                      child: Container(
-                        height: 40,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            16.0,
-                            0.0,
-                            8.0,
-                            0.0,
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)
-                                    .product_details_screen_reviews,
-                                style: TextStyle(
-                                    color: MyTheme.font_grey,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Spacer(),
-                              Icon(
-                                Ionicons.ios_add,
-                                color: MyTheme.font_grey,
-                                size: 24,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return CommonWebviewScreen(
-                            url:
-                                "${AppConfig.RAW_BASE_URL}/mobile-page/sellerpolicy",
-                            page_name: AppLocalizations.of(context)
-                                .product_details_screen_seller_policy,
-                          );
-                        }));
-                      },
-                      child: Container(
-                        height: 40,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            16.0,
-                            0.0,
-                            8.0,
-                            0.0,
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)
-                                    .product_details_screen_seller_policy,
-                                style: TextStyle(
-                                    color: MyTheme.font_grey,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Spacer(),
-                              Icon(
-                                Ionicons.ios_add,
-                                color: MyTheme.font_grey,
-                                size: 24,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return CommonWebviewScreen(
-                            url:
-                                "${AppConfig.RAW_BASE_URL}/mobile-page/returnpolicy",
-                            page_name: AppLocalizations.of(context)
-                                .product_details_screen_return_policy,
-                          );
-                        }));
-                      },
-                      child: Container(
-                        height: 40,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            16.0,
-                            0.0,
-                            8.0,
-                            0.0,
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)
-                                    .product_details_screen_return_policy,
-                                style: TextStyle(
-                                    color: MyTheme.font_grey,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Spacer(),
-                              Icon(
-                                Ionicons.ios_add,
-                                color: MyTheme.font_grey,
-                                size: 24,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return CommonWebviewScreen(
-                            url:
-                                "${AppConfig.RAW_BASE_URL}/mobile-page/supportpolicy",
-                            page_name: AppLocalizations.of(context)
-                                .product_details_screen_support_policy,
-                          );
-                        }));
-                      },
-                      child: Container(
-                        height: 40,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            16.0,
-                            0.0,
-                            8.0,
-                            0.0,
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)
-                                    .product_details_screen_support_policy,
-                                style: TextStyle(
-                                    color: MyTheme.font_grey,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Spacer(),
-                              Icon(
-                                Ionicons.ios_add,
-                                color: MyTheme.font_grey,
-                                size: 24,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                    ),
-                  ]),
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        16.0,
-                        16.0,
-                        16.0,
-                        0.0,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .product_details_screen_products_may_like,
-                        style: TextStyle(
-                            color: MyTheme.font_grey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        8.0,
-                        16.0,
-                        0.0,
-                        0.0,
-                      ),
-                      child: buildProductsMayLikeList(),
-                    )
-                  ]),
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        16.0,
-                        16.0,
-                        16.0,
-                        0.0,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .top_selling_products_screen_top_selling_products,
-                        style: TextStyle(
-                            color: MyTheme.font_grey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        16.0,
-                        16.0,
-                        16.0,
-                        0.0,
-                      ),
-                      child: buildTopSellingProductList(),
-                    )
-                  ]),
-                )
+
               ],
             ),
           )),
     );
+
   }
 
   Row buildSellerRow(BuildContext context) {
@@ -1195,9 +854,14 @@ class _ProductDetailsState extends State<ProductDetails> {
       children: [
 
         Container(
+          padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: MyTheme.primary_Colour,
+              borderRadius: BorderRadius.circular(30)
+            ),
             child: Row(
               children: [
-                Icon(Icons.message, size: 16, color: MyTheme.primary_Colour),
+                Icon(Icons.message, size: 16, color: MyTheme.white),
                 InkWell(
                   onTap: () {
                     if (is_logged_in == false) {
@@ -1211,8 +875,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: Text(
-                      "Message Seller",
-                      style: LatoHeavy
+                        "Message Seller",
+                        style: LatoBold.copyWith(color: MyTheme.white)
                     ),
                   ),
                 ),
@@ -1231,11 +895,11 @@ class _ProductDetailsState extends State<ProductDetails> {
           },
         ),
 
-       SizedBox(width: 20,),
+        SizedBox(width: 20,),
         IconButton(icon: Icon(Icons.share, color: MyTheme.primary_Colour,),
-        onPressed: (){
-          onPressShare(context);
-        },
+          onPressed: (){
+            onPressShare(context);
+          },
         )
 
       ],
@@ -1247,13 +911,13 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Row(
       children: [
 
-       Expanded(child:  Column(
-       children: [
-       Text("Discount Remaining", style: LatoMedium.copyWith(color: Colors.grey,),),
-        Center(child: Text("00:00:00", style: LatoHeavy.copyWith(color: Colors.grey),)),
-      ],
-    )),
-       // Spacer(),
+        Expanded(child:  Column(
+          children: [
+            Text("Discount Remaining", style: LatoMedium.copyWith(color: Colors.grey,),),
+            Center(child: Text("00:00:00", style: LatoHeavy.copyWith(color: Colors.grey),)),
+          ],
+        )),
+        // Spacer(),
 
         Row(
           children: [
@@ -1261,16 +925,16 @@ class _ProductDetailsState extends State<ProductDetails> {
               width: 100,
               height: 70,
               decoration: BoxDecoration(
-                color: MyTheme.golden,
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), topLeft: Radius.circular(20)),
+                  color: MyTheme.golden,
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), topLeft: Radius.circular(20)),
 
-                boxShadow: [
-                  BoxShadow(
-                    color: MyTheme.dark_grey.withOpacity(0.3),
-                    blurRadius: 5,
-                    spreadRadius: 3,
-                  )
-                ]
+                  boxShadow: [
+                    BoxShadow(
+                      color: MyTheme.dark_grey.withOpacity(0.3),
+                      blurRadius: 5,
+                      spreadRadius: 3,
+                    )
+                  ]
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1284,21 +948,21 @@ class _ProductDetailsState extends State<ProductDetails> {
             InkWell(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return GroupBuyingProductDetails(id: widget.id,);
+                  return GroupBuyingProductDetails();
                 }));
               },
               child: Container(
                 width: 120,
                 height: 70,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), topRight: Radius.circular(20)),
-                 border: Border.all(color: Colors.redAccent, width: 3),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), topRight: Radius.circular(20)),
+                    border: Border.all(color: Colors.redAccent, width: 3),
                     boxShadow: [
                       BoxShadow(
-                          color: MyTheme.dark_grey.withOpacity(0.3),
-                          blurRadius: 4,
-                          spreadRadius: 3,
+                        color: MyTheme.dark_grey.withOpacity(0.3),
+                        blurRadius: 4,
+                        spreadRadius: 3,
                       )
                     ]
                 ),
@@ -1356,7 +1020,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           width: 100,
           decoration: BoxDecoration(
               border:
-                  Border.all(color: Color.fromRGBO(222, 222, 222, 1), width: 1),
+              Border.all(color: Color.fromRGBO(222, 222, 222, 1), width: 1),
               borderRadius: BorderRadius.circular(36.0),
               color: Colors.white),
           child: Row(
@@ -1368,14 +1032,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                   width: 26,
                   child: Center(
                       child: Text(
-                    _quantity.toString(),
-                    style: TextStyle(fontSize: 18, color: MyTheme.dark_grey),
-                  ))),
+                        _quantity.toString(),
+                        style: TextStyle(fontSize: 18, color: MyTheme.dark_grey),
+                      ))),
               buildQuantityUpButton()
             ],
           ),
         ),
-   /*     Padding(
+        /*     Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6.0),
           child: Text(
             "(${_stock} ${AppLocalizations.of(context).product_details_screen_available})",
@@ -1520,7 +1184,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           return Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child:
-                buildChoiceOpiton(_productDetails.data[0].choiceOptions, index),
+            buildChoiceOpiton(_productDetails.data[0].choiceOptions, index),
           );
         },
       ),
@@ -1555,7 +1219,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),*/
         )
 
-        /* Row(
+      /* Row(
         children: [
           Padding(
             padding: app_language_rtl.$ ? EdgeInsets.only(left: 8.0) : EdgeInsets.only(right: 8.0),
@@ -1570,7 +1234,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
         ],
       ),*/
-        );
+    );
   }
 
   buildChoiceItem(option, choice_options_index, index) {
@@ -1693,7 +1357,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Padding(
         padding: const EdgeInsets.all(3),
         child: /*Icon(FontAwesome.check, color: Colors.white, size: 16),*/
-            Image.asset(
+        Image.asset(
           "assets/white_tick.png",
           width: 16,
           height: 16,
@@ -1722,7 +1386,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               color: Color.fromRGBO(253, 235, 212, 1)),
           child: Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
             child: Text(
               _productDetails.data[0].earnPoint.toString(),
               style: TextStyle(color: MyTheme.golden, fontSize: 12.0),
@@ -1740,8 +1404,8 @@ class _ProductDetailsState extends State<ProductDetails> {
         Text(
             AppLocalizations.of(context).product_details_screen_total_price,
             style: LatoHeavy),
-       SizedBox(height: 10,),
-       /* _productDetails.data[0].hasDiscount
+        SizedBox(height: 10,),
+        /* _productDetails.data[0].hasDiscount
             ? Padding(
                 padding: EdgeInsets.only(right: 8.0),
                 child: Text(_productDetails.data[0].strokedPrice,
@@ -1753,8 +1417,8 @@ class _ProductDetailsState extends State<ProductDetails> {
               )
             : Container(),*/
         Text(
-          _singlePriceString,
-          style: LatoHeavy
+            _singlePriceString,
+            style: LatoHeavy
         )
       ],
     );
@@ -1864,21 +1528,21 @@ class _ProductDetailsState extends State<ProductDetails> {
       children: [
         Text(
           _productDetails.data[0].mainPrice,
-          style: LatoMedium,
+          style: LatoHeavy.copyWith(color: MyTheme.black, fontWeight: FontWeight.w800),
         ),
         Spacer(),
         RatingBar(
           itemSize: 14.0,
           ignoreGestures: true,
           initialRating:
-              double.parse(_productDetails.data[0].rating.toString()),
+          double.parse(_productDetails.data[0].rating.toString()),
           direction: Axis.horizontal,
           allowHalfRating: false,
           itemCount: 5,
           ratingWidget: RatingWidget(
-            full: Icon(FontAwesome.star, color: Colors.amber),
+            full: Icon(FontAwesome.star, color: MyTheme.primary_Colour),
             empty:
-                Icon(FontAwesome.star, color: Color.fromRGBO(224, 224, 225, 1)),
+            Icon(FontAwesome.star, color: MyTheme.dark_grey.withOpacity(0.7)),
           ),
           itemPadding: EdgeInsets.only(right: 1.0),
           onRatingUpdate: (rating) {
@@ -1890,128 +1554,153 @@ class _ProductDetailsState extends State<ProductDetails> {
           child: Text(
             "(" + _productDetails.data[0].ratingCount.toString() + ")",
             style: TextStyle(
-                color: Color.fromRGBO(152, 152, 153, 1), fontSize: 14),
+                color: MyTheme.dark_grey, fontSize: 14),
           ),
         ),
 
-        /*_isInWishList
-            ? InkWell(
-                onTap: () {
-                  onWishTap();
-                },
-                child: Icon(
-                  FontAwesome.heart,
-                  color: Color.fromRGBO(230, 46, 4, 1),
-                  size: 20,
-                ),
-              )
-            : InkWell(
-                onTap: () {
-                  onWishTap();
-                },
-                child: Icon(
-                  FontAwesome.heart_o,
-                  color: Color.fromRGBO(230, 46, 4, 1),
-                  size: 20,
-                ),
-              )*/
       ],
+    );
+  }
+
+  discountBuyingTimeRow() {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: MyTheme.primary_Colour,
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        child: Row(
+          children: [
+            Text(
+              "Discount Buying\nTime Remaining",
+              style: LatoMedium.copyWith(color: MyTheme.white, fontWeight: FontWeight.w700),
+            ),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(left: 4.0, top: 8, right: 4),
+              child: Text(
+                "01.02.50",
+                style: LatoMedium.copyWith(
+                    color: MyTheme.white, fontSize: 14, fontWeight: FontWeight.w700),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+ timeIconRow() {
+    return Container(
+      height: 35,
+      width: 35,
+      decoration: BoxDecoration(
+        color: MyTheme.primary_Colour,
+        shape: BoxShape.circle,
+        border: Border.all(width: 1.5, color: MyTheme.white)
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        child: Image.asset(Images.profile_Home, height: 30, width: 30,)
+      ),
     );
   }
 
   buildBrandRow() {
     return _productDetails.data[0].brand.id > 0
         ? InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return BrandProducts(
-                  id: _productDetails.data[0].brand.id,
-                  brand_name: _productDetails.data[0].brand.name,
-                );
-              }));
-            },
-            child: Row(
-              children: [
-                Padding(
-                  padding: app_language_rtl.$
-                      ? EdgeInsets.only(left: 8.0)
-                      : EdgeInsets.only(right: 8.0),
-                  child: Container(
-                    width: 75,
-                    child: Text(
-                      AppLocalizations.of(context).product_details_screen_brand,
-                      style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Text(
-                    _productDetails.data[0].brand.name,
-                    style: TextStyle(
-                        color: Color.fromRGBO(152, 152, 153, 1), fontSize: 16),
-                  ),
-                ),
-                Spacer(),
-                Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                        color: Color.fromRGBO(112, 112, 112, .3), width: 1),
-                    //shape: BoxShape.rectangle,
-                  ),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/placeholder.png',
-                        image: AppConfig.BASE_PATH +
-                            _productDetails.data[0].brand.logo,
-                        fit: BoxFit.contain,
-                      )),
-                ),
-              ],
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return BrandProducts(
+            id: _productDetails.data[0].brand.id,
+            brand_name: _productDetails.data[0].brand.name,
+          );
+        }));
+      },
+      child: Row(
+        children: [
+          Padding(
+            padding: app_language_rtl.$
+                ? EdgeInsets.only(left: 8.0)
+                : EdgeInsets.only(right: 8.0),
+            child: Container(
+              width: 75,
+              child: Text(
+                AppLocalizations.of(context).product_details_screen_brand,
+                style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
+              ),
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              _productDetails.data[0].brand.name,
+              style: TextStyle(
+                  color: Color.fromRGBO(152, 152, 153, 1), fontSize: 16),
+            ),
+          ),
+          Spacer(),
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                  color: Color.fromRGBO(112, 112, 112, .3), width: 1),
+              //shape: BoxShape.rectangle,
+            ),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/placeholder.png',
+                  image: AppConfig.BASE_PATH +
+                      _productDetails.data[0].brand.logo,
+                  fit: BoxFit.contain,
+                )),
+          ),
+        ],
+      ),
+    )
         : Container();
   }
 
   ExpandableNotifier buildExpandableDescription() {
     return ExpandableNotifier(
         child: ScrollOnExpand(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          /*Expandable(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              /*Expandable(
             collapsed: Container(
                 height: 50, child: Html(data: _productDetails.data[0].description)),
             expanded: Container(child: Html(data: _productDetails.data[0].description)),
           ),*/
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Builder(
-                builder: (context) {
-                  var controller = ExpandableController.of(context);
-                  return FlatButton(
-                    child: Text(
-                      !controller.expanded
-                          ? AppLocalizations.of(context).common_view_more
-                          : AppLocalizations.of(context).common_show_less,
-                      style: TextStyle(color: MyTheme.font_grey, fontSize: 11),
-                    ),
-                    onPressed: () {
-                      controller.toggle();
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Builder(
+                    builder: (context) {
+                      var controller = ExpandableController.of(context);
+                      return FlatButton(
+                        child: Text(
+                          !controller.expanded
+                              ? AppLocalizations.of(context).common_view_more
+                              : AppLocalizations.of(context).common_show_less,
+                          style: TextStyle(color: MyTheme.font_grey, fontSize: 11),
+                        ),
+                        onPressed: () {
+                          controller.toggle();
+                        },
+                      );
                     },
-                  );
-                },
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
 
   buildTopSellingProductList() {
@@ -2046,12 +1735,12 @@ class _ProductDetailsState extends State<ProductDetails> {
             return Padding(
               padding: const EdgeInsets.only(bottom: 3.0),
               child: ListProductCard(
-                  id: _topProducts[index].id,
-                  image: _topProducts[index].thumbnailImage,
-                  name: _topProducts[index].name,
-                  main_price: _topProducts[index].basePrice,
+                id: _topProducts[index].id,
+                image: _topProducts[index].thumbnailImage,
+                name: _topProducts[index].name,
+                main_price: _topProducts[index].basePrice,
                 rating: _topProducts[index].rating,
-                  ),
+              ),
             );
           },
         ),
@@ -2104,12 +1793,12 @@ class _ProductDetailsState extends State<ProductDetails> {
               return Padding(
                 padding: const EdgeInsets.only(right: 3.0),
                 child: MiniProductCard(
-                    id: _relatedProducts[index].id,
-                    image: _relatedProducts[index].thumbnailImage,
-                    name: _relatedProducts[index].name,
-                    main_price: _relatedProducts[index].basePrice,
+                  id: _relatedProducts[index].id,
+                  image: _relatedProducts[index].thumbnailImage,
+                  name: _relatedProducts[index].name,
+                  main_price: _relatedProducts[index].basePrice,
                   rating: _relatedProducts[index].rating,
-                   ),
+                ),
               );
             },
           ),
@@ -2120,25 +1809,25 @@ class _ProductDetailsState extends State<ProductDetails> {
           height: 100,
           child: Center(
               child: Text(
-            AppLocalizations.of(context)
-                .product_details_screen_no_related_product,
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                AppLocalizations.of(context)
+                    .product_details_screen_no_related_product,
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     }
   }
 
   buildQuantityUpButton() => SizedBox(
-        width: 26,
-        child: IconButton(
-            icon: Icon(FontAwesome.plus, size: 12, color: MyTheme.dark_grey),
-            onPressed: () {
-              if (_quantity < _stock) {
-                _quantity++;
-                setState(() {});
-                calculateTotalPrice();
-              }
-            }),
-      );
+    width: 26,
+    child: IconButton(
+        icon: Icon(FontAwesome.plus, size: 12, color: MyTheme.dark_grey),
+        onPressed: () {
+          if (_quantity < _stock) {
+            _quantity++;
+            setState(() {});
+            calculateTotalPrice();
+          }
+        }),
+  );
 
   buildQuantityDownButton() => SizedBox(
       width: 26,
@@ -2153,11 +1842,11 @@ class _ProductDetailsState extends State<ProductDetails> {
           }));
 
   openPhotoDialog(BuildContext context, path) => showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            child: Container(
-                child: Stack(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: Container(
+            child: Stack(
               children: [
                 PhotoView(
                   enableRotation: true,
@@ -2190,9 +1879,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
               ],
             )),
-          );
-        },
       );
+    },
+  );
 
   buildProductImagePart() {
     if (_productImageList.length == 0) {
@@ -2238,7 +1927,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     } else {
       return Container(
           width: double.infinity,
-          height: 200,
+          height: 240,
           child: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -2249,69 +1938,17 @@ class _ProductDetailsState extends State<ProductDetails> {
                     width: 50,
                     child: _productDetails != null
                         ? (_colorList.length > 0
-                            ? buildColorColumn()
-                            : Container())
+                        ? buildColorColumn()
+                        : Container())
                         : ShimmerHelper().buildBasicShimmer(
-                            height: 30.0,
-                          ),
+                      height: 30.0,
+                    ),
                   ),
                 ),
                 //SizedBox(width: 10,),
-/*          SizedBox(
-            height: 250,
-            width: 64,
-            child: Scrollbar(
-              controller: _imageScrollController,
-              isAlwaysShown: false,
-              thickness: 4.0,
-              child: Padding(
-                padding: app_language_rtl.$ ? EdgeInsets.only(left: 8.0) : EdgeInsets.only(right: 8.0),
-                child: ListView.builder(
-                    itemCount: _productImageList.length,
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      int itemIndex = index;
-                      return GestureDetector(
-                        onTap: () {
-                          _currentImage = itemIndex;
-                          print(_currentImage);
-                          setState(() {});
-                        },
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          margin: EdgeInsets.symmetric(
-                              vertical: 4.0, horizontal: 2.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                color: _currentImage == itemIndex
-                                    ? MyTheme.accent_color
-                                    : Color.fromRGBO(112, 112, 112, .3),
-                                width: _currentImage == itemIndex ? 2 : 1),
-                            //shape: BoxShape.rectangle,
-                          ),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child:
-                                  */ /*Image.asset(
-                                        singleProduct.product_images[index])*/ /*
-                                  FadeInImage.assetNetwork(
-                                placeholder: 'assets/placeholder.png',
-                                image: AppConfig.BASE_PATH +
-                                    _productImageList[index],
-                                fit: BoxFit.contain,
-                              )),
-                        ),
-                      );
-                    }),
-              ),
-            ),
-          ),*/
 
                 Container(
-                    height: 200,
+                    height: 240,
                     width: 200,
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -2355,27 +1992,51 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       _productImageList[_currentImage]);
                             },
                             child: Container(
-                                child: FadeInImage.assetNetwork(
-                              placeholder: 'assets/placeholder_rectangle.png',
-                              image: AppConfig.BASE_PATH +
-                                  _productImageList[_currentImage],
-                              fit: BoxFit.scaleDown,
-                            )),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                              ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: 'assets/placeholder_rectangle.png',
+                                    image: AppConfig.BASE_PATH +
+                                        _productImageList[_currentImage],
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                )),
                           ),
                           left: 10,
-                          right: 10,
+                          right:10,
                           top: 10,
-                          bottom: 40,
+                          bottom: 70,
                         ),
                         Positioned(
                           child: Padding(
-                            padding: EdgeInsets.only(left: 10, right: 5),
+                            padding: EdgeInsets.only(left: 0, right: 0),
                             child: buildRatingAndPriceRow(),
                           ),
-                          left: 10,
-                          right: 10,
-                          bottom: 10,
+                          left: 5,
+                          right: 5,
+                          bottom: 50,
                         ),
+                        Positioned(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 0, right: 0),
+                            child: discountBuyingTimeRow(),
+                          ),
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                        ),
+                        Positioned(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 0, right: 0),
+                            child: timeIconRow(),
+                          ),
+                          right: 0,
+                          bottom: 30,
+                        ),
+
                       ],
                     )),
 
@@ -2394,9 +2055,9 @@ class _ProductDetailsState extends State<ProductDetails> {
     }
   }
 
- Container buildDescription() {
+  Container buildDescription() {
     return Container(
-       width: 150,
+      width: 150,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8
@@ -2423,4 +2084,86 @@ class _ProductDetailsState extends State<ProductDetails> {
       ),
     );
   }
+
+  priceRangeRow(BuildContext context) {
+  return  Container(
+    margin: EdgeInsets.all(20),
+      child: Column(
+        children: [
+
+          Container(
+            height: 30,
+            decoration: BoxDecoration(
+              color: MyTheme.red_div,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
+
+            ),
+            child: Center(
+              child: Text("Invite Friends And Family", style: LatoBold.copyWith(color: MyTheme.white, fontSize: 18, fontWeight: FontWeight.w800),),
+            ),
+          ),
+
+          Table(
+            border: TableBorder.all(width: 1, color: MyTheme.primary_Colour),
+            columnWidths: {
+              0: FlexColumnWidth(1),
+              1: FlexColumnWidth(6),
+              2: FlexColumnWidth(4),
+            },
+            children: [
+              TableRow(
+                children: [
+                  Container(
+                    width: 20,
+                    padding: EdgeInsets.all(8),
+                    child: Center(child: Text("#", style: LatoBold.copyWith(color: MyTheme.black,),)),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: Center(child: Text("Group Sell", style: LatoBold.copyWith(color: MyTheme.black,),)),
+                    ),
+                  ),
+                  Container(
+                    width: 70,
+                    padding: EdgeInsets.all(8),
+                    child: Center(child: Text("Price", style: LatoBold.copyWith(color: MyTheme.black,),)),
+                  ),
+
+
+                ]
+              ),
+
+             for(var id in list)  TableRow(
+                 children: [
+                   Container(
+                     width: 20,
+                     padding: EdgeInsets.all(8),
+                     child: Center(child: Text(id.toString(), style: LatoBold.copyWith(color: MyTheme.black,),)),
+                   ),
+                   Expanded(
+                     child: Container(
+                       padding: EdgeInsets.all(8),
+                       child: Center(child: Text("Group Sell", style: LatoBold.copyWith(color: MyTheme.black,),)),
+                     ),
+                   ),
+                   Container(
+                     width: 70,
+                     padding: EdgeInsets.all(8),
+                     child: Center(child: Text("Price", style: LatoBold.copyWith(color: MyTheme.black,),)),
+                   ),
+
+
+                 ]
+             ),
+            ],
+          )
+
+        ],
+      ),
+    );
+  }
+
 }
+
+

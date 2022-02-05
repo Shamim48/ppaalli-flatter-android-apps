@@ -1,3 +1,5 @@
+import 'package:active_ecommerce_flutter/ui_elements/common_ui_element.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'dart:ui';
@@ -21,12 +23,14 @@ class Chat extends StatefulWidget {
     this.messenger_name,
     this.messenger_title,
     this.messenger_image,
+    this.isGroup=true,
   }) : super(key: key);
 
   final int conversation_id;
   final String messenger_name;
   final String messenger_title;
   final String messenger_image;
+  final bool isGroup;
 
   @override
   _ChatState createState() => _ChatState();
@@ -38,7 +42,7 @@ class _ChatState extends State<Chat> {
   final ScrollController _xcrollController = ScrollController();
   final lastKey = GlobalKey();
 
-  var uid = user_id;
+  var uid = user_id.$;
 
   List<dynamic> _list = [];
   bool _isInitial = true;
@@ -47,49 +51,92 @@ class _ChatState extends State<Chat> {
   bool _showLoadingContainer = false;
   int _last_id = 0;
 
+
+  List<dynamic> _groupList = [];
+  bool _isGroupInitial = true;
+  int _groupPage = 1;
+  int _groupTotalData = 0;
+  bool _groupShowLoadingContainer = false;
+  int _groupLastIid = 0;
+
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    fetchData();
+   // widget.isGroup ? fetchGroupData(): fetchSellerData();
+    onPressLoadMore();
+    onPressLoadMore();
   }
 
 
-  fetchData() async {
+  fetchSellerData() async {
     var messageResponse = await ChatRepository().getMessageResponse(
-        conversation_id: widget.conversation_id, page: _page);
-    _list.addAll(messageResponse.messages);
+        conversation_id: widget.conversation_id , page: _page);
+    print("seller Data");
+    print(messageResponse.data.toString());
+    _list.addAll(messageResponse.data);
     _isInitial = false;
     _totalData = messageResponse.meta.total;
     _showLoadingContainer = false;
-    _last_id = _list[0].id;
+    //_last_id = _list[0].id;
     setState(() {});
 
     fetch_new_message();
   }
 
+   fetchGroupData() async {
+    var messageResponse = await ChatRepository().getGroupMessageResponse(
+        conversation_id: widget.conversation_id, page: _groupPage);
+    _groupList.clear();
+    _groupList.addAll(messageResponse.data);
+
+    _isGroupInitial = false;
+    _groupShowLoadingContainer = false;
+    _groupLastIid = _groupList[0].id;
+    print("Group List Size: "+_groupList.length.toString());
+    setState(() {
+     // _chatScrollController.jumpTo(_chatScrollController.position.maxScrollExtent);
+    });
+    fetch_new_message();
+  }
+
   reset() {
+
     _list.clear();
     _isInitial = true;
     _totalData = 0;
     _page = 1;
     _showLoadingContainer = false;
     _last_id = 0;
+
+    _groupList.clear();
+    _isGroupInitial = true;
+    _groupTotalData = 0;
+    _groupPage = 1;
+    _groupShowLoadingContainer = false;
+    _groupLastIid = 0;
+
     setState(() {});
   }
 
   Future<void> _onRefresh() async {
     reset();
-    fetchData();
+    widget.isGroup ? fetchGroupData(): fetchSellerData();
+    onPressLoadMore();
   }
 
   onPressLoadMore() {
     setState(() {
       _page++;
+      _groupPage++;
     });
     _showLoadingContainer = true;
-    fetchData();
+    _groupShowLoadingContainer=true;
+    widget.isGroup ? fetchGroupData(): fetchSellerData();
+
+
   }
 
   onTapSendMessage() async {
@@ -103,13 +150,31 @@ class _ChatState extends State<Chat> {
       final String formatted_date = date_formatter.format(now);
       final String formatted_time = time_formatter.format(now);
 
-      var messageResponse = await ChatRepository().getInserMessageResponse(
-          conversation_id: widget.conversation_id, message: chatText);
-      _list = [
-        messageResponse.messages,
-        _list,
-      ].expand((x) => x).toList(); //prepend
-      _last_id = _list[0].id;
+      if(widget.isGroup){
+        var messageResponse = await ChatRepository().getInsertGroupMessageResponse(
+            conversation_id: widget.conversation_id, message: chatText);
+        _groupList = [
+          messageResponse.data,
+          _groupList,
+        ].expand((x) => x).toList(); //prepend
+        _groupLastIid = _groupList[0].id;
+        setState(() {
+          _groupList.add([
+           { "user_id" : user_id.$,
+            "group_order_id": widget.conversation_id,
+            "message": chatText
+          }
+          ]);
+        });
+      }else {
+        var messageResponse = await ChatRepository().getInsertMessageResponse(
+            conversation_id: widget.conversation_id, message: chatText);
+        _list = [
+          messageResponse.data,
+          _list,
+        ].expand((x) => x).toList(); //prepend
+        _last_id = _list[0].id;
+      }
       setState(() {});
 
       _xcrollController.animateTo(
@@ -120,10 +185,11 @@ class _ChatState extends State<Chat> {
     }
   }
 
+
   fetch_new_message() async {
     print('fetch new message hit');
     print('-------------');
-    await Future.delayed(const Duration(seconds: 5), () {
+    await Future.delayed(const Duration(seconds: 3), () {
       print('fetch new message start');
       print('##################');
       get_new_message();
@@ -137,14 +203,14 @@ class _ChatState extends State<Chat> {
     var messageResponse = await ChatRepository().getNewMessageResponse(
         conversation_id: widget.conversation_id, last_message_id: _last_id);
     _list = [
-      messageResponse.messages,
+      messageResponse.data,
       _list,
     ].expand((x) => x).toList(); //prepend
     _last_id = _list[0].id;
     setState(() {});
 
     // if new message comes in
-    if( messageResponse.messages.length > 0){
+    if( messageResponse.data.length > 0){
       _xcrollController.animateTo(
         _xcrollController.position.maxScrollExtent + 100,
         curve: Curves.easeOut,
@@ -170,7 +236,7 @@ class _ChatState extends State<Chat> {
                 slivers: [
                   SliverList(
                     delegate: SliverChildListDelegate([
-                      FlatButton(
+                      /*FlatButton(
                         minWidth: MediaQuery.of(context).size.width,
                         height: 36,
                         color: MyTheme.primaryColor,
@@ -187,10 +253,10 @@ class _ChatState extends State<Chat> {
                         onPressed: () {
                           onPressLoadMore();
                         },
-                      ),
+                      ),*/
                       Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: buildChatList(),
+                        child: widget.isGroup ? buildGroupChatList(): buildChatList(),
                       ),
                       Container(
                         height: 80,
@@ -199,7 +265,7 @@ class _ChatState extends State<Chat> {
                   )
                 ],
               ),
-              Align(alignment: Alignment.center, child: buildLoadingContainer()),
+             // Align(alignment: Alignment.center, child: widget.isGroup ? buildGroupLoadingContainer() : buildLoadingContainer()),
               //original
               Align(
                 alignment: Alignment.bottomCenter,
@@ -238,13 +304,27 @@ class _ChatState extends State<Chat> {
     );
   }
 
+Container buildGroupLoadingContainer() {
+    return Container(
+      height: _groupShowLoadingContainer ? 36 : 0,
+      width: double.infinity,
+      color: Colors.white,
+      child: Center(
+        child: Text(_groupTotalData == _groupList.length
+            ? AppLocalizations.of(context).common_no_more_items
+            : AppLocalizations.of(context).common_loading_more_items),
+      ),
+    );
+  }
+
+
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
 backgroundColor: Colors.white,
       toolbarHeight: 75,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, ),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -254,7 +334,7 @@ backgroundColor: Colors.white,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Container(
+                /*  Container(
                     width: 40,
                     height: 40,
                     margin:
@@ -262,7 +342,7 @@ backgroundColor: Colors.white,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35),
                       border: Border.all(
-                          color: Color.fromRGBO(112, 112, 112, .3), width: 1),
+                          color: MyTheme.primary_Colour, width: 1.5),
                       //shape: BoxShape.rectangle,
                     ),
                     child: ClipRRect(
@@ -272,7 +352,7 @@ backgroundColor: Colors.white,
                           image: AppConfig.BASE_PATH + widget.messenger_image,
                           fit: BoxFit.contain,
                         )),
-                  ),
+                  ),*/
                   Container(
                     width: 220,
                     child: Padding(
@@ -281,23 +361,23 @@ backgroundColor: Colors.white,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.messenger_name,
+                            widget.messenger_title,
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
-                            style: TextStyle(
+                            style: LatoHeavy.copyWith(
                                 color: MyTheme.font_grey,
                                 fontSize: 14,
                                 height: 1.6,
                                 fontWeight: FontWeight.w600),
                           ),
                           Text(
-                            widget.messenger_title,
+                            widget.messenger_name,
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(
-                              color: MyTheme.medium_grey,
+                            style: LatoMedium.copyWith(
+                              color: MyTheme.dark_grey,
                               fontSize: 12,
                               height: 1.6,
                             ),
@@ -307,7 +387,7 @@ backgroundColor: Colors.white,
                     ),
                   ),
                   Spacer(),
-                  InkWell(
+                  /*InkWell(
                     onTap: () {
                       _onRefresh();
                     },
@@ -318,7 +398,7 @@ backgroundColor: Colors.white,
                         color: MyTheme.font_grey,
                       ),
                     ),
-                  )
+                  )*/
                 ])),
       ),
       elevation: 0.0,
@@ -355,18 +435,63 @@ backgroundColor: Colors.white,
       return Container(); // should never be happening
     }
   }
+ buildGroupChatList() {
+    if (_isGroupInitial && _groupList.length == 0) {
+      return SingleChildScrollView(
+          child: ShimmerHelper()
+              .buildListShimmer(item_count: 10, item_height: 100.0));
+    } else if (_groupList.length > 0) {
+      return SingleChildScrollView(
+        child: ListView.builder(
+          key: lastKey,
+          controller: _chatScrollController,
+          itemCount: _groupList.length,
+          scrollDirection: Axis.vertical,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          reverse: true,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: buildGroupChatItem(index)
+            );
+          },
+        ),
+      );
+
+
+    } else if (_groupTotalData == 0) {
+      return Center(child: Text(AppLocalizations.of(context).common_no_data_available));
+    } else {
+      return Container(); // should never be happening
+    }
+  }
 
   buildChatItem(index) {
-    return _list[index].user_id == uid
+    return _list[index].userId == uid
         ? getSenderView(ChatBubbleClipper5(type: BubbleType.sendBubble),
-            context, _list[index].message, _list[index].date, _list[index].time)
+            context, _list[index].message, _list[index].createdAt)
         : getReceiverView(
             ChatBubbleClipper5(type: BubbleType.receiverBubble),
             context,
+            _list[index].customerName,
             _list[index].message,
-            _list[index].date,
-            _list[index].time);
+            _list[index].createdAt);
   }
+
+   buildGroupChatItem(index) {
+    return _groupList[index].senderUserId == uid
+        ? getSenderView(ChatBubbleClipper5(type: BubbleType.sendBubble),
+            context, _groupList[index].message, _groupList[index].createdAt)
+        : getReceiverView(
+            ChatBubbleClipper5(type: BubbleType.receiverBubble),
+            context,
+        _groupList[index].name,
+        _groupList[index].message,
+        _groupList[index].createdAt);
+  }
+
+
 
   Row buildMessageSendingRow(BuildContext context) {
     return Row(
@@ -375,6 +500,17 @@ backgroundColor: Colors.white,
         Container(
           height: 40,
           width: (MediaQuery.of(context).size.width - 32) * (4 / 5),
+          decoration: BoxDecoration(
+              color: MyTheme.white,
+              borderRadius: BorderRadius.circular(35),
+              boxShadow: [
+                BoxShadow(
+                    color: MyTheme.dark_grey.withOpacity(0.3),
+                    spreadRadius: 1.5,
+                    blurRadius: 3
+                )
+              ]
+          ),
           child: TextField(
             autofocus: false,
             maxLines: null,
@@ -409,8 +545,8 @@ backgroundColor: Colors.white,
               onTapSendMessage();
             },
             child: Container(
-              width: 40,
-              height: 40,
+              width: 35,
+              height: 35,
               margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
               decoration: BoxDecoration(
                 color: MyTheme.primaryColor,
@@ -434,13 +570,13 @@ backgroundColor: Colors.white,
   }
 
   getSenderView(
-          CustomClipper clipper, BuildContext context, text, date, time) =>
+          CustomClipper clipper, BuildContext context, text, date) =>
       ChatBubble(
         elevation: 0.0,
         clipper: clipper,
         alignment: Alignment.topRight,
         margin: EdgeInsets.only(top: 10),
-        backGroundColor: MyTheme.soft_accent_color,
+        backGroundColor: MyTheme.primary_Colour,
         child: Container(
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * 0.6,
@@ -455,44 +591,60 @@ backgroundColor: Colors.white,
                   text,
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      color: MyTheme.font_grey, fontSize: 13, wordSpacing: 1),
+                      color: MyTheme.white, fontSize: 14, wordSpacing: 1),
                 ),
               ),
-              Text(date + " " + time,
-                  style: TextStyle(color: MyTheme.medium_grey, fontSize: 10)),
+
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Text(date, style: LatoRegular.copyWith(color: MyTheme.white, fontSize: 12),),
+              )
+              /*Text(date + " " + time,
+                  style: TextStyle(color: MyTheme.medium_grey, fontSize: 10)),*/
             ],
           ),
         ),
       );
 
   getReceiverView(
-          CustomClipper clipper, BuildContext context, text, date, time) =>
-      ChatBubble(
-        elevation: 0.0,
-        clipper: clipper,
-        backGroundColor: Color.fromRGBO(239, 239, 239, 1),
-        margin: EdgeInsets.only(top: 10),
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.6,
-            minWidth: MediaQuery.of(context).size.width * 0.6,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                width: double.infinity,
-                child: Text(
-                  text,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: MyTheme.font_grey, fontSize: 13, wordSpacing: 1),
-                ),
+          CustomClipper clipper, BuildContext context, name, text, date) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 5,),
+          Text(name,style: LatoRegular.copyWith(fontSize: 10, color: MyTheme.dark_grey, ),),
+          ChatBubble(
+            elevation: 0.0,
+            clipper: clipper,
+            backGroundColor: Color.fromRGBO(239, 239, 239, 1),
+            margin: EdgeInsets.only(top: 10),
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.6,
+                minWidth: MediaQuery.of(context).size.width * 0.6,
               ),
-              Text(date + " " + time,
-                  style: TextStyle(color: MyTheme.medium_grey, fontSize: 10)),
-            ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    child: Text(
+                      text,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: MyTheme.font_grey, fontSize: 14, wordSpacing: 1),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(date, style: LatoRegular.copyWith(color: MyTheme.dark_grey, fontSize: 12),),
+                  )
+                  /*Text(date + " " + time,
+                      style: TextStyle(color: MyTheme.medium_grey, fontSize: 10)),*/
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       );
 }
