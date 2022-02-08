@@ -1,7 +1,6 @@
 import 'package:active_ecommerce_flutter/other_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/splash.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
@@ -107,12 +106,13 @@ class _MyAppState extends State<MyApp> {
             )*/
               //
               // the below code is getting fonts from http
-              textTheme: GoogleFonts.sourceSansProTextTheme(textTheme).copyWith(
+              /*textTheme: GoogleFonts.sourceSansProTextTheme(textTheme).copyWith(
                 bodyText1:
                     GoogleFonts.sourceSansPro(textStyle: textTheme.bodyText1),
                 bodyText2: GoogleFonts.sourceSansPro(
-                    textStyle: textTheme.bodyText2, fontSize: 12),
-              ),
+                    textStyle: textTheme.bodyText2, fontSize: 12
+                ),
+              ),*/
             ),
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,

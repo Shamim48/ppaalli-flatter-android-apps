@@ -1,6 +1,7 @@
 import 'package:active_ecommerce_flutter/addon_config.dart';
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
@@ -555,15 +556,7 @@ class _ProfileState extends State<Profile> {
           Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
           InkWell(
             onTap: () {
-              AuthRepository().getLogoutResponse();
-              ToastComponent.showDialog(
-                  "Log Out", context,
-                  gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                return Main();
-              }));
-              setState(() {
-              });
+              logOut();
             },
             child: Visibility(
               visible: true,
@@ -1326,5 +1319,20 @@ class _ProfileState extends State<Profile> {
       elevation: 0.0,
       titleSpacing: 0,
     );
+  }
+
+  void logOut() async {
+    var response= await  AuthRepository().getLogoutResponse();
+    if(response.result ==true){
+      AuthHelper().clearUserData();
+      ToastComponent.showDialog(
+          "Log Out", context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return Main();
+      }));
+      setState(() {
+      });
+    }
   }
 }
