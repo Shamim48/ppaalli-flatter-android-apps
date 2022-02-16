@@ -36,7 +36,7 @@ class _BrandSquareCardState extends State<BrandSquareCard> {
             children: <Widget>[
               Container(
                   width: 130,
-                  height: 130,
+                  height: 129,
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),

@@ -72,7 +72,6 @@ class _CategoryListState extends State<CategoryList> {
     setState(() {});
   }
 
-
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;

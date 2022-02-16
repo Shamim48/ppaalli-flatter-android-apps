@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/data_model/group_buying/group_buying_product.dart';
+import 'package:active_ecommerce_flutter/data_model/group_buying/group_product_details.dart';
 import 'package:active_ecommerce_flutter/helpers/color_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
@@ -43,11 +44,12 @@ class GroupBuyingProductDetails extends StatefulWidget {
   GroupBuyingProductDetails({Key key, this.id}) : super(key: key);
 
   @override
-  _GroupBuyingProductDetailsState createState() => _GroupBuyingProductDetailsState();
+  _GroupBuyingProductDetailsState createState() =>
+      _GroupBuyingProductDetailsState();
 }
 
 class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
-  bool isGroup=false;
+  bool isGroup = false;
   bool _showCopied = false;
   String _appbarPriceString = ". . .";
   int _currentImage = 0;
@@ -74,20 +76,23 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
   var _singlePriceString;
   int _quantity = 1;
   int _stock = 0;
-  var list=[1,2,3,4];
+  var list = [1, 2, 3, 4];
 
   List<dynamic> _relatedProducts = [];
   bool _relatedProductInit = false;
   List<dynamic> _topProducts = [];
   bool _topProductInit = false;
 
-  String wishlistImage=Images.heart_outline;
+  String wishlistImage = Images.heart_outline;
 
   CheckGroupBuying _checkGroupBuying;
+
+  GroupProductDetails _groupProductDetails;
 
   @override
   void initState() {
     fetchAll();
+
     super.initState();
   }
 
@@ -104,6 +109,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
   fetchAll() {
     print("product id : ${widget.id}");
     fetchProductDetails();
+    fetchGroupProductDetails();
     checkGroupBuying();
     if (is_logged_in.$ == true) {
       fetchWishListCheckInfo();
@@ -113,9 +119,19 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
     fetchTopProducts();
   }
 
+  fetchGroupProductDetails() async{
+    var productDetailsRes= await GroupBuyingRepo().getGroupProductDetails(id: widget.id);
+    _groupProductDetails=productDetailsRes;
+
+    setState(() {
+
+    });
+
+  }
+
   fetchProductDetails() async {
     var productDetailsResponse =
-    await ProductRepository().getProductDetails(id: widget.id);
+        await ProductRepository().getProductDetails(id: widget.id);
 
     // var productDetailsResponse =_productImageList.ge;
     // if (productDetailsResponse.data.length > 0) {
@@ -129,19 +145,19 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
 
     setState(() {});
   }
+
   checkGroupBuying() async {
-    var response = await GroupBuyingRepo().checkGroupProduct( widget.id);
-    isGroup=response.success;
-    _checkGroupBuying=response;
+    var response = await GroupBuyingRepo().checkGroupProduct(widget.id);
+    isGroup = response.success;
+    _checkGroupBuying = response;
     print("Product type:");
     print(isGroup);
-    setState(() {
-    });
+    setState(() {});
   }
 
   fetchRelatedProducts() async {
     var relatedProductResponse =
-    await ProductRepository().getRelatedProducts(id: widget.id);
+        await ProductRepository().getRelatedProducts(id: widget.id);
     _relatedProducts.addAll(relatedProductResponse.data);
     _relatedProductInit = true;
 
@@ -150,7 +166,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
 
   fetchTopProducts() async {
     var topProductResponse =
-    await ProductRepository().getTopFromThisSellerProducts(id: widget.id);
+        await ProductRepository().getTopFromThisSellerProducts(id: widget.id);
     _topProducts.addAll(topProductResponse.data);
     _topProductInit = true;
   }
@@ -192,7 +208,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
 
   fetchWishListCheckInfo() async {
     var wishListCheckResponse =
-    await WishListRepository().isProductInUserWishList(
+        await WishListRepository().isProductInUserWishList(
       product_id: widget.id,
     );
 
@@ -203,7 +219,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
 
   addToWishList() async {
     var wishListCheckResponse =
-    await WishListRepository().add(product_id: widget.id);
+        await WishListRepository().add(product_id: widget.id);
 
     //print("p&u:" + widget.id.toString() + " | " + _user_id.toString());
     _isInWishList = wishListCheckResponse.is_in_wishlist;
@@ -212,7 +228,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
 
   removeFromWishList() async {
     var wishListCheckResponse =
-    await WishListRepository().remove(product_id: widget.id);
+        await WishListRepository().remove(product_id: widget.id);
 
     //print("p&u:" + widget.id.toString() + " | " + _user_id.toString());
     _isInWishList = wishListCheckResponse.is_in_wishlist;
@@ -342,7 +358,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
       ToastComponent.showDialog(
           AppLocalizations.of(context).common_login_warning, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-      Navigator.push(context, MaterialPageRoute(builder: (context){
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
         return Login();
       }));
 
@@ -424,7 +440,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               side:
-                              BorderSide(color: Colors.black, width: 1.0)),
+                                  BorderSide(color: Colors.black, width: 1.0)),
                           child: Text(
                             AppLocalizations.of(context)
                                 .product_details_screen_copy_product_link,
@@ -440,13 +456,13 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                       ),
                       _showCopied
                           ? Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(
-                          AppLocalizations.of(context).common_copied,
-                          style: TextStyle(
-                              color: MyTheme.medium_grey, fontSize: 12),
-                        ),
-                      )
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Text(
+                                AppLocalizations.of(context).common_copied,
+                                style: TextStyle(
+                                    color: MyTheme.medium_grey, fontSize: 12),
+                              ),
+                            )
                           : Container(),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
@@ -457,7 +473,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               side:
-                              BorderSide(color: Colors.black, width: 1.0)),
+                                  BorderSide(color: Colors.black, width: 1.0)),
                           child: Text(
                             AppLocalizations.of(context)
                                 .product_details_screen_share_options,
@@ -511,168 +527,168 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
     return showDialog(
         context: context,
         builder: (_) => Directionality(
-          textDirection:
-          app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
-          child: AlertDialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 10),
-            contentPadding: EdgeInsets.only(
-                top: 36.0, left: 36.0, right: 36.0, bottom: 2.0),
-            content: Container(
-              width: 400,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                          AppLocalizations.of(context)
-                              .product_details_screen_seller_chat_title,
-                          style: TextStyle(
-                              color: MyTheme.font_grey, fontSize: 12)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: Container(
-                        height: 40,
-                        child: TextField(
-                          controller: sellerChatTitleController,
-                          autofocus: false,
-                          decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)
-                                  .product_details_screen_seller_chat_enter_title,
-                              hintStyle: TextStyle(
-                                  fontSize: 12.0,
-                                  color: MyTheme.textfield_grey),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: MyTheme.textfield_grey,
-                                    width: 0.5),
-                                borderRadius: const BorderRadius.all(
-                                  const Radius.circular(8.0),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: MyTheme.textfield_grey,
-                                    width: 1.0),
-                                borderRadius: const BorderRadius.all(
-                                  const Radius.circular(8.0),
-                                ),
-                              ),
-                              contentPadding:
-                              EdgeInsets.symmetric(horizontal: 8.0)),
+              textDirection:
+                  app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
+              child: AlertDialog(
+                insetPadding: EdgeInsets.symmetric(horizontal: 10),
+                contentPadding: EdgeInsets.only(
+                    top: 36.0, left: 36.0, right: 36.0, bottom: 2.0),
+                content: Container(
+                  width: 400,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                              AppLocalizations.of(context)
+                                  .product_details_screen_seller_chat_title,
+                              style: TextStyle(
+                                  color: MyTheme.font_grey, fontSize: 12)),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                          "${AppLocalizations.of(context).product_details_screen_seller_chat_messasge} *",
-                          style: TextStyle(
-                              color: MyTheme.font_grey, fontSize: 12)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: Container(
-                        height: 55,
-                        child: TextField(
-                          controller: sellerChatMessageController,
-                          autofocus: false,
-                          maxLines: null,
-                          keyboardType: TextInputType.multiline,
-                          decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)
-                                  .product_details_screen_seller_chat_enter_messasge,
-                              hintStyle: TextStyle(
-                                  fontSize: 12.0,
-                                  color: MyTheme.textfield_grey),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: MyTheme.textfield_grey,
-                                    width: 0.5),
-                                borderRadius: const BorderRadius.all(
-                                  const Radius.circular(8.0),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: MyTheme.textfield_grey,
-                                    width: 1.0),
-                                borderRadius: const BorderRadius.all(
-                                  const Radius.circular(8.0),
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.only(
-                                  right: 16.0,
-                                  left: 8.0,
-                                  top: 16.0,
-                                  bottom: 16.0)),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Container(
+                            height: 40,
+                            child: TextField(
+                              controller: sellerChatTitleController,
+                              autofocus: false,
+                              decoration: InputDecoration(
+                                  hintText: AppLocalizations.of(context)
+                                      .product_details_screen_seller_chat_enter_title,
+                                  hintStyle: TextStyle(
+                                      fontSize: 12.0,
+                                      color: MyTheme.textfield_grey),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: MyTheme.textfield_grey,
+                                        width: 0.5),
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(8.0),
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: MyTheme.textfield_grey,
+                                        width: 1.0),
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(8.0),
+                                    ),
+                                  ),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 8.0)),
+                            ),
+                          ),
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                              "${AppLocalizations.of(context).product_details_screen_seller_chat_messasge} *",
+                              style: TextStyle(
+                                  color: MyTheme.font_grey, fontSize: 12)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Container(
+                            height: 55,
+                            child: TextField(
+                              controller: sellerChatMessageController,
+                              autofocus: false,
+                              maxLines: null,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                  hintText: AppLocalizations.of(context)
+                                      .product_details_screen_seller_chat_enter_messasge,
+                                  hintStyle: TextStyle(
+                                      fontSize: 12.0,
+                                      color: MyTheme.textfield_grey),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: MyTheme.textfield_grey,
+                                        width: 0.5),
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(8.0),
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: MyTheme.textfield_grey,
+                                        width: 1.0),
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(8.0),
+                                    ),
+                                  ),
+                                  contentPadding: EdgeInsets.only(
+                                      right: 16.0,
+                                      left: 8.0,
+                                      top: 16.0,
+                                      bottom: 16.0)),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: FlatButton(
-                      minWidth: 75,
-                      height: 30,
-                      color: Color.fromRGBO(253, 253, 253, 1),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: BorderSide(
-                              color: MyTheme.light_grey, width: 1.0)),
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .common_close_in_all_capital,
-                        style: TextStyle(
-                          color: MyTheme.font_grey,
+                actions: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: FlatButton(
+                          minWidth: 75,
+                          height: 30,
+                          color: Color.fromRGBO(253, 253, 253, 1),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: BorderSide(
+                                  color: MyTheme.light_grey, width: 1.0)),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .common_close_in_all_capital,
+                            style: TextStyle(
+                              color: MyTheme.font_grey,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context, rootNavigator: true).pop();
+                          },
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.of(context, rootNavigator: true).pop();
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 1,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                    child: FlatButton(
-                      minWidth: 75,
-                      height: 30,
-                      color: MyTheme.primaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: BorderSide(
-                              color: MyTheme.light_grey, width: 1.0)),
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .common_send_in_all_capital,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
+                      SizedBox(
+                        width: 1,
                       ),
-                      onPressed: () {
-                        onPressSendMessage();
-                      },
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                        child: FlatButton(
+                          minWidth: 75,
+                          height: 30,
+                          color: MyTheme.primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: BorderSide(
+                                  color: MyTheme.light_grey, width: 1.0)),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .common_send_in_all_capital,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          onPressed: () {
+                            onPressSendMessage();
+                          },
+                        ),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
-          ),
-        ));
+              ),
+            ));
   }
 
   onPressSendMessage() async {
@@ -691,7 +707,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
 
     var conversationCreateResponse = await ChatRepository()
         .getCreateConversationResponse(
-        product_id: widget.id, title: title, message: message);
+            product_id: widget.id, title: title, message: message);
 
     if (conversationCreateResponse.result == false) {
       ToastComponent.showDialog(
@@ -751,7 +767,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
     return Directionality(
       textDirection: app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
-          bottomNavigationBar: buildBottomAppBar(context, _addedToCartSnackbar),
+         // bottomNavigationBar: buildBottomAppBar(context, _addedToCartSnackbar),
           backgroundColor: Colors.white,
           appBar: buildAppBar(statusBarHeight, context),
           body: RefreshIndicator(
@@ -765,26 +781,26 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
               slivers: <Widget>[
                 SliverList(
                     delegate: SliverChildListDelegate([
-                      Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            16.0,
-                            8.0,
-                            16.0,
-                            0.0,
-                          ),
-                          child: _productDetails != null
-                              ? Text(
-                            _productDetails.data[0].name,
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: MyTheme.font_grey,
-                                fontWeight: FontWeight.w600),
-                            maxLines: 2,
-                          )
-                              : ShimmerHelper().buildBasicShimmer(
-                            height: 30.0,
-                          )),
-                    ])),
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        16.0,
+                        8.0,
+                        16.0,
+                        0.0,
+                      ),
+                      child: _productDetails != null
+                          ? Text(
+                              _productDetails.data[0].name,
+                              style: LatoBold.copyWith(
+                                  fontSize: 20,
+                                  color: MyTheme.black,
+                                  fontWeight: FontWeight.w800),
+                              maxLines: 2,
+                            )
+                          : ShimmerHelper().buildBasicShimmer(
+                              height: 30.0,
+                            )),
+                ])),
                 SliverList(
                   delegate: SliverChildListDelegate([
                     Padding(
@@ -795,70 +811,93 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                         0.0,
                       ),
                       child: //buildProductImagePart(),
-                      buildProductImageSection(),
+                          buildProductImageSection(),
                     ),
                     Divider(
                       height: 24.0,
                     ),
                   ]),
                 ),
-
-
                 SliverList(
                     delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          16.0,
-                          16.0,
-                          10.0,
-                        ),
-                        child: _productDetails != null
-                            ? buildSellerRow(context)
-                            : ShimmerHelper().buildBasicShimmer(
-                          height: 50.0,
-                        ),
-                      ),
-                    ])),
-
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      16.0,
+                      16.0,
+                      16.0,
+                     0.0,
+                    ),
+                    child: _productDetails != null
+                        ? buildSellerRow(context)
+                        : ShimmerHelper().buildBasicShimmer(
+                            height: 50.0,
+                          ),
+                  ),
+                ])),
                 SliverList(
                     delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          16.0,
-                          16.0,
-                          16.0,
-                          10.0,
-                        ),
-                        child: _productDetails != null
-                            ? priceRangeRow(context)
-                            : ShimmerHelper().buildBasicShimmer(
-                          height: 50.0,
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      16.0,
+                      10.0,
+                      16.0,
+                      10.0,
+                    ),
+                    child: _productDetails != null
+                        ? priceRangeRow(context)
+                        : ShimmerHelper().buildBasicShimmer(
+                            height: 50.0,
+                          ),
+                  ),
+                ])),
+
+                 SliverList(
+                    delegate: SliverChildListDelegate([
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      16.0,
+                      0.0,
+                      16.0,
+                      0.0,
+                    ),
+                    child: _productDetails != null
+                        ? cartAndCheckoutRow(context)
+                        : ShimmerHelper().buildBasicShimmer(
+                            height: 30.0,
+                          ),
+                  ),
+                ])),
+  SliverList(
+                      delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        16.0,
+                        0.0,
+                        16.0,
+                        0.0,
                       ),
-                    ])),
-
-
+                      child: Container(
+                              height: 30.0,
+                            ),
+                    ),
+                  ])),
 
 
               ],
             ),
           )),
     );
-
   }
 
   Row buildSellerRow(BuildContext context) {
     //print("sl:" + AppConfig.BASE_PATH + _productDetails.shop_logo);
     return Row(
       children: [
-
         Container(
-          padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: MyTheme.primary_Colour,
-              borderRadius: BorderRadius.circular(30)
-            ),
+                color: MyTheme.primary_Colour,
+                borderRadius: BorderRadius.circular(30)),
             child: Row(
               children: [
                 Icon(Icons.message, size: 16, color: MyTheme.white),
@@ -874,34 +913,37 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Text(
-                        "Message Seller",
-                        style: LatoBold.copyWith(color: MyTheme.white)
-                    ),
+                    child: Text("Message Seller",
+                        style: LatoBold.copyWith(color: MyTheme.white)),
                   ),
                 ),
               ],
             )),
-
         Spacer(),
-
         IconButton(
-          icon: Image.asset(_isInWishList ? Images.heart : Images.heart_outline, color: Colors.redAccent,),
-          onPressed: (){
+          icon: Image.asset(
+            _isInWishList ? Images.heart : Images.heart_outline,
+            color: Colors.redAccent,
+          ),
+          onPressed: () {
             onWishTap();
             setState(() {
-              wishlistImage=Images.heart;
+              wishlistImage = Images.heart;
             });
           },
         ),
-
-        SizedBox(width: 20,),
-        IconButton(icon: Icon(Icons.share, color: MyTheme.primary_Colour,),
-          onPressed: (){
+        SizedBox(
+          width: 20,
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.share,
+            color: MyTheme.primary_Colour,
+          ),
+          onPressed: () {
             onPressShare(context);
           },
         )
-
       ],
     );
   }
@@ -910,11 +952,20 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
     //print("sl:" + AppConfig.BASE_PATH + _productDetails.shop_logo);
     return Row(
       children: [
-
-        Expanded(child:  Column(
+        Expanded(
+            child: Column(
           children: [
-            Text("Discount Remaining", style: LatoMedium.copyWith(color: Colors.grey,),),
-            Center(child: Text("00:00:00", style: LatoHeavy.copyWith(color: Colors.grey),)),
+            Text(
+              "Discount Remaining",
+              style: LatoMedium.copyWith(
+                color: Colors.grey,
+              ),
+            ),
+            Center(
+                child: Text(
+              "00:00:00",
+              style: LatoHeavy.copyWith(color: Colors.grey),
+            )),
           ],
         )),
         // Spacer(),
@@ -926,28 +977,35 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
               height: 70,
               decoration: BoxDecoration(
                   color: MyTheme.golden,
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), topLeft: Radius.circular(20)),
-
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      topLeft: Radius.circular(20)),
                   boxShadow: [
                     BoxShadow(
                       color: MyTheme.dark_grey.withOpacity(0.3),
                       blurRadius: 5,
                       spreadRadius: 3,
                     )
-                  ]
-              ),
+                  ]),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
-                  Text(_singlePriceString!=null ? _singlePriceString:"0.0", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 16),),
-                  Text("Individual", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 16),),
+                  Text(
+                    _singlePriceString != null ? _singlePriceString : "0.0",
+                    style:
+                        LatoHeavy.copyWith(color: Colors.white, fontSize: 16),
+                  ),
+                  Text(
+                    "Individual",
+                    style:
+                        LatoHeavy.copyWith(color: Colors.white, fontSize: 16),
+                  ),
                 ],
               ),
             ),
             InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context){
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return GroupBuyingProductDetails();
                 }));
               },
@@ -956,7 +1014,9 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                 height: 70,
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), topRight: Radius.circular(20)),
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(20),
+                        topRight: Radius.circular(20)),
                     border: Border.all(color: Colors.redAccent, width: 3),
                     boxShadow: [
                       BoxShadow(
@@ -964,13 +1024,21 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                         blurRadius: 4,
                         spreadRadius: 3,
                       )
-                    ]
-                ),
+                    ]),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("৳${_checkGroupBuying.minPrice}-৳${_checkGroupBuying.maxPrice}", style: LatoHeavy.copyWith(color: Colors.redAccent,),),
-                    Text("Discount", style: LatoHeavy.copyWith(color: Colors.redAccent, fontSize: 16),),
+                    Text(
+                      "৳${_checkGroupBuying.minPrice}-৳${_checkGroupBuying.maxPrice}",
+                      style: LatoHeavy.copyWith(
+                        color: Colors.redAccent,
+                      ),
+                    ),
+                    Text(
+                      "Discount",
+                      style: LatoHeavy.copyWith(
+                          color: Colors.redAccent, fontSize: 16),
+                    ),
                   ],
                 ),
               ),
@@ -1014,13 +1082,15 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
           AppLocalizations.of(context).product_details_screen_quantity,
           style: LatoHeavy,
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Container(
           height: 26,
           width: 100,
           decoration: BoxDecoration(
               border:
-              Border.all(color: Color.fromRGBO(222, 222, 222, 1), width: 1),
+                  Border.all(color: Color.fromRGBO(222, 222, 222, 1), width: 1),
               borderRadius: BorderRadius.circular(36.0),
               color: Colors.white),
           child: Row(
@@ -1032,9 +1102,9 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                   width: 26,
                   child: Center(
                       child: Text(
-                        _quantity.toString(),
-                        style: TextStyle(fontSize: 18, color: MyTheme.dark_grey),
-                      ))),
+                    _quantity.toString(),
+                    style: TextStyle(fontSize: 18, color: MyTheme.dark_grey),
+                  ))),
               buildQuantityUpButton()
             ],
           ),
@@ -1184,7 +1254,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
           return Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child:
-            buildChoiceOpiton(_productDetails.data[0].choiceOptions, index),
+                buildChoiceOpiton(_productDetails.data[0].choiceOptions, index),
           );
         },
       ),
@@ -1219,7 +1289,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
         ),*/
         )
 
-      /* Row(
+        /* Row(
         children: [
           Padding(
             padding: app_language_rtl.$ ? EdgeInsets.only(left: 8.0) : EdgeInsets.only(right: 8.0),
@@ -1234,7 +1304,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
 
         ],
       ),*/
-    );
+        );
   }
 
   buildChoiceItem(option, choice_options_index, index) {
@@ -1357,7 +1427,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
     return Padding(
         padding: const EdgeInsets.all(3),
         child: /*Icon(FontAwesome.check, color: Colors.white, size: 16),*/
-        Image.asset(
+            Image.asset(
           "assets/white_tick.png",
           width: 16,
           height: 16,
@@ -1386,7 +1456,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
               color: Color.fromRGBO(253, 235, 212, 1)),
           child: Padding(
             padding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
             child: Text(
               _productDetails.data[0].earnPoint.toString(),
               style: TextStyle(color: MyTheme.golden, fontSize: 12.0),
@@ -1401,10 +1471,11 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-            AppLocalizations.of(context).product_details_screen_total_price,
+        Text(AppLocalizations.of(context).product_details_screen_total_price,
             style: LatoHeavy),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         /* _productDetails.data[0].hasDiscount
             ? Padding(
                 padding: EdgeInsets.only(right: 8.0),
@@ -1416,10 +1487,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                         fontWeight: FontWeight.w600)),
               )
             : Container(),*/
-        Text(
-            _singlePriceString,
-            style: LatoHeavy
-        )
+        Text(_singlePriceString, style: LatoHeavy)
       ],
     );
   }
@@ -1429,7 +1497,11 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
       backgroundColor: Colors.white,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 25,),
+          icon: Icon(
+            Icons.arrow_back,
+            color: MyTheme.primary_Colour,
+            size: 25,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -1445,7 +1517,10 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                 padding: const EdgeInsets.only(top: 22.0),
                 child: Text(
                   "Product Details",
-                  style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primary_Colour, fontWeight: FontWeight.w900),
+                  style: LatoHeavy.copyWith(
+                      fontSize: 20,
+                      color: MyTheme.primary_Colour,
+                      fontWeight: FontWeight.w900),
                 ),
               ),
             )),
@@ -1528,21 +1603,22 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
       children: [
         Text(
           _productDetails.data[0].mainPrice,
-          style: LatoHeavy.copyWith(color: MyTheme.black, fontWeight: FontWeight.w800),
+          style: LatoHeavy.copyWith(
+              color: MyTheme.black, fontWeight: FontWeight.w800),
         ),
         Spacer(),
         RatingBar(
           itemSize: 14.0,
           ignoreGestures: true,
           initialRating:
-          double.parse(_productDetails.data[0].rating.toString()),
+              double.parse(_productDetails.data[0].rating.toString()),
           direction: Axis.horizontal,
           allowHalfRating: false,
           itemCount: 5,
           ratingWidget: RatingWidget(
             full: Icon(FontAwesome.star, color: MyTheme.primary_Colour),
-            empty:
-            Icon(FontAwesome.star, color: MyTheme.dark_grey.withOpacity(0.7)),
+            empty: Icon(FontAwesome.star,
+                color: MyTheme.dark_grey.withOpacity(0.7)),
           ),
           itemPadding: EdgeInsets.only(right: 1.0),
           onRatingUpdate: (rating) {
@@ -1553,11 +1629,9 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Text(
             "(" + _productDetails.data[0].ratingCount.toString() + ")",
-            style: TextStyle(
-                color: MyTheme.dark_grey, fontSize: 14),
+            style: TextStyle(color: MyTheme.dark_grey, fontSize: 14),
           ),
         ),
-
       ],
     );
   }
@@ -1567,7 +1641,8 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
       height: 50,
       decoration: BoxDecoration(
         color: MyTheme.primary_Colour,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
       ),
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -1575,7 +1650,8 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
           children: [
             Text(
               "Discount Buying\nTime Remaining",
-              style: LatoMedium.copyWith(color: MyTheme.white, fontWeight: FontWeight.w700),
+              style: LatoMedium.copyWith(
+                  color: MyTheme.white, fontWeight: FontWeight.w700),
             ),
             Spacer(),
             Padding(
@@ -1583,124 +1659,128 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
               child: Text(
                 "01.02.50",
                 style: LatoMedium.copyWith(
-                    color: MyTheme.white, fontSize: 14, fontWeight: FontWeight.w700),
+                    color: MyTheme.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
- timeIconRow() {
+
+  timeIconRow() {
     return Container(
       height: 35,
       width: 35,
       decoration: BoxDecoration(
-        color: MyTheme.primary_Colour,
-        shape: BoxShape.circle,
-        border: Border.all(width: 1.5, color: MyTheme.white)
-      ),
+          color: MyTheme.primary_Colour,
+          shape: BoxShape.circle,
+          border: Border.all(width: 1.5, color: MyTheme.white)),
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Image.asset(Images.profile_Home, height: 30, width: 30,)
-      ),
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: Image.asset(
+            Images.profile_Home,
+            height: 30,
+            width: 30,
+          )),
     );
   }
 
   buildBrandRow() {
     return _productDetails.data[0].brand.id > 0
         ? InkWell(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return BrandProducts(
-            id: _productDetails.data[0].brand.id,
-            brand_name: _productDetails.data[0].brand.name,
-          );
-        }));
-      },
-      child: Row(
-        children: [
-          Padding(
-            padding: app_language_rtl.$
-                ? EdgeInsets.only(left: 8.0)
-                : EdgeInsets.only(right: 8.0),
-            child: Container(
-              width: 75,
-              child: Text(
-                AppLocalizations.of(context).product_details_screen_brand,
-                style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
-              ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return BrandProducts(
+                  id: _productDetails.data[0].brand.id,
+                  brand_name: _productDetails.data[0].brand.name,
+                );
+              }));
+            },
+            child: Row(
+              children: [
+                Padding(
+                  padding: app_language_rtl.$
+                      ? EdgeInsets.only(left: 8.0)
+                      : EdgeInsets.only(right: 8.0),
+                  child: Container(
+                    width: 75,
+                    child: Text(
+                      AppLocalizations.of(context).product_details_screen_brand,
+                      style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Text(
+                    _productDetails.data[0].brand.name,
+                    style: TextStyle(
+                        color: Color.fromRGBO(152, 152, 153, 1), fontSize: 16),
+                  ),
+                ),
+                Spacer(),
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                        color: Color.fromRGBO(112, 112, 112, .3), width: 1),
+                    //shape: BoxShape.rectangle,
+                  ),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
+                        image: AppConfig.BASE_PATH +
+                            _productDetails.data[0].brand.logo,
+                        fit: BoxFit.contain,
+                      )),
+                ),
+              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: Text(
-              _productDetails.data[0].brand.name,
-              style: TextStyle(
-                  color: Color.fromRGBO(152, 152, 153, 1), fontSize: 16),
-            ),
-          ),
-          Spacer(),
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                  color: Color.fromRGBO(112, 112, 112, .3), width: 1),
-              //shape: BoxShape.rectangle,
-            ),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/placeholder.png',
-                  image: AppConfig.BASE_PATH +
-                      _productDetails.data[0].brand.logo,
-                  fit: BoxFit.contain,
-                )),
-          ),
-        ],
-      ),
-    )
+          )
         : Container();
   }
 
   ExpandableNotifier buildExpandableDescription() {
     return ExpandableNotifier(
         child: ScrollOnExpand(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              /*Expandable(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          /*Expandable(
             collapsed: Container(
                 height: 50, child: Html(data: _productDetails.data[0].description)),
             expanded: Container(child: Html(data: _productDetails.data[0].description)),
           ),*/
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Builder(
-                    builder: (context) {
-                      var controller = ExpandableController.of(context);
-                      return FlatButton(
-                        child: Text(
-                          !controller.expanded
-                              ? AppLocalizations.of(context).common_view_more
-                              : AppLocalizations.of(context).common_show_less,
-                          style: TextStyle(color: MyTheme.font_grey, fontSize: 11),
-                        ),
-                        onPressed: () {
-                          controller.toggle();
-                        },
-                      );
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Builder(
+                builder: (context) {
+                  var controller = ExpandableController.of(context);
+                  return FlatButton(
+                    child: Text(
+                      !controller.expanded
+                          ? AppLocalizations.of(context).common_view_more
+                          : AppLocalizations.of(context).common_show_less,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 11),
+                    ),
+                    onPressed: () {
+                      controller.toggle();
                     },
-                  ),
-                ],
+                  );
+                },
               ),
             ],
           ),
-        ));
+        ],
+      ),
+    ));
   }
 
   buildTopSellingProductList() {
@@ -1809,25 +1889,25 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
           height: 100,
           child: Center(
               child: Text(
-                AppLocalizations.of(context)
-                    .product_details_screen_no_related_product,
-                style: TextStyle(color: MyTheme.font_grey),
-              )));
+            AppLocalizations.of(context)
+                .product_details_screen_no_related_product,
+            style: TextStyle(color: MyTheme.font_grey),
+          )));
     }
   }
 
   buildQuantityUpButton() => SizedBox(
-    width: 26,
-    child: IconButton(
-        icon: Icon(FontAwesome.plus, size: 12, color: MyTheme.dark_grey),
-        onPressed: () {
-          if (_quantity < _stock) {
-            _quantity++;
-            setState(() {});
-            calculateTotalPrice();
-          }
-        }),
-  );
+        width: 26,
+        child: IconButton(
+            icon: Icon(FontAwesome.plus, size: 12, color: MyTheme.dark_grey),
+            onPressed: () {
+              if (_quantity < _stock) {
+                _quantity++;
+                setState(() {});
+                calculateTotalPrice();
+              }
+            }),
+      );
 
   buildQuantityDownButton() => SizedBox(
       width: 26,
@@ -1842,11 +1922,11 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
           }));
 
   openPhotoDialog(BuildContext context, path) => showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-        child: Container(
-            child: Stack(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+                child: Stack(
               children: [
                 PhotoView(
                   enableRotation: true,
@@ -1879,9 +1959,9 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                 ),
               ],
             )),
+          );
+        },
       );
-    },
-  );
 
   buildProductImagePart() {
     if (_productImageList.length == 0) {
@@ -1938,11 +2018,11 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                     width: 50,
                     child: _productDetails != null
                         ? (_colorList.length > 0
-                        ? buildColorColumn()
-                        : Container())
+                            ? buildColorColumn()
+                            : Container())
                         : ShimmerHelper().buildBasicShimmer(
-                      height: 30.0,
-                    ),
+                            height: 30.0,
+                          ),
                   ),
                 ),
                 //SizedBox(width: 10,),
@@ -1992,13 +2072,18 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                                       _productImageList[_currentImage]);
                             },
                             child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-                              ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30)),
+                                ),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30)),
                                   child: FadeInImage.assetNetwork(
-                                    placeholder: 'assets/placeholder_rectangle.png',
+                                    placeholder:
+                                        'assets/placeholder_rectangle.png',
                                     image: AppConfig.BASE_PATH +
                                         _productImageList[_currentImage],
                                     fit: BoxFit.scaleDown,
@@ -2006,7 +2091,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                                 )),
                           ),
                           left: 10,
-                          right:10,
+                          right: 10,
                           top: 10,
                           bottom: 70,
                         ),
@@ -2036,7 +2121,6 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                           right: 0,
                           bottom: 30,
                         ),
-
                       ],
                     )),
 
@@ -2060,8 +2144,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
       width: 150,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8
-        ),
+        borderRadius: BorderRadius.circular(8),
         // border: Border.all(color: Colors.grey),
         boxShadow: [
           BoxShadow(
@@ -2072,13 +2155,18 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
           ),
         ],
       ),
-
       child: Row(
         children: [
-          Padding(padding: EdgeInsets.all(5),
-            child: Text("Description", style: LatoBold,),),
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: Text(
+              "Description",
+              style: LatoBold,
+            ),
+          ),
           Icon(
-            Icons.fifteen_mp_outlined ,  color: MyTheme.primary_Colour,
+            Icons.fifteen_mp_outlined,
+            color: MyTheme.primary_Colour,
           )
         ],
       ),
@@ -2086,84 +2174,206 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
   }
 
   priceRangeRow(BuildContext context) {
-  return  Container(
-    margin: EdgeInsets.all(20),
+    return Container(
+      margin: EdgeInsets.all(20),
       child: Column(
         children: [
-
           Container(
-            height: 30,
+            height: 35,
             decoration: BoxDecoration(
-              color: MyTheme.red_div,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
-
-            ),
+                color: MyTheme.red_div,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10))),
             child: Center(
-              child: Text("Invite Friends And Family", style: LatoBold.copyWith(color: MyTheme.white, fontSize: 18, fontWeight: FontWeight.w800),),
+              child: Text(
+                "Invite Friends And Family",
+                style: LatoHeavy.copyWith(
+                    color: Colors.white,
+                    fontSize: 20,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black45.withOpacity(0.3),
+                        offset: Offset(3, 3),
+                        blurRadius: 5,
+                      ),
+                    ],
+                    fontWeight: FontWeight.w900),
+              ),
             ),
           ),
-
           Table(
             border: TableBorder.all(width: 1, color: MyTheme.primary_Colour),
             columnWidths: {
-              0: FlexColumnWidth(1),
-              1: FlexColumnWidth(6),
-              2: FlexColumnWidth(4),
+              0: FlexColumnWidth(6),
+              1: FlexColumnWidth(4),
             },
             children: [
-              TableRow(
-                children: [
-                  Container(
-                    width: 20,
+              TableRow(children: [
+                /*Container(
+                  width: 20,
+                  padding: EdgeInsets.all(8),
+                  child: Center(
+                      child: Text(
+                    "#",
+                    style: LatoBold.copyWith(
+                      color: MyTheme.black,
+                    ),
+                  )),
+                ),*/
+                Expanded(
+                  child: Container(
                     padding: EdgeInsets.all(8),
-                    child: Center(child: Text("#", style: LatoBold.copyWith(color: MyTheme.black,),)),
+                    child: Center(
+                        child: Text(
+                      "Group Sell",
+                      style: LatoHeavy.copyWith(
+                        color: MyTheme.black,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18
+
+                      ),
+                    )),
                   ),
+                ),
+                Container(
+                  width: 70,
+                  padding: EdgeInsets.all(8),
+                  child: Center(
+                      child: Text(
+                    "Price",
+                    style: LatoHeavy.copyWith(
+                      color: MyTheme.black,
+                      fontWeight: FontWeight.w900,
+                        fontSize: 18
+                    ),
+                  )),
+                ),
+              ]),
+              for (var groupProduct in _groupProductDetails.data)
+                TableRow(children: [
+                  /*Container(
+                    width: 20,
+                    padding: EdgeInsets.all(6),
+                    child: Center(
+                        child: Container(
+                          height: 25,
+                          width: 25,
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: MyTheme.red_div,
+                          ),
+
+                          child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white
+                            ),
+                          ),
+                        )),
+                  ),*/
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.all(8),
-                      child: Center(child: Text("Group Sell", style: LatoBold.copyWith(color: MyTheme.black,),)),
+                      child: Center(
+                          child: Text(
+                        groupProduct.quantityRange,
+                        style: LatoBold.copyWith(
+                          color: MyTheme.black,
+                        ),
+                      )),
                     ),
                   ),
                   Container(
                     width: 70,
                     padding: EdgeInsets.all(8),
-                    child: Center(child: Text("Price", style: LatoBold.copyWith(color: MyTheme.black,),)),
+                    child: Center(
+                        child: Text(
+                      groupProduct.price,
+                      style: LatoBold.copyWith(
+                        color: MyTheme.black,
+                      ),
+                    )),
                   ),
-
-
-                ]
-              ),
-
-             for(var id in list)  TableRow(
-                 children: [
-                   Container(
-                     width: 20,
-                     padding: EdgeInsets.all(8),
-                     child: Center(child: Text(id.toString(), style: LatoBold.copyWith(color: MyTheme.black,),)),
-                   ),
-                   Expanded(
-                     child: Container(
-                       padding: EdgeInsets.all(8),
-                       child: Center(child: Text("Group Sell", style: LatoBold.copyWith(color: MyTheme.black,),)),
-                     ),
-                   ),
-                   Container(
-                     width: 70,
-                     padding: EdgeInsets.all(8),
-                     child: Center(child: Text("Price", style: LatoBold.copyWith(color: MyTheme.black,),)),
-                   ),
-
-
-                 ]
-             ),
+                ]),
             ],
           )
-
         ],
       ),
     );
   }
 
+  cartAndCheckoutRow(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            children: [
+              Container(
+                height: 30,
+              ),
+              InkWell(
+                onTap: (){
+
+                },
+                child: Container(
+                    height: 40,
+                    width: 150,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    decoration: BoxDecoration(
+                        color: MyTheme.primary_Colour,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                              color: MyTheme.dark_grey.withOpacity(0.3),
+                              spreadRadius: 1.5,
+                              blurRadius: 3
+                          )
+                        ]
+                    ),
+                    child: Center(child: Text("Add to cart", style: LatoHeavy.copyWith(color: MyTheme.white, fontSize: 18),))
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              Container(
+                height: 30,
+                child: Text("Require ${_groupProductDetails.advancePayment}% amount to join"),
+              ),
+              InkWell(
+                onTap: (){
+
+                },
+                child: Container(
+                    height: 40,
+                    width: 150,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    decoration: BoxDecoration(
+                        color: MyTheme.primary_Colour,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                              color: MyTheme.dark_grey.withOpacity(0.3),
+                              spreadRadius: 1.5,
+                              blurRadius: 3
+                          )
+                        ]
+                    ),
+                    child: Center(child: Text("Confirm", style: LatoHeavy.copyWith(color: MyTheme.white, fontSize: 18),))
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+
+  }
 }
-
-

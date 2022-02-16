@@ -15,7 +15,7 @@ AppBar buildAppBarWithBackAndTitle(BuildContext context, String title) {
     centerTitle: true,
     leading: Builder(
       builder: (context) => IconButton(
-        icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 25,),
+        icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 35,),
         onPressed: () => Navigator.of(context).pop(),
       ),
     ),

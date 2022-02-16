@@ -6,6 +6,7 @@ import 'package:active_ecommerce_flutter/screens/cart.dart';
 import 'package:active_ecommerce_flutter/screens/category_list.dart';
 import 'package:active_ecommerce_flutter/screens/congratulation.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
+import 'package:active_ecommerce_flutter/screens/group_buying_product.dart';
 import 'package:active_ecommerce_flutter/screens/home.dart';
 import 'package:active_ecommerce_flutter/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,7 +30,7 @@ class _MainState extends State<Main> {
     /*CategoryList(
       is_base_category: true,
     ),*/
-    Congratulations(),
+    GroupBuyingProduct(),
     Cart(has_bottomnav: true),
     Profile(),
     // MyWidget()

@@ -98,7 +98,9 @@ class _ProfileState extends State<Profile> {
         counterText(_wishlistCounter.toString(), default_length: 2);
     _orderCounterString =
         counterText(_orderCounter.toString(), default_length: 2);
-    setState(() {});
+    setState(() {
+
+    });
   }
 
   String counterText(String txt, {default_length = 3}) {
