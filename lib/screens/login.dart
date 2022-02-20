@@ -20,7 +20,6 @@ import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -125,11 +124,13 @@ class _LoginState extends State<Login> {
     }
   }
 
+/*
   onPressedFacebookLogin() async {
     final facebookLogin = FacebookLogin();
     final facebookLoginResult = await facebookLogin.logIn(['email']);
 
-    /*print(facebookLoginResult.accessToken);
+    */
+/*print(facebookLoginResult.accessToken);
     print(facebookLoginResult.accessToken.token);
     print(facebookLoginResult.accessToken.expires);
     print(facebookLoginResult.accessToken.permissions);
@@ -137,7 +138,8 @@ class _LoginState extends State<Login> {
     print(facebookLoginResult.accessToken.isValid());
 
     print(facebookLoginResult.errorMessage);
-    print(facebookLoginResult.status);*/
+    print(facebookLoginResult.status);*//*
+
 
     final token = facebookLoginResult.accessToken.token;
 
@@ -147,14 +149,16 @@ class _LoginState extends State<Login> {
     final graphResponse = await http.get(url);
     final profile = json.decode(graphResponse.body);
     //print(profile);
-    /*from profile you will get the below params
+    */
+/*from profile you will get the below params
     {
      "name": "Iiro Krankka",
      "first_name": "Iiro",
      "last_name": "Krankka",
      "email": "iiro.krankka\u0040gmail.com",
      "id": "<user id here>"
-    }*/
+    }*//*
+
 
     var loginResponse = await AuthRepository().getSocialLoginResponse(
         profile['name'], profile['email'], profile['id'].toString());
@@ -171,6 +175,7 @@ class _LoginState extends State<Login> {
       }));
     }
   }
+*/
 
   onPressedGoogleLogin() async {
     GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -599,7 +604,7 @@ class _LoginState extends State<Login> {
                                     visible: SocialConfig.allow_facebook_login,
                                     child: InkWell(
                                       onTap: () {
-                                        onPressedFacebookLogin();
+                                       // onPressedFacebookLogin();
                                       },
                                       child: Container(
                                         width: 28,

@@ -787,8 +787,8 @@ class _ProfileState extends State<Profile> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(padding: EdgeInsets.only(left: 10,top: 10),
-        child: Icon(Icons.arrow_back,color: MyTheme.primary_Colour, size: 30,),),
+        /*Padding(padding: EdgeInsets.only(left: 10,top: 10),
+        child: Icon(Icons.arrow_back,color: MyTheme.primary_Colour, size: 30,),),*/
         Center(child:
         Padding(
           padding: EdgeInsets.all(10),
@@ -835,7 +835,7 @@ class _ProfileState extends State<Profile> {
                     padding: EdgeInsets.only(
                         left: Dimensions.PADDING_SIZE_DEFAULT  ),
                     child: Text(
-                      "Shamim Ahmed",
+                      "${user_name.$}",
                       // "${user_name.$}",
                       style: LatoHeavy.copyWith(
                           fontSize: 20,
@@ -864,7 +864,7 @@ class _ProfileState extends State<Profile> {
                         top: 5,
                         left: Dimensions.PADDING_SIZE_DEFAULT),
                     child: Text(
-                      "shamim@nextpage.com",
+                      "${user_email.$}",
                       style: LatoRegular.copyWith(color: Colors.black),
                     ),
                   )

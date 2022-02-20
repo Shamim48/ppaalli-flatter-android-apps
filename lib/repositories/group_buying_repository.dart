@@ -18,6 +18,8 @@ class GroupBuyingRepo{
     return groupProductResponseFromJson(response.body);
   }
 
+
+
   Future<GroupProductDetails> getGroupProductDetails({id}) async {
     Uri url = Uri.parse("${AppConfig.BASE_URL}/group/product_details/${id}");
     final response = await http.get(url, headers: {

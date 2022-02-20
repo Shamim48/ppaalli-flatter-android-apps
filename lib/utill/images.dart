@@ -18,10 +18,15 @@ class Images{
   static const String  heart='assets/icon/heart.png';
   static const String  heart_outline='assets/icon/heart_outline.png';
   static const String  chat='assets/icon/chat.png';
+  static const String  user_time='assets/icon/user_time.png';
+  static const String  qrCode='assets/icon/qr_code.png';
+  static const String  qrCodeBold='assets/icon/qr_code_bold.png';
+  static const String  timer_light='assets/icon/timer_light.png';
+  static const String  timer_havy='assets/icon/timer_havy.png';
   static const String  notifications='assets/icon/notifications.png';
 
   // Images
-  static const String  qr_code='assets/images/qr-code .png';
+  static const String  qr_code='assets/images/qr-code.png';
   static const String  onBoarding_one='assets/images/onboard1.png';
   static const String  onBoarding_two='assets/images/onboard2.png';
   static const String  onBoarding_three = 'assets/images/onboard3.png';
@@ -63,7 +68,7 @@ class Images{
 
 
   // Home Images
- //  static const String  user='assets/images/user.png';
+ //  static const String  user='assets/images/user_time.png';
  //  static const String  appointment='assets/images/appointment.png';
  //  static const String  trip='assets/images/trip.png';
  //  static const String  account='assets/images/accounts.png';

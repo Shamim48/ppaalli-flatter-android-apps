@@ -8,6 +8,11 @@ import 'package:flutter/material.dart';
 
 class Group_Buying_Card extends StatelessWidget {
 
+  DateTime convertTimeStampToDateTime(int timeStamp) {
+    var dateToTimeStamp = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
+    return dateToTimeStamp;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: SafeArea(

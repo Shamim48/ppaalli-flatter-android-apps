@@ -185,7 +185,6 @@ class _ChatState extends State<Chat> {
     }
   }
 
-
   fetch_new_message() async {
     print('fetch new message hit');
     print('-------------');

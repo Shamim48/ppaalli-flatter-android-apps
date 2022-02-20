@@ -1,3 +1,4 @@
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter_countdown_timer/index.dart';
@@ -236,14 +237,14 @@ class _FlashDealListState extends State<FlashDealList> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          timeText(time.days.toString(), default_length: 3),
+          timeText(time.days.toString()+"d", default_length: 3),
           style: TextStyle(
               color: MyTheme.primaryColor,
               fontSize: 16.0,
               fontWeight: FontWeight.w600),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+          padding: const EdgeInsets.only(left: 2.0, right: 2.0),
           child: Text(
             ":",
             style: TextStyle(
@@ -253,14 +254,14 @@ class _FlashDealListState extends State<FlashDealList> {
           ),
         ),
         Text(
-          timeText(time.hours.toString(), default_length: 2),
+          timeText(time.hours.toString()+"h", default_length: 2),
           style: TextStyle(
               color: MyTheme.primaryColor,
               fontSize: 16.0,
               fontWeight: FontWeight.w600),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+          padding: const EdgeInsets.only(left: 2.0, right: 2.0),
           child: Text(
             ":",
             style: TextStyle(
@@ -270,14 +271,14 @@ class _FlashDealListState extends State<FlashDealList> {
           ),
         ),
         Text(
-          timeText(time.min.toString(), default_length: 2),
+          timeText(time.min.toString()+"m", default_length: 2),
           style: TextStyle(
               color: MyTheme.primaryColor,
               fontSize: 16.0,
               fontWeight: FontWeight.w600),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+          padding: const EdgeInsets.only(left: 2.0, right: 2.0),
           child: Text(
             ":",
             style: TextStyle(
@@ -287,7 +288,7 @@ class _FlashDealListState extends State<FlashDealList> {
           ),
         ),
         Text(
-          timeText(time.sec.toString(), default_length: 2),
+          timeText(time.sec.toString()+"s", default_length: 2),
           style: TextStyle(
               color: MyTheme.primaryColor,
               fontSize: 16.0,
@@ -303,13 +304,13 @@ class _FlashDealListState extends State<FlashDealList> {
       centerTitle: true,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 30,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       title: Text(
         AppLocalizations.of(context).flash_deal_list_flash_deals,
-        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
+        style: LatoHeavy.copyWith(fontSize: 22, color: MyTheme.primaryColor, fontWeight: FontWeight.w900),
       ),
       elevation: 0.0,
       titleSpacing: 0,

@@ -39,8 +39,10 @@ import 'group_buying_product_details.dart';
 class ProductDetails extends StatefulWidget {
   int id;
  bool fromGroupBuying;
+ bool fromScan;
+ String slug;
 
-  ProductDetails({Key key, this.id, this.fromGroupBuying=false}) : super(key: key);
+  ProductDetails({Key key, this.id, this.fromGroupBuying=false, this.fromScan=false, this.slug=""}) : super(key: key);
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
@@ -113,8 +115,13 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   fetchProductDetails() async {
-    var productDetailsResponse =
-        await ProductRepository().getProductDetails(id: widget.id);
+    var productDetailsResponse ;
+
+    if(widget.fromScan){
+      productDetailsResponse= await ProductRepository().getProductDetailsWithSlug(slug: widget.slug);
+    }else{
+      productDetailsResponse= await ProductRepository().getProductDetails(id: widget.id);
+    }
 
     // var productDetailsResponse =_productImageList.ge;
     // if (productDetailsResponse.data.length > 0) {

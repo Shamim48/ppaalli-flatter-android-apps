@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/cart.dart';
@@ -8,10 +9,15 @@ import 'package:active_ecommerce_flutter/screens/congratulation.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/group_buying_product.dart';
 import 'package:active_ecommerce_flutter/screens/home.dart';
+import 'package:active_ecommerce_flutter/screens/product_details.dart';
 import 'package:active_ecommerce_flutter/screens/profile.dart';
+import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:toast/toast.dart';
 
 class Main extends StatefulWidget {
   Main({Key key, go_back = true}) : super(key: key);
@@ -23,6 +29,86 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   int _currentIndex = 0;
+
+  String result = "";
+  Future _scanQR() async {
+    try {
+      var cameraStatus= await Permission.camera.status;
+      if(cameraStatus.isGranted){
+        String cameraScanResult = await scanner.scan();
+        setState(() {
+          result = cameraScanResult;
+          if(result!=""){
+
+            try {
+              var resultList=result.split("/");
+              String slug = resultList[resultList.length-1];
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) {
+                    result="";
+                    return ProductDetails(fromScan: true, slug: slug);
+                    print('Profle tab Click');
+                  }));
+            }catch(e){
+              ToastComponent.showDialog("This is not Match", context, gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+              return AlertDialog(
+                title: const Text('Sorry'),
+                content: const Text('This QR code is invalid !'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Close'),
+                    child: const Text('Close'),
+                  ),
+                ],
+              );
+
+            }
+
+          }// setting string result with cameraScanResult
+        });
+      }else{
+        var permissionRequest= await Permission.camera.request();
+
+        if(permissionRequest.isGranted){
+          String cameraScanResult = await scanner.scan();
+          setState(() {
+            result = cameraScanResult;
+            if(result!=""){
+
+              try {
+                var resultList=result.split("/");
+                String slug = resultList[resultList.length-1];
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                      result="";
+                      return ProductDetails(fromScan: true, slug: slug);
+                      print('Profle tab Click');
+                    }));
+              }catch(e){
+                ToastComponent.showDialog("This is not Match", context, gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+                return AlertDialog(
+                  title: const Text('Sorry'),
+                  content: const Text('This QR code is invalid !'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Close'),
+                      child: const Text('Close'),
+                    ),
+                  ],
+                );
+
+              }
+
+            }// setting string result with cameraScanResult
+          });
+        }
+      }
+
+    } on PlatformException catch (e) {
+      print(e);
+    }
+  }
+
   var _children = [
    // Cart(has_bottomnav: true),
 
@@ -195,6 +281,32 @@ class _MainState extends State<Main> {
     ),
     )*/
                   ),
+                  BottomNavigationBarItem(
+                    icon: GestureDetector(
+                      onTap: () {
+                        _scanQR();
+
+                       // onTapped(2);
+                      /*  Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Cart(has_bottomnav: true,);
+                          print('Profle tab Click');
+                        }));*/
+                      },
+                      child: Image.asset(
+                        Images.qrCodeBold,
+                        color: _currentIndex == 3
+                            ? MyTheme.white
+                            : MyTheme.light_grey,
+                        height: 25,
+                      ),
+                    ),
+                    title: Text(
+                      "",
+                      style: TextStyle(fontSize: 12, color: MyTheme.white),
+                    ),
+                  ),
+
                   BottomNavigationBarItem(
                     icon: GestureDetector(
                       onTap: () {

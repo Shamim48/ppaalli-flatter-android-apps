@@ -70,6 +70,8 @@
 
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>location when in use</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Need Camera Permission for Scanning QR</string>
 
 
 

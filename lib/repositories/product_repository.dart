@@ -110,6 +110,18 @@ Future<ProductMiniResponse> getLinkProducts(
     return productDetailsResponseFromJson(response.body);
   }
 
+  Future<ProductDetailsResponse> getProductDetailsWithSlug(
+      {@required String slug = ""}) async {
+   // Uri url = Uri.parse("${AppConfig.BASE_URL}/products/${37}");
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/products/slug/${slug}");
+    final response = await http.get(url, headers: {
+      "App-Language": app_language.$,
+    });
+    return productDetailsResponseFromJson(response.body);
+  }
+
+
+
   Future<ProductMiniResponse> getRelatedProducts({@required int id = 0}) async {
     Uri url =
         Uri.parse("${AppConfig.BASE_URL}/products/related/" +id.toString());
