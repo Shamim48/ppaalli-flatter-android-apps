@@ -17,6 +17,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class Chat extends StatefulWidget {
+
   Chat({
     Key key,
     this.conversation_id,
@@ -135,8 +136,6 @@ class _ChatState extends State<Chat> {
     _showLoadingContainer = true;
     _groupShowLoadingContainer=true;
     widget.isGroup ? fetchGroupData(): fetchSellerData();
-
-
   }
 
   onTapSendMessage() async {

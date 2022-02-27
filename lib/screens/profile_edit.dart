@@ -389,7 +389,7 @@ backgroundColor: Colors.white,
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Container(
-                    width: 120,
+                    width: 150,
                     height: 40,
                     decoration: BoxDecoration(
                         border:
@@ -405,7 +405,7 @@ backgroundColor: Colors.white,
                               const BorderRadius.all(Radius.circular(30.0))),
                       child: Text(
                         AppLocalizations.of(context).profile_edit_screen_btn_update_profile,
-                        style: TextStyle(
+                        style: LatoBold.copyWith(
                             color: Colors.white,
                             fontSize: 14,
                             fontWeight: FontWeight.w600),

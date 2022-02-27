@@ -1,4 +1,5 @@
 import 'package:active_ecommerce_flutter/addon_config.dart';
+import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -1286,7 +1287,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       centerTitle: true,
       leading: Builder(
         builder: (context) => IconButton(
-            icon: Icon(Icons.arrow_back, color: MyTheme.dark_grey),
+            icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 30,),
             onPressed: () {
               if (widget.from_notification || widget.go_back == false) {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -1299,7 +1300,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
       title: Text(
         AppLocalizations.of(context).order_details_screen_order_details,
-        style: TextStyle(fontSize: 16, color: MyTheme.primaryColor),
+        style: LatoHeavy.copyWith(fontSize: 20, color: MyTheme.primaryColor),
       ),
       elevation: 0.0,
       titleSpacing: 0,

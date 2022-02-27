@@ -755,7 +755,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Directionality(
       textDirection: app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
-          bottomNavigationBar: buildBottomAppBar(context, _addedToCartSnackbar),
+          bottomNavigationBar: isGroup ? groupBuyingBottomAppBar(context, _addedToCartSnackbar) : buildBottomAppBar(context, _addedToCartSnackbar),
           backgroundColor: Colors.white,
           appBar: buildAppBar(statusBarHeight, context),
           body: RefreshIndicator(
@@ -1256,70 +1256,12 @@ class _ProductDetailsState extends State<ProductDetails> {
 
        Expanded(child:  Column(
        children: [
-       Text("Discount Remaining", style: LatoMedium.copyWith(color: Colors.grey,),),
+       Text("Discount Time Remaining", style: LatoMedium.copyWith(color: Colors.grey,),),
         Center(child: Text("00:00:00", style: LatoHeavy.copyWith(color: Colors.grey),)),
       ],
     )),
        // Spacer(),
 
-        Row(
-          children: [
-            Container(
-              width: 100,
-              height: 70,
-              decoration: BoxDecoration(
-                color: MyTheme.golden,
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), topLeft: Radius.circular(20)),
-
-                boxShadow: [
-                  BoxShadow(
-                    color: MyTheme.dark_grey.withOpacity(0.3),
-                    blurRadius: 5,
-                    spreadRadius: 3,
-                  )
-                ]
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-
-                  Text(_singlePriceString!=null ? _singlePriceString:"0.0", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 16),),
-                  Text("Individual", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 16),),
-                ],
-              ),
-            ),
-            InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return GroupBuyingProductDetails(id: widget.id,);
-                }));
-              },
-              child: Container(
-                width: 120,
-                height: 70,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), topRight: Radius.circular(20)),
-                 border: Border.all(color: Colors.redAccent, width: 3),
-                    boxShadow: [
-                      BoxShadow(
-                          color: MyTheme.dark_grey.withOpacity(0.3),
-                          blurRadius: 4,
-                          spreadRadius: 3,
-                      )
-                    ]
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("৳${_checkGroupBuying.minPrice}-৳${_checkGroupBuying.maxPrice}", style: LatoHeavy.copyWith(color: Colors.redAccent,),),
-                    Text("Discount", style: LatoHeavy.copyWith(color: Colors.redAccent, fontSize: 16),),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        )
       ],
     );
   }
@@ -1772,7 +1714,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       backgroundColor: Colors.white,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 25,),
+          icon: Icon(Icons.arrow_back, color: MyTheme.primary_Colour, size: 30,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -2429,5 +2371,84 @@ class _ProductDetailsState extends State<ProductDetails> {
         ],
       ),
     );
+  }
+
+  groupBuyingBottomAppBar(BuildContext context, _addedToCartSnackbar) {
+
+    return Builder(builder: (BuildContext context) {
+      return BottomAppBar(
+        child: Container(
+          color: Colors.transparent,
+          height: 60,
+          child: Row(
+            children: [
+              InkWell(
+                onTap: (){
+                  onPressAddToCart(context, _addedToCartSnackbar);
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width/2,
+                  height: 60,
+                  decoration: BoxDecoration(
+                      color: MyTheme.golden,
+                      borderRadius: BorderRadius.only( topLeft: Radius.circular(10)),
+
+                      boxShadow: [
+                        BoxShadow(
+                          color: MyTheme.dark_grey.withOpacity(0.3),
+                          blurRadius: 5,
+                          spreadRadius: 3,
+                        )
+                      ]
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      Text(_singlePriceString!=null ? _singlePriceString:"0.0", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 16),),
+                      Text("Individual add to cart", style: LatoHeavy.copyWith(color: Colors.white, fontSize: 16),),
+                    ],
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return GroupBuyingProductDetails(id: widget.id,);
+                  }));
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width/2,
+                  height: 70,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only( topRight: Radius.circular(10)),
+                      border: Border.all(color: Colors.redAccent, width: 3),
+                      boxShadow: [
+                        BoxShadow(
+                          color: MyTheme.dark_grey.withOpacity(0.3),
+                          blurRadius: 4,
+                          spreadRadius: 3,
+                        )
+                      ]
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("৳${_checkGroupBuying.minPrice}-৳${_checkGroupBuying.maxPrice}", style: LatoHeavy.copyWith(color: Colors.redAccent,),),
+                      Text("Discount", style: LatoHeavy.copyWith(color: Colors.redAccent, fontSize: 16),),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+
+
+
+
   }
 }

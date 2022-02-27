@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:active_ecommerce_flutter/addon_config.dart';
-import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/intl_phone_input.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
@@ -11,9 +10,9 @@ import 'package:active_ecommerce_flutter/other_config.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
-import 'package:active_ecommerce_flutter/screens/otp.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
 import 'package:active_ecommerce_flutter/screens/registration.dart';
+import 'package:active_ecommerce_flutter/screens/student_reg.dart';
 import 'package:active_ecommerce_flutter/social_config.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
@@ -522,7 +521,7 @@ class _LoginState extends State<Login> {
                                 onTap: () {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return Registration();
+                                    return StudentReg();
                                   }));
                                 },
                                 child: Text(

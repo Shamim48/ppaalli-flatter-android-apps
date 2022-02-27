@@ -61,9 +61,9 @@ class _CongratulationsState extends State<Congratulations> {
                 children: [
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return Main();
-                      }));
+
+                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                          Main()), (Route<dynamic> route) => false);
                     },
                     child: Container(
                       height: 40,

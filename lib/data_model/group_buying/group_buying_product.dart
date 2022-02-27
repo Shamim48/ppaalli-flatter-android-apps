@@ -141,10 +141,10 @@ class Data {
 
 class GroupbuyingInfo {
   String _minMaxPrice;
-  String _startTime;
-  String _endTime;
+  int _startTime;
+  int _endTime;
 
-  GroupbuyingInfo({String minMaxPrice, String startTime, String endTime}) {
+  GroupbuyingInfo({String minMaxPrice, int startTime, int endTime}) {
     this._minMaxPrice = minMaxPrice;
     this._startTime = startTime;
     this._endTime = endTime;
@@ -152,10 +152,10 @@ class GroupbuyingInfo {
 
   String get minMaxPrice => _minMaxPrice;
   set minMaxPrice(String minMaxPrice) => _minMaxPrice = minMaxPrice;
-  String get startTime => _startTime;
-  set startTime(String startTime) => _startTime = startTime;
-  String get endTime => _endTime;
-  set endTime(String endTime) => _endTime = endTime;
+  int get startTime => _startTime;
+  set startTime(int startTime) => _startTime = startTime;
+  int get endTime => _endTime;
+  set endTime(int endTime) => _endTime = endTime;
 
   GroupbuyingInfo.fromJson(Map<String, dynamic> json) {
     _minMaxPrice = json['min_max_price'];

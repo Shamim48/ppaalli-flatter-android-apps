@@ -23,8 +23,10 @@ class GroupBuyingProductCard extends StatefulWidget {
   String name;
   String main_price;
   int rating;
+  int startTime;
+  int endTime;
 
-  GroupBuyingProductCard({Key key,this.id, this.image, this.name, this.main_price,this.rating=0}) : super(key: key);
+  GroupBuyingProductCard({Key key,this.id, this.image, this.name, this.main_price,this.rating=0, this.startTime, this.endTime}) : super(key: key);
 
   @override
   _GroupBuyingProductCardState createState() => _GroupBuyingProductCardState();
@@ -51,11 +53,14 @@ class _GroupBuyingProductCardState extends State<GroupBuyingProductCard> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    end = convertTimeStampToDateTime(1646071140);
-    diff = end.difference(now).inMilliseconds;
-    endTime = diff + now.millisecondsSinceEpoch;
-    void onEnd() {}
-    _timerController=CountdownTimerController(endTime: endTime, onEnd: onEnd);
+    if(endTime!=0){
+      end = convertTimeStampToDateTime(1646376303);
+      diff = end.difference(now).inMilliseconds;
+      endTime = diff + now.millisecondsSinceEpoch;
+      void onEnd() {}
+      _timerController=CountdownTimerController(endTime: endTime, onEnd: onEnd);
+    }
+
 
   }
 
@@ -95,6 +100,7 @@ class _GroupBuyingProductCardState extends State<GroupBuyingProductCard> {
                 MaterialPageRoute(builder: (context) {
                   return ProductDetails(
                     id: widget.id,
+                    fromGroupBuying: true,
                   );
                 }));
           },
@@ -129,20 +135,21 @@ class _GroupBuyingProductCardState extends State<GroupBuyingProductCard> {
 
 
 
-                         Positioned(child:  Container(
+                         Positioned(child: widget.startTime!=0 ?  Container(
 
                             padding: EdgeInsets.only(top: 3, bottom: 3, left: 5, right: 15),
                             decoration: BoxDecoration(
                                 color: MyTheme.primary_Colour.withOpacity(0.8),
                               borderRadius: BorderRadius.circular(30)
                             ),
-                            child: Text("${time.days}d.${time.hours}h.${time.min}m.${time.sec}s",style:  LatoHeavy.copyWith(color: MyTheme.white, fontWeight: FontWeight.w900),)),
+                            child: Text(time.days.toString()+"d.${time.hours}h.${time.min}m.${time.sec}s",style:  LatoHeavy.copyWith(color: MyTheme.white, fontWeight: FontWeight.w900),))
+                         : Container(),
                         top: 6,
                         right: 15,
                       ),
 
 
-                        Positioned(child: Container(
+                        Positioned(child: widget.startTime!=0 ? Container(
                           width: 30,
                           height: 30,
                           padding: EdgeInsets.all(4.5),
@@ -152,7 +159,8 @@ class _GroupBuyingProductCardState extends State<GroupBuyingProductCard> {
                           ),
 
                           child: Image.asset(Images.timer_light, color: Colors.white,),
-                        ),
+                        )
+                        : Container(),
                           top: 1,
                           right: 1,
                         ),

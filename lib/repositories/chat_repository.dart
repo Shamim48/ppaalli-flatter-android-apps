@@ -116,7 +116,7 @@ class ChatRepository {
   Future<MessageResponse> getNewMessageResponse(
       {@required conversation_id, @required last_message_id}) async {
     Uri url = Uri.parse(
-        "${AppConfig.BASE_URL}/chat/get-new-messages/${conversation_id}/${last_message_id}");
+        "${AppConfig.BASE_URL}/seller/chat/new_messages/${conversation_id}/${last_message_id}");
     final response = await http.get(
       url,
       headers: {

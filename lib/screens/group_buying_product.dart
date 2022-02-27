@@ -173,6 +173,9 @@ class _GroupBuyingProductState extends State<GroupBuyingProduct> {
                       image: _groupBuyingProductList[index].thumbnailImage,
                       name: _groupBuyingProductList[index].name,
                       main_price: _groupBuyingProductList[index].basePrice,
+                      startTime: _groupBuyingProductList[index].groupbuyingInfo.startTime!=null ? _groupBuyingProductList[index].groupbuyingInfo.startTime: 0,
+                      endTime: _groupBuyingProductList[index].groupbuyingInfo.endTime!=null ? _groupBuyingProductList[index].groupbuyingInfo.endTime:0,
+
                       /*baseDiscountedPrice: _groupBuyingProductList[index].baseDiscountedPrice,
                       discount: _groupBuyingProductList[index].discount,
                       discountType: _groupBuyingProductList[index].discountType,

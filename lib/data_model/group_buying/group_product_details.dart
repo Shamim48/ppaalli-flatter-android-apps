@@ -8,8 +8,8 @@ class GroupProductDetails {
   int _status;
   String _message;
   String _minMaxPrice;
-  String _startTime;
-  String _endTime;
+  int _startTime;
+  int _endTime;
   int _advancePayment;
   List<Data> _data;
 
@@ -18,8 +18,8 @@ class GroupProductDetails {
         int status,
         String message,
         String minMaxPrice,
-        String startTime,
-        String endTime,
+        int startTime,
+        int endTime,
         int advancePayment,
         List<Data> data}) {
     this._success = success;
@@ -40,10 +40,10 @@ class GroupProductDetails {
   set message(String message) => _message = message;
   String get minMaxPrice => _minMaxPrice;
   set minMaxPrice(String minMaxPrice) => _minMaxPrice = minMaxPrice;
-  String get startTime => _startTime;
-  set startTime(String startTime) => _startTime = startTime;
-  String get endTime => _endTime;
-  set endTime(String endTime) => _endTime = endTime;
+  int get startTime => _startTime;
+  set startTime(int startTime) => _startTime = startTime;
+  int get endTime => _endTime;
+  set endTime(int endTime) => _endTime = endTime;
   int get advancePayment => _advancePayment;
   set advancePayment(int advancePayment) => _advancePayment = advancePayment;
   List<Data> get data => _data;

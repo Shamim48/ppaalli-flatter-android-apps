@@ -345,7 +345,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
     fetchAndSetVariantWiseInfo();
   }
 
-  onPressAddToCart(context, snackbar) {
+  onPressAddToCart({context, snackbar}) {
     addToCart(mode: "add_to_cart", context: context, snackbar: snackbar);
   }
 
@@ -376,26 +376,18 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
     print(_quantity);
 
     var cartAddResponse = await CartRepository()
-        .getCartAddResponse(widget.id, _variant, user_id.$, _quantity);
+        .getGroupCartAddResponse(id:widget.id, user_id: user_id.$, quantity: _quantity);
 
     if (cartAddResponse.result == false) {
       ToastComponent.showDialog(cartAddResponse.message, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
       return;
     } else {
-      if (mode == "add_to_cart") {
-        if (snackbar != null && context != null) {
-          Scaffold.of(context).showSnackBar(snackbar);
-        }
-        reset();
-        fetchAll();
-      } else if (mode == 'buy_now') {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Cart(has_bottomnav: false);
-        })).then((value) {
-          onPopped(value);
-        });
-      }
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return Cart(has_bottomnav: false);
+      })).then((value) {
+        onPopped(value);
+      });
     }
   }
 
@@ -1566,7 +1558,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                       fontWeight: FontWeight.w600),
                 ),
                 onPressed: () {
-                  onPressAddToCart(context, _addedToCartSnackbar);
+                  onPressAddToCart(context: context, snackbar:  _addedToCartSnackbar);
                 },
               ),
               SizedBox(
@@ -2318,6 +2310,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
               InkWell(
                 onTap: (){
 
+                  onPressAddToCart(context: context);
                 },
                 child: Container(
                     height: 40,

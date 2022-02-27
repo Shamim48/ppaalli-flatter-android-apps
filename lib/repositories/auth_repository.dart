@@ -1,4 +1,5 @@
 import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/university.dart';
 import 'package:http/http.dart' as http;
 import 'package:active_ecommerce_flutter/data_model/login_response.dart';
 import 'package:active_ecommerce_flutter/data_model/logout_response.dart';
@@ -61,6 +62,21 @@ class AuthRepository {
     return logoutResponseFromJson(response.body);
   }
 
+Future<University> getUniversityResponse() async {
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/universities");
+    final response = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer ${access_token.$}",
+        "App-Language": app_language.$,
+      },
+    );
+    print(response.body);
+
+    return universityResponseFromJson(response.body);
+  }
+
+
   Future<SignupResponse> getSignupResponse(
       @required String name,
       @required String email_or_phone,
@@ -76,6 +92,41 @@ class AuthRepository {
     });
 
     Uri url = Uri.parse("${AppConfig.BASE_URL}/auth/signup");
+    final response = await http.post(url,
+        headers: {
+          "Content-Type": "application/json",
+          "App-Language": app_language.$,
+        },
+        body: post_body);
+
+    return signupResponseFromJson(response.body);
+  }
+
+Future<SignupResponse> getStudentSignupResponse(
+  {
+      @required String firstName,
+      @required String lastName,
+      @required String email,
+      @required String phone,
+      @required String studentId,
+      @required int universityId,
+      @required String dateOfBirth,
+      @required String password,
+      @required String passowrd_confirmation,
+      @required String register_by}) async {
+    var post_body = jsonEncode({
+      "first_name": "$firstName",
+      "last_name": "$lastName",
+      "email": "${email}",
+      "phone": "${phone}",
+      "student_id": "${studentId}",
+      "university_id": "${universityId}",
+      "date_of_birth": "${dateOfBirth}",
+      "password": "$password",
+      "register_by": "$register_by"
+    });
+
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/auth/signup_student");
     final response = await http.post(url,
         headers: {
           "Content-Type": "application/json",
@@ -171,6 +222,8 @@ class AuthRepository {
 
     return resendCodeResponseFromJson(response.body);
   }
+
+
 
   Future<UserByTokenResponse> getUserByTokenResponse() async {
     var post_body = jsonEncode({"access_token": "${access_token.$}"});

@@ -1,17 +1,19 @@
+
 import 'dart:convert';
 
-OnGoingGroupProduct onGoingProductResponseFromJson(String str) => OnGoingGroupProduct.fromJson(json.decode(str));
+GroupOrderResponse groupOrderResponseFromJson(String str) => GroupOrderResponse.fromJson(json.decode(str));
 
-class OnGoingGroupProduct {
-  List<OnGoingData> _data;
+
+class GroupOrderResponse {
+  List<GroupOrderData> _data;
   Links _links;
   Meta _meta;
   bool _success;
   int _status;
   String _message;
 
-  OnGoingGroupProduct(
-      {List<OnGoingData> data,
+  GroupOrderResponse(
+      {List<GroupOrderData> data,
         Links links,
         Meta meta,
         bool success,
@@ -25,8 +27,8 @@ class OnGoingGroupProduct {
     this._message = message;
   }
 
-  List<OnGoingData> get data => _data;
-  set data(List<OnGoingData> data) => _data = data;
+  List<GroupOrderData> get data => _data;
+  set data(List<GroupOrderData> data) => _data = data;
   Links get links => _links;
   set links(Links links) => _links = links;
   Meta get meta => _meta;
@@ -38,11 +40,11 @@ class OnGoingGroupProduct {
   String get message => _message;
   set message(String message) => _message = message;
 
-  OnGoingGroupProduct.fromJson(Map<String, dynamic> json) {
+  GroupOrderResponse.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      _data = new List<OnGoingData>();
+      _data = new List<GroupOrderData>();
       json['data'].forEach((v) {
-        _data.add(new OnGoingData.fromJson(v));
+        _data.add(new GroupOrderData.fromJson(v));
       });
     }
     _links = json['links'] != null ? new Links.fromJson(json['links']) : null;
@@ -70,7 +72,7 @@ class OnGoingGroupProduct {
   }
 }
 
-class OnGoingData {
+class GroupOrderData {
   int _id;
   int _productId;
   int _quantityRangeId;
@@ -83,7 +85,7 @@ class OnGoingData {
   int _orderStatus;
   ProductInfo _productInfo;
 
-  OnGoingData(
+  GroupOrderData(
       {int id,
         int productId,
         int quantityRangeId,
@@ -135,7 +137,7 @@ class OnGoingData {
   ProductInfo get productInfo => _productInfo;
   set productInfo(ProductInfo productInfo) => _productInfo = productInfo;
 
-  OnGoingData.fromJson(Map<String, dynamic> json) {
+  GroupOrderData.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _productId = json['product_id'];
     _quantityRangeId = json['quantity_range_id'];
@@ -207,9 +209,9 @@ class Links {
   String _first;
   String _last;
   Null _prev;
-  String _next;
+  Null _next;
 
-  Links({String first, String last, Null prev, String next}) {
+  Links({String first, String last, Null prev, Null next}) {
     this._first = first;
     this._last = last;
     this._prev = prev;
@@ -222,8 +224,8 @@ class Links {
   set last(String last) => _last = last;
   Null get prev => _prev;
   set prev(Null prev) => _prev = prev;
-  String get next => _next;
-  set next(String next) => _next = next;
+  Null get next => _next;
+  set next(Null next) => _next = next;
 
   Links.fromJson(Map<String, dynamic> json) {
     _first = json['first'];
