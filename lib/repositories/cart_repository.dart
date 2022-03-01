@@ -43,7 +43,6 @@ class CartRepository {
     return cartDeleteResponseFromJson(response.body);
   }
 
-
   Future<CartProcessResponse> getCartProcessResponse(
       @required String cart_ids, @required String cart_quantities) async {
     var post_body = jsonEncode(

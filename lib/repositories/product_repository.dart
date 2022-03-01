@@ -1,4 +1,7 @@
 import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/student_product_check_response.dart';
+import 'package:active_ecommerce_flutter/data_model/student_product_response.dart';
+import 'package:active_ecommerce_flutter/screens/student_product.dart';
 import 'package:http/http.dart' as http;
 import 'package:active_ecommerce_flutter/data_model/product_mini_response.dart';
 import 'package:active_ecommerce_flutter/data_model/product_details_response.dart';
@@ -14,6 +17,24 @@ class ProductRepository {
     });
     return productMiniResponseFromJson(response.body);
   }
+
+  Future<StudentProductResponse> getStudentProducts({page = 1}) async {
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/products/student");
+    final response = await http.get(url, headers: {
+      "App-Language": app_language.$,
+    });
+    return studentProductMiniResponseFromJson(response.body);
+  }
+
+Future<StudentProductCheckResponse> getStudentProductsCheck({int id = 1}) async {
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/group/student_discount_check/${id}");
+    final response = await http.get(url, headers: {
+      "App-Language": app_language.$,
+    });
+    return studentProductCheckResponseFromJson(response.body);
+  }
+
+
 
   Future<ProductMiniResponse> getBestSellingProducts() async {
     Uri url = Uri.parse("${AppConfig.BASE_URL}/products/best-seller");

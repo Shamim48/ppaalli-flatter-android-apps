@@ -19,6 +19,7 @@ import 'package:active_ecommerce_flutter/screens/flash_deal_list.dart';
 import 'package:active_ecommerce_flutter/screens/messenger_list.dart';
 import 'package:active_ecommerce_flutter/screens/product_card.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
+import 'package:active_ecommerce_flutter/screens/student_product.dart';
 import 'package:active_ecommerce_flutter/screens/todays_deal_products.dart';
 import 'package:active_ecommerce_flutter/screens/top_saller.dart';
 import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
@@ -1998,8 +1999,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return CategoryList(
-                    is_top_category: true,
+                  return StudentProduct(
                   );
                 }));
               },

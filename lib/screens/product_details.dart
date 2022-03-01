@@ -82,6 +82,9 @@ class _ProductDetailsState extends State<ProductDetails> {
   List<dynamic> _topProducts = [];
   bool _topProductInit = false;
 
+  bool isStudentProduct=false;
+  var _studentProductCheckData=[];
+
   String wishlistImage=Images.heart_outline;
 
   CheckGroupBuying _checkGroupBuying;
@@ -106,6 +109,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     print("product id : ${widget.id}");
     fetchProductDetails();
     checkGroupBuying();
+    studentProductCheck();
     if (is_logged_in.$ == true) {
       fetchWishListCheckInfo();
     }
@@ -114,15 +118,19 @@ class _ProductDetailsState extends State<ProductDetails> {
     fetchTopProducts();
   }
 
+  studentProductCheck() async {
+    var studentProductCheckResponse= await ProductRepository().getStudentProductsCheck(id: widget.id);
+    isStudentProduct=studentProductCheckResponse.success;
+    _studentProductCheckData=studentProductCheckResponse.data;
+  }
+
   fetchProductDetails() async {
     var productDetailsResponse ;
-
     if(widget.fromScan){
       productDetailsResponse= await ProductRepository().getProductDetailsWithSlug(slug: widget.slug);
     }else{
       productDetailsResponse= await ProductRepository().getProductDetails(id: widget.id);
     }
-
     // var productDetailsResponse =_productImageList.ge;
     // if (productDetailsResponse.data.length > 0) {
     _productDetails = productDetailsResponse;
@@ -130,11 +138,10 @@ class _ProductDetailsState extends State<ProductDetails> {
         'Product Details : ${productDetailsResponse.data[0].name.toString()}');
     sellerChatTitleController.text = productDetailsResponse.data[0].name;
     // }
-
     setProductDetailValues();
-
     setState(() {});
   }
+
   checkGroupBuying() async {
     var response = await GroupBuyingRepo().checkGroupProduct( widget.id);
     isGroup=response.success;
@@ -864,6 +871,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                             : Container(),
                       ),
                     ])),
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          16.0,
+                          10.0,
+                          16.0,
+                          10.0,
+                        ),
+                        child: isStudentProduct
+                            ? priceRangeRow(context)
+                            : Container(),
+                      ),
+                    ])),
 
                 SliverList(
                     delegate: SliverChildListDelegate([
@@ -1576,7 +1597,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
         ),
         Container(
-          height: 170,
+          height: 165,
           width: 40,
           child: Scrollbar(
             controller: _colorScrollController,
@@ -2451,4 +2472,136 @@ class _ProductDetailsState extends State<ProductDetails> {
 
 
   }
+
+  priceRangeRow(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Container(
+            height: 35,
+            decoration: BoxDecoration(
+                color: MyTheme.red_div,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10))),
+            child: Center(
+              child: Text(
+                "Discount For Students",
+                style: LatoBold.copyWith(
+                    color: Colors.white,
+                    fontSize: 20,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black45.withOpacity(0.3),
+                        offset: Offset(3, 3),
+                        blurRadius: 5,
+                      ),
+                    ],
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
+          ),
+          Table(
+            border: TableBorder.all(width: 1, color: MyTheme.primary_Colour),
+            columnWidths: {
+              0: FlexColumnWidth(7),
+              1: FlexColumnWidth(3),
+            },
+            children: [
+              TableRow(children: [
+                /*Container(
+                  width: 20,
+                  padding: EdgeInsets.all(8),
+                  child: Center(
+                      child: Text(
+                    "#",
+                    style: LatoBold.copyWith(
+                      color: MyTheme.black,
+                    ),
+                  )),
+                ),*/
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    child: Center(
+                        child: Text(
+                          "University Name",
+                          style: LatoBold.copyWith(
+                              color: MyTheme.primary_Colour,
+                              fontSize: 18
+
+                          ),
+                        )),
+                  ),
+                ),
+                Container(
+                  width: 70,
+                  padding: EdgeInsets.all(8),
+                  child: Center(
+                      child: Text(
+                        "Discount",
+                        style: LatoBold.copyWith(
+                            color: MyTheme.primary_Colour,
+                            fontSize: 18
+                        ),
+                      )),
+                ),
+              ]),
+              for (var groupProduct in _studentProductCheckData)
+                TableRow(children: [
+                  /*Container(
+                    width: 20,
+                    padding: EdgeInsets.all(6),
+                    child: Center(
+                        child: Container(
+                          height: 25,
+                          width: 25,
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: MyTheme.red_div,
+                          ),
+
+                          child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white
+                            ),
+                          ),
+                        )),
+                  ),*/
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: Center(
+                          child: Text(
+                            groupProduct.versityName,
+                            style: LatoBold.copyWith(
+                              color: MyTheme.black,
+                            ),
+                          )),
+                    ),
+                  ),
+                  Container(
+                    width: 70,
+                    padding: EdgeInsets.all(8),
+                    child: Center(
+                        child: Text(
+                          "${groupProduct.discountPercentage}%",
+                          style: LatoBold.copyWith(
+                            color: MyTheme.black,
+                          ),
+                        )),
+                  ),
+                ]),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
 }
+
+

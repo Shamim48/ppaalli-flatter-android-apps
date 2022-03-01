@@ -217,7 +217,6 @@ class _MainState extends State<Main> {
                 backgroundColor: MyTheme.primary_Colour,
                 type: BottomNavigationBarType.fixed,
                 onTap: onTapped,
-                currentIndex: _currentIndex,
                 fixedColor: Theme.of(context).accentColor,
                 unselectedItemColor: MyTheme.grey_153,
                 items: <BottomNavigationBarItem>[
