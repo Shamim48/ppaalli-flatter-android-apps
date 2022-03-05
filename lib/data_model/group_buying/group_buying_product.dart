@@ -1,17 +1,17 @@
 
 import 'dart:convert';
 
-GroupBuyingProduct groupProductResponseFromJson(String str) => GroupBuyingProduct.fromJson(json.decode(str));
+GroupBuyingProductResponse groupProductResponseFromJson(String str) => GroupBuyingProductResponse.fromJson(json.decode(str));
 CheckGroupBuying checkGroupBuyingResponseFromJson(String str) => CheckGroupBuying.fromJson(json.decode(str));
 
-class GroupBuyingProduct {
+class GroupBuyingProductResponse {
   List<Data> _data;
   Links _links;
   Meta _meta;
   bool _success;
   int _status;
 
-  GroupBuyingProduct(
+  GroupBuyingProductResponse(
       {List<Data> data, Links links, Meta meta, bool success, int status}) {
     this._data = data;
     this._links = links;
@@ -31,7 +31,7 @@ class GroupBuyingProduct {
   int get status => _status;
   set status(int status) => _status = status;
 
-  GroupBuyingProduct.fromJson(Map<String, dynamic> json) {
+  GroupBuyingProductResponse.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       _data = new List<Data>();
       json['data'].forEach((v) {

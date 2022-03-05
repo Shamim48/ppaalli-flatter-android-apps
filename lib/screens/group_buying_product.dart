@@ -11,7 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GroupBuyingProduct extends StatefulWidget {
-  const GroupBuyingProduct({Key key}) : super(key: key);
+  String from;
+   GroupBuyingProduct({Key key, this.from}) : super(key: key);
 
   @override
   _GroupBuyingProductState createState() => _GroupBuyingProductState();

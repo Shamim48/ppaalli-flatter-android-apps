@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class GroupBuyingRepo{
 
-  Future<GroupBuyingProduct> getGroupProduct({page = 1}) async {
+  Future<GroupBuyingProductResponse> getGroupProduct({page = 1}) async {
     Uri url = Uri.parse("${AppConfig.BASE_URL}/group/products");
     final response = await http.get(url, headers: {
       "App-Language": app_language.$,

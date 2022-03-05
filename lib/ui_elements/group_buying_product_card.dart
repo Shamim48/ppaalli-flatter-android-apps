@@ -142,13 +142,13 @@ class _GroupBuyingProductCardState extends State<GroupBuyingProductCard> {
                                 color: MyTheme.primary_Colour.withOpacity(0.8),
                               borderRadius: BorderRadius.circular(30)
                             ),
-                            child: Text(time.days.toString()+"d.${time.hours}h.${time.min}m.${time.sec}s",style:  LatoHeavy.copyWith(color: MyTheme.white, fontWeight: FontWeight.w900),))
+                            child: Text("${time.hours}h.${time.min}m.${time.sec}s",style:  LatoHeavy.copyWith(color: MyTheme.white, fontWeight: FontWeight.w900),))
                          : Container(),
                         top: 6,
                         right: 15,
                       ),
 
-
+/*${time.days.toString()}d*/
                         Positioned(child: widget.startTime!=0 ? Container(
                           width: 30,
                           height: 30,

@@ -1,5 +1,6 @@
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
+import 'package:active_ecommerce_flutter/screens/group_order_details.dart';
 import 'package:active_ecommerce_flutter/ui_elements/AppBar_Common.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -483,10 +484,9 @@ class _GroupOrderHistoryState extends State<GroupOrderHistory> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                          return OrderDetails(
+                          return GroupOrderDetails(
                             id: _orderList[index].id ,
-                            go_back: true,
-                            from_notification: false,
+
                           );
                         }));
                   },
@@ -619,40 +619,112 @@ class _GroupOrderHistoryState extends State<GroupOrderHistory> {
         borderRadius: BorderRadius.circular(8.0),
       ),
       elevation: 2.0,
-      child: Column(
-        children: [
-          Padding(padding: EdgeInsets.only(left: 10, right: 10, top: 10),
-            child: Row(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Padding(padding: EdgeInsets.only(left: 10, right: 10, top: 0),
+              child: Row(
+                children: [
+                  Text(
+                    "Order ID: ${_orderList[index].id}",
+                    style: LatoHeavy,
+                  ),
+                  Expanded(
+                    child: Text(
+                      "${_orderList[index].productInfo.name}",
+                      style: LatoHeavy.copyWith(fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "${_orderList[index].date}",
-                  style: LatoBold,
+                Container(
+                  child: Row(
+                    children: [
+                     /* FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
+                        image: AppConfig.BASE_PATH +
+                            _orderList[index].productInfo.thumbnailImage,
+                        height: 70,
+                        width: 80,
+                      ),*/
+
+                      Container(
+                          width: 80,
+                          height: 80,
+                          margin: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: MyTheme.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: MyTheme.dark_grey.withOpacity(0.3),
+                                  spreadRadius: 2,
+                                  blurRadius: 3,
+                                )
+
+                              ]),
+                          child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'assets/placeholder.png',
+                                image: AppConfig.BASE_PATH +
+                                    _orderList[index].productInfo.thumbnailImage,
+                                fit: BoxFit.fitWidth,
+                              ))),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text("Price:  ${_orderList[index].productUnitPrice} Tk", style: LatoBold.copyWith(fontSize: 16),),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text("Advance:  ${_orderList[index].advancePaymentPrice}%", style: LatoBold.copyWith(fontSize: 16)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text("Total Member Join:  ${_orderList[index].totalMemberJoin}", style: LatoMedium.copyWith(fontSize: 14)),
+                          ),
+
+                        ],
+                      ),
+
+
+                    ],
+                  ),
                 ),
-                Expanded(child: Container()),
-                Text(
-                  "Total: ${_orderList[index].grandTotal} Tk",
-                  style: LatoBold,
-                )
+
+
               ],
             ),
-          ),
-          ListView.builder(
-            padding: const EdgeInsets.all(5.0),
-            itemCount: _orderList[index].items.length,
-            scrollDirection: Axis.vertical,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (context, itemIndex) {
-              return Padding(
-                  padding: const EdgeInsets.only(bottom: 0.0),
-                  child: GestureDetector(
-                    child: buildOrderItemsCard(index, itemIndex),
-                  ));
-            },
-          ),
+            /*ListView.builder(
+              padding: const EdgeInsets.all(5.0),
+              itemCount: _orderList[index].length,
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, itemIndex) {
+                return Padding(
+                    padding: const EdgeInsets.only(bottom: 0.0),
+                    child: GestureDetector(
+                      child: buildOrderItemsCard(index, itemIndex),
+                    ));
+              },
+            ),*/
 
 
-        ],
+          ],
+        ),
       ),
     );
     /*Card(

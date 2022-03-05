@@ -25,6 +25,15 @@ class ProductRepository {
     });
     return studentProductMiniResponseFromJson(response.body);
   }
+   Future<StudentProductResponse> getStudentProductsUniversityWise({page = 1, universityId}) async {
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/products/university/${universityId}");
+    final response = await http.get(url, headers: {
+      "App-Language": app_language.$,
+    });
+    print("university Product: "+ response.body);
+    return studentProductMiniResponseFromJson(response.body);
+  }
+
 
 Future<StudentProductCheckResponse> getStudentProductsCheck({int id = 1}) async {
     Uri url = Uri.parse("${AppConfig.BASE_URL}/group/student_discount_check/${id}");

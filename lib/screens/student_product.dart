@@ -1,6 +1,8 @@
+import 'package:active_ecommerce_flutter/data_model/university.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/group_buying_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:active_ecommerce_flutter/screens/product_card.dart';
@@ -30,11 +32,26 @@ class _StudentProductState extends State<StudentProduct> {
 
   ScrollController _mainScrollController = ScrollController();
 
+  bool _isUniversityInitial=true;
+
+  List<UniversityData> _universityList=[];
+
+  int universityIndex=0;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchAll();
+    fetchUniversity();
+
+  }
+
+  fetchUniversity() async {
+    var universityResponse = await AuthRepository().getUniversityResponse();
+    _universityList.addAll(universityResponse.data);
+    _isUniversityInitial = false;
+    setState(() {});
   }
 
   void dispose() {
@@ -42,7 +59,7 @@ class _StudentProductState extends State<StudentProduct> {
     super.dispose();
   }
 
-  fetchGroupBuyingProducts() async {
+  fetchStudentProducts() async {
     var productResponse = await ProductRepository().getStudentProducts();
     _stProductList.addAll(productResponse.data);
     _isStProductInitial = false;
@@ -53,12 +70,25 @@ class _StudentProductState extends State<StudentProduct> {
     });
   }
 
+   fetchStudentProductsUniversityWise(int universityId) async {
+    var productResponse = await ProductRepository().getStudentProductsUniversityWise(universityId: universityId);
+    _stProductList.addAll(productResponse.data);
+    _isStProductInitial = false;
+    _totalStProductData = _stProductList.length;
+    _showProductLoadingContainer = false;
+    setState(() {
+
+    });
+  }
+
+
+
   Future<void> _onRefresh() async {
     reset();
     fetchAll();
   }
   void fetchAll() {
-    fetchGroupBuyingProducts();
+    fetchStudentProducts();
   }
   reset() {
     _isStProductInitial=true;
@@ -75,9 +105,78 @@ class _StudentProductState extends State<StudentProduct> {
       child: Scaffold(
         appBar: buildAppBar(context),
         backgroundColor: Colors.white,
-        body: Stack(overflow: Overflow.visible, children: [
-          buildProductList()
-        ]),
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Stack( children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4.0, left: 20),
+              child: Text(
+                "Select Your University",
+                style: LatoBold,
+              ),
+            ),
+            Positioned(
+              top: 20,
+              left: 1,
+              right: 1,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      height: 42,
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      decoration: BoxDecoration(
+                          color: MyTheme.white,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                                color: MyTheme.dark_grey.withOpacity(0.3),
+                                spreadRadius: 1.5,
+                                blurRadius: 3
+                            )
+                          ]
+                      ),
+                      child: _isUniversityInitial ? Container() :  DropdownButton<UniversityData>(
+                        underline: SizedBox(),
+                        isExpanded: true,
+                        hint: Text('Select University', style: SFRegular),
+                        value:  _universityList[universityIndex],
+                        items: _universityList.map((UniversityData universityData) {
+                          return DropdownMenuItem<UniversityData>(
+                            value: universityData,
+                            child: Text(universityData.name, style: SFRegular, overflow: TextOverflow.ellipsis),
+                          );
+                        }).toList(),
+                        onChanged: (UniversityData universityData) {
+                          int index = _universityList.indexOf(universityData);
+                          setState(() {
+                            universityIndex=index;
+                            _stProductList.clear();
+                            fetchStudentProductsUniversityWise(_universityList[universityIndex].id);
+
+                          });
+
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              child: buildProductList(),
+            top: 60,
+              left: 1,
+              right: 1,
+              bottom: 5,
+            )
+
+          ]),
+        ),
       ),
     );
   }
@@ -119,7 +218,6 @@ class _StudentProductState extends State<StudentProduct> {
       titleSpacing: 0,
     );
   }
-
 
   buildProductScrollableList() {
     if (_isStProductInitial && _stProductList.length == 0) {
@@ -165,7 +263,6 @@ class _StudentProductState extends State<StudentProduct> {
                             );
                           }));
                     },
-
                     child: ProductCard(
                       id: _stProductList[index].id,
                       image: _stProductList[index].thumbnailImage,

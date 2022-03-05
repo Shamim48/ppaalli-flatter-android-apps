@@ -123,32 +123,6 @@ class _MainState extends State<Main> {
     setState(() {
       _currentIndex = i;
 
-/*
-      switch(_currentIndex){
-        case 0:
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Home();
-          }));
-           break;
-        case 1:
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return CategoryList();
-          }));
-          break;
-          case 2:
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Cart(has_bottomnav: true,);
-          }));
-          break;
-          case 3:
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Profile();
-          }));
-          break;
-
-
-      }
-*/
     });
   }
 
@@ -216,7 +190,7 @@ class _MainState extends State<Main> {
               child: BottomNavigationBar(
                 backgroundColor: MyTheme.primary_Colour,
                 type: BottomNavigationBarType.fixed,
-                onTap: onTapped,
+               // onTap: onTapped,
                 fixedColor: Theme.of(context).accentColor,
                 unselectedItemColor: MyTheme.grey_153,
                 items: <BottomNavigationBarItem>[
@@ -291,9 +265,7 @@ class _MainState extends State<Main> {
                       },
                       child: Image.asset(
                         Images.qrCodeBold,
-                        color: _currentIndex == 3
-                            ? MyTheme.white
-                            : MyTheme.light_grey,
+                        color:  MyTheme.light_grey,
                         height: 25,
                       ),
                     ),
@@ -315,7 +287,7 @@ class _MainState extends State<Main> {
                       },
                       child: Image.asset(
                         "assets/cart.png",
-                        color: _currentIndex == 3
+                        color: _currentIndex == 2
                             ? MyTheme.white
                             : MyTheme.light_grey,
                         height: 25,
