@@ -9,143 +9,113 @@ import 'package:active_ecommerce_flutter/utill/images.dart';
 List<CartResponse> cartResponseFromJson(String str) => List<CartResponse>.from(json.decode(str).map((x) => CartResponse.fromJson(x)));
 
 String cartResponseToJson(List<CartResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-var cartList=[
-  CartResponse(
-    name: "Shamim Ahmed",
-    owner_id: 1,
-    cart_items: [
-      CartItem(
-        id: 1,
-        owner_id: 1,
-        user_id: 1,
-        product_id: 70,
-        product_name: "jamdani saree",
-        product_thumbnail_image : Images.logo,
-        price: 1000.00,
-        quantity: 1,
-        variation: "ds",
-        currency_symbol: "\$",
-        tax: 12.00,
-        shipping_cost: 100.0,
-        lower_limit: 1,
-        upper_limit: 5,
 
-
-      )
-    ]
-  ),
-  CartResponse(
-    name: "Shamim Ahmed",
-    owner_id: 1,
-    cart_items: [
-      CartItem(
-        id: 1,
-        owner_id: 1,
-        user_id: 1,
-        product_id: 66,
-        product_name: "Men's Athletic Tracksuit Full Zip Warm",
-        product_thumbnail_image : Images.logo,
-        price: 1000.00,
-        quantity: 1,
-        variation: "ds",
-        currency_symbol: "\$",
-        tax: 12.00,
-        shipping_cost: 100.0,
-        lower_limit: 1,
-        upper_limit: 5,
-      )
-    ]
-  )
-
-];
 class CartResponse {
-  CartResponse({
-    this.name,
-    this.owner_id,
-    this.cart_items,
-  });
-
   String name;
-  int owner_id;
-  List<CartItem> cart_items;
+  int ownerId;
+  List<CartItems> cartItems;
 
-  factory CartResponse.fromJson(Map<String, dynamic> json) => CartResponse(
-    name: json["name"] == null ? null : json["name"],
-    owner_id: json["owner_id"] == null ? null : json["owner_id"],
-    cart_items: json["cart_items"] == null ? null : List<CartItem>.from(json["cart_items"].map((x) => CartItem.fromJson(x))),
-  );
+  CartResponse({this.name, this.ownerId, this.cartItems});
 
-  Map<String, dynamic> toJson() => {
-    "name": name == null ? null : name,
-    "owner_id": owner_id == null ? null : owner_id,
-    "cart_items": cart_items == null ? null : List<dynamic>.from(cart_items.map((x) => x.toJson())),
-  };
+  CartResponse.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    ownerId = json['owner_id'];
+    if (json['cart_items'] != null) {
+      cartItems = new List<CartItems>();
+      json['cart_items'].forEach((v) {
+        cartItems.add(new CartItems.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['owner_id'] = this.ownerId;
+    if (this.cartItems != null) {
+      data['cart_items'] = this.cartItems.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
-class CartItem {
-  CartItem({
-    this.id,
-    this.owner_id,
-    this.user_id,
-    this.product_id,
-    this.product_name,
-    this.product_thumbnail_image,
-    this.variation,
-    this.currency_symbol,
-    this.price,
-    this.tax,
-    this.shipping_cost,
-    this.quantity,
-    this.lower_limit,
-    this.upper_limit,
-  });
-
+class CartItems {
   int id;
-  int owner_id;
-  int user_id;
-  int product_id;
-  String product_name;
-  String product_thumbnail_image;
+  int ownerId;
+  int userId;
+  int productId;
+  String productName;
+  String productThumbnailImage;
+  String productBasePrice;
   String variation;
-  double price;
-  String currency_symbol;
-  double tax;
-  double shipping_cost;
+  int price;
+  String currencySymbol;
+  int tax;
+  int shippingCost;
   int quantity;
-  int lower_limit;
-  int upper_limit;
+  int lowerLimit;
+  int upperLimit;
+  int type;
+  int advancePaymentPercentage;
 
-  factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
-    id: json["id"] == null ? null : json["id"],
-    owner_id: json["owner_id"] == null ? null : json["owner_id"],
-    user_id: json["user_id"] == null ? null : json["user_id"],
-    product_id: json["product_id"] == null ? null : json["product_id"],
-    product_name: json["product_name"] == null ? null : json["product_name"],
-    product_thumbnail_image: json["product_thumbnail_image"] == null ? null : json["product_thumbnail_image"],
-    variation: json["variation"] == null ? null : json["variation"],
-    price: json["price"] == null ? null : json["price"].toDouble(),
-    currency_symbol: json["currency_symbol"] == null ? null : json["currency_symbol"],
-    tax: json["tax"] == null ? null : json["tax"].toDouble(),
-    shipping_cost: json["shipping_cost"] == null ? null : json["shipping_cost"].toDouble(),
-    quantity: json["quantity"] == null ? null : json["quantity"],
-    lower_limit: json["lower_limit"] == null ? null : json["lower_limit"],
-    upper_limit: json["upper_limit"] == null ? null : json["upper_limit"],
-  );
+  CartItems(
+      {this.id,
+        this.ownerId,
+        this.userId,
+        this.productId,
+        this.productName,
+        this.productThumbnailImage,
+        this.productBasePrice,
+        this.variation,
+        this.price,
+        this.currencySymbol,
+        this.tax,
+        this.shippingCost,
+        this.quantity,
+        this.lowerLimit,
+        this.upperLimit,
+        this.type,
+        this.advancePaymentPercentage});
 
-  Map<String, dynamic> toJson() => {
-    "id": id == null ? null : id,
-    "owner_id": owner_id == null ? null : owner_id,
-    "user_id": user_id == null ? null : user_id,
-    "product_id": product_id == null ? null : product_id,
-    "product_name": product_name == null ? null : product_name,
-    "product_thumbnail_image": product_thumbnail_image == null ? null : product_thumbnail_image,
-    "variation": variation == null ? null : variation,
-    "price": price == null ? null : price,
-    "currency_symbol": currency_symbol == null ? null : currency_symbol,
-    "tax": tax == null ? null : tax,
-    "shipping_cost": shipping_cost == null ? null : shipping_cost,
-    "quantity": quantity == null ? null : quantity,
-    "lower_limit": lower_limit == null ? null : lower_limit,
-    "upper_limit": upper_limit == null ? null : upper_limit,
-  };
+  CartItems.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    ownerId = json['owner_id'];
+    userId = json['user_id'];
+    productId = json['product_id'];
+    productName = json['product_name'];
+    productThumbnailImage = json['product_thumbnail_image'];
+    productBasePrice = json['product_base_price'];
+    variation = json['variation'];
+    price = json['price'];
+    currencySymbol = json['currency_symbol'];
+    tax = json['tax'];
+    shippingCost = json['shipping_cost'];
+    quantity = json['quantity'];
+    lowerLimit = json['lower_limit'];
+    upperLimit = json['upper_limit'];
+    type = json['type'];
+    advancePaymentPercentage = json['advance_payment_percentage'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['owner_id'] = this.ownerId;
+    data['user_id'] = this.userId;
+    data['product_id'] = this.productId;
+    data['product_name'] = this.productName;
+    data['product_thumbnail_image'] = this.productThumbnailImage;
+    data['product_base_price'] = this.productBasePrice;
+    data['variation'] = this.variation;
+    data['price'] = this.price;
+    data['currency_symbol'] = this.currencySymbol;
+    data['tax'] = this.tax;
+    data['shipping_cost'] = this.shippingCost;
+    data['quantity'] = this.quantity;
+    data['lower_limit'] = this.lowerLimit;
+    data['upper_limit'] = this.upperLimit;
+    data['type'] = this.type;
+    data['advance_payment_percentage'] = this.advancePaymentPercentage;
+    return data;
+  }
 }

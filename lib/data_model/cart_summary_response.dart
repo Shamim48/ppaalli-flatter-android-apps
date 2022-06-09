@@ -35,7 +35,7 @@ class CartSummaryResponse {
     shipping_cost: json["shipping_cost"],
     discount: json["discount"],
     grand_total: json["grand_total"],
-    grand_total_value: json["grand_total_value"].toDouble(),
+    grand_total_value: json["grand_total_value"],
     coupon_code: json["coupon_code"],
     coupon_applied: json["coupon_applied"],
   );

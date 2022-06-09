@@ -689,7 +689,7 @@ class _GroupOrderHistoryState extends State<GroupOrderHistory> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
-                            child: Text("Advance:  ${_orderList[index].advancePaymentPrice}%", style: LatoBold.copyWith(fontSize: 16)),
+                            child: Text("Advance: ${_orderList[index].advancePaymentPrice}", style: LatoBold.copyWith(fontSize: 16)),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),

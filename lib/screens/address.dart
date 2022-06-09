@@ -247,6 +247,8 @@ class _AddressState extends State<Address> {
     var address = _addressController.text.toString();
     var postal_code = _postalCodeController.text.toString();
     var phone = _phoneController.text.toString();
+    var country=_countryController.text.toString();
+    var city=_cityController.text.toString();
 
     if (address == "") {
       ToastComponent.showDialog(
@@ -255,25 +257,11 @@ class _AddressState extends State<Address> {
       return;
     }
 
-    if (_selected_country == null) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context).address_screen_country_warning, context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-      return;
-    }
-
-
-    if (_selected_city == null) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context).address_screen_city_warning, context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-      return;
-    }
 
     var addressAddResponse = await AddressRepository().getAddressAddResponse(
         address: address,
-        country: _selected_country.name,
-        city: _selected_city.name,
+        country: country,
+        city: city,
         postal_code: postal_code,
         phone: phone);
 
@@ -308,8 +296,6 @@ class _AddressState extends State<Address> {
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
       return;
     }
-
-
 
     if (_selected_city_list_for_update[index] == null) {
       ToastComponent.showDialog(
@@ -590,7 +576,7 @@ class _AddressState extends State<Address> {
                           child: TypeAheadField(
                             suggestionsCallback: (name) async {
                               var countryResponse = await AddressRepository()
-                                  .getCountryList(name: name);
+                                  .getCountryList();
                               return countryResponse.countries;
                             },
                             loadingBuilder: (context) {
@@ -676,12 +662,12 @@ class _AddressState extends State<Address> {
                               if (_selected_state == null) {
                                 var cityResponse = await AddressRepository()
                                     .getCityListByState(); // blank response
-                                return cityResponse.cities;
+                                return cityResponse.data;
                               }
                               var cityResponse = await AddressRepository()
                                   .getCityListByState(
-                                      state_id: _selected_state.id, name: name);
-                              return cityResponse.cities;
+                                      countryId: _selected_country.id);
+                              return cityResponse.data;
                             },
                             loadingBuilder: (context) {
                               return Container(
@@ -947,7 +933,7 @@ class _AddressState extends State<Address> {
                           child: TypeAheadField(
                             suggestionsCallback: (name) async {
                               var countryResponse = await AddressRepository()
-                                  .getCountryList(name: name);
+                                  .getCountryList();
                               return countryResponse.countries;
                             },
                             loadingBuilder: (context) {

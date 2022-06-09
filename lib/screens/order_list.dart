@@ -10,6 +10,8 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:one_context/one_context.dart';
 
+import '../app_config.dart';
+
 
 class PaymentStatus {
   String option_key;
@@ -27,25 +29,27 @@ class PaymentStatus {
 }
 
 class DeliveryStatus {
-  String option_key;
-  String name;
+  String option_key="pending";
+  String name="Pending Order";
 
   DeliveryStatus(this.option_key, this.name);
 
   static List<DeliveryStatus> getDeliveryStatusList() {
     return <DeliveryStatus>[
       DeliveryStatus('', AppLocalizations.of(OneContext().context).order_list_screen_all),
-      DeliveryStatus('confirmed', AppLocalizations.of(OneContext().context).order_list_screen_confirmed),
-      DeliveryStatus('on_delivery', AppLocalizations.of(OneContext().context).order_list_screen_on_delivery),
-      DeliveryStatus('delivered', AppLocalizations.of(OneContext().context).order_list_screen_delivered),
+      DeliveryStatus('pending', "Pending Order"),
+      DeliveryStatus('confirmed', "Confirmed Order"),
+      DeliveryStatus('on_delivery', "Process Order"),
+      DeliveryStatus('delivered', "Complete Order"),
+      DeliveryStatus('cancelled', "Cancel Order"),
     ];
   }
 }
 
 class OrderList extends StatefulWidget {
-  OrderList({Key key, this.from_checkout = false}) : super(key: key);
+  OrderList({Key key, this.from_checkout = false, this.defaultDeliveryStatusKey}) : super(key: key);
   final bool from_checkout;
-
+  String defaultDeliveryStatusKey = '';
   @override
   _OrderListState createState() => _OrderListState();
 }
@@ -71,7 +75,7 @@ class _OrderListState extends State<OrderList> {
   int _totalData = 0;
   bool _showLoadingContainer = false;
   String _defaultPaymentStatusKey = '';
-  String _defaultDeliveryStatusKey = '';
+
 
   @override
   void initState() {
@@ -119,7 +123,7 @@ class _OrderListState extends State<OrderList> {
 
     for (int x = 0; x < _dropdownDeliveryStatusItems.length; x++) {
       if (_dropdownDeliveryStatusItems[x].value.option_key ==
-          _defaultDeliveryStatusKey) {
+          widget.defaultDeliveryStatusKey) {
         _selectedDeliveryStatus = _dropdownDeliveryStatusItems[x].value;
       }
     }
@@ -135,7 +139,7 @@ class _OrderListState extends State<OrderList> {
 
   resetFilterKeys() {
     _defaultPaymentStatusKey = '';
-    _defaultDeliveryStatusKey = '';
+    widget.defaultDeliveryStatusKey = '';
 
     setState(() {});
   }
@@ -152,7 +156,7 @@ class _OrderListState extends State<OrderList> {
 
     for (int x = 0; x < _dropdownDeliveryStatusItems.length; x++) {
       if (_dropdownDeliveryStatusItems[x].value.option_key ==
-          _defaultDeliveryStatusKey) {
+          widget.defaultDeliveryStatusKey) {
         _selectedDeliveryStatus = _dropdownDeliveryStatusItems[x].value;
       }
     }
@@ -164,9 +168,12 @@ class _OrderListState extends State<OrderList> {
     var orderResponse = await OrderRepository().getOrderList(
         page: _page,
         payment_status: _selectedPaymentStatus.option_key,
-        delivery_status: _selectedDeliveryStatus.option_key);
+        delivery_status: _selectedDeliveryStatus.option_key
+    );
     //print("or:"+orderResponse.toJson().toString());
-    _orderList.addAll(orderResponse.orders);
+    _orderList.addAll(orderResponse.data);
+    print("Order List:");
+    print("${_orderList.length}");
     _isInitial = false;
     _totalData = orderResponse.meta.total;
     _showLoadingContainer = false;
@@ -256,7 +263,7 @@ class _OrderListState extends State<OrderList> {
                         BorderSide(color: MyTheme.light_grey, width: 1))),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             height: 36,
-            width: MediaQuery.of(context).size.width * .3,
+            width: MediaQuery.of(context).size.width * .30,
             child: new DropdownButton<PaymentStatus>(
               icon: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -282,7 +289,7 @@ class _OrderListState extends State<OrderList> {
               },
             ),
           ),
-          Padding(
+          /*Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(
               Icons.credit_card,
@@ -298,7 +305,7 @@ class _OrderListState extends State<OrderList> {
               color: MyTheme.font_grey,
               size: 16,
             ),
-          ),
+          ),*/
           Container(
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -308,7 +315,7 @@ class _OrderListState extends State<OrderList> {
                         BorderSide(color: MyTheme.light_grey, width: 1))),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             height: 36,
-            width: MediaQuery.of(context).size.width * .40,
+            width: MediaQuery.of(context).size.width * .50,
             child: new DropdownButton<DeliveryStatus>(
               icon: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -455,7 +462,7 @@ class _OrderListState extends State<OrderList> {
                         );
                       }));
                     },
-                    child: buildOrderListItemCard(index),
+                    child: buildOrderHistoryItemCard(index),
                   ));
             },
           ),
@@ -467,6 +474,136 @@ class _OrderListState extends State<OrderList> {
       return Container(); // should never be happening
     }
   }
+
+  Card buildOrderHistoryItemCard(int index) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      elevation: 2.0,
+      child: Column(
+        children: [
+          Padding(padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+            child: Row(
+              children: [
+                Text(
+                  "${_orderList[index].date}",
+                  style: LatoBold,
+                ),
+                Expanded(child: Container()),
+                Text(
+                  "Total: ${_orderList[index].grandTotal} Tk",
+                  style: LatoBold,
+                )
+              ],
+            ),
+          ),
+          ListView.builder(
+            padding: const EdgeInsets.all(5.0),
+            itemCount: _orderList[index].items.length,
+            scrollDirection: Axis.vertical,
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, itemIndex) {
+              return Padding(
+                  padding: const EdgeInsets.only(bottom: 0.0),
+                  child: GestureDetector(
+                    child: buildOrderItemsCard(index, itemIndex),
+                  ));
+            },
+          ),
+
+
+        ],
+      ),
+    );
+    /*Card(
+      shape: RoundedRectangleBorder(
+        side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      elevation: 0.0,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Row(
+                  children: [
+
+                    Text("03/01/2022", style: LatoBold,),
+                    Expanded(child: Container()),
+                    Text("345 Tk", style: LatoBold,)
+                  ],
+                ),
+                SizedBox(height: 10,),
+
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        child: Row(
+                          children: [
+                            Image.asset(Images.p2, height: 50, width: 50,),
+                            SizedBox(width: 10,),
+                            Text("Product Name", style: LatoBold,)
+                          ],
+                        ),
+                      ),
+                      Text("1"),
+                      Text("Tk 345"),
+
+                    ],
+                  ),
+                )
+
+              ],
+            )
+          ],
+        ),
+      )
+    );*/
+  }
+
+  buildOrderItemsCard(int index, int itemIndex) {
+    return Container(
+      padding: EdgeInsets.only(left: 10,right: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              children: [
+                _orderList[index].items[itemIndex].thumbnailImage!="" ?  FadeInImage.assetNetwork(
+                  placeholder: 'assets/placeholder.png',
+                  image: AppConfig.BASE_PATH +
+                      _orderList[index].items[itemIndex].thumbnailImage,
+                  height: 70,
+                  width: 80,
+                ):Container(),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "${_orderList[index].items[itemIndex].productName}",
+                  style: LatoBold,
+                )
+              ],
+            ),
+          ),
+          Text("${_orderList[index].items[itemIndex].quantity}"),
+          Text("${_orderList[index].items[itemIndex].price} Tk"),
+        ],
+      ),
+    );
+
+  }
+
 
   Card buildOrderListItemCard(int index) {
     return Card(

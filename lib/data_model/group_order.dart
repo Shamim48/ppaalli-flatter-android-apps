@@ -78,8 +78,8 @@ class Data {
   int _id;
   int _productId;
   int _quantityRangeId;
-  int _productUnitPrice;
-  int _advancePaymentPrice;
+  String _productUnitPrice;
+  String _advancePaymentPrice;
   int _timesloatId;
   int _startTime;
   int _endTime;
@@ -91,8 +91,8 @@ class Data {
       {int id,
         int productId,
         int quantityRangeId,
-        int productUnitPrice,
-        int advancePaymentPrice,
+        String productUnitPrice,
+        String advancePaymentPrice,
         int timesloatId,
         int startTime,
         int endTime,
@@ -119,11 +119,11 @@ class Data {
   int get quantityRangeId => _quantityRangeId;
   set quantityRangeId(int quantityRangeId) =>
       _quantityRangeId = quantityRangeId;
-  int get productUnitPrice => _productUnitPrice;
-  set productUnitPrice(int productUnitPrice) =>
+  String get productUnitPrice => _productUnitPrice;
+  set productUnitPrice(String productUnitPrice) =>
       _productUnitPrice = productUnitPrice;
-  int get advancePaymentPrice => _advancePaymentPrice;
-  set advancePaymentPrice(int advancePaymentPrice) =>
+  String get advancePaymentPrice => _advancePaymentPrice;
+  set advancePaymentPrice(String advancePaymentPrice) =>
       _advancePaymentPrice = advancePaymentPrice;
   int get timesloatId => _timesloatId;
   set timesloatId(int timesloatId) => _timesloatId = timesloatId;
@@ -177,11 +177,14 @@ class Data {
 class ProductInfo {
   String _name;
   String _thumbnailImage;
+  String _basePrice;
   int _rating;
 
-  ProductInfo({String name, String thumbnailImage, int rating}) {
+  ProductInfo(
+      {String name, String thumbnailImage, String basePrice, int rating}) {
     this._name = name;
     this._thumbnailImage = thumbnailImage;
+    this._basePrice = basePrice;
     this._rating = rating;
   }
 
@@ -189,12 +192,15 @@ class ProductInfo {
   set name(String name) => _name = name;
   String get thumbnailImage => _thumbnailImage;
   set thumbnailImage(String thumbnailImage) => _thumbnailImage = thumbnailImage;
+  String get basePrice => _basePrice;
+  set basePrice(String basePrice) => _basePrice = basePrice;
   int get rating => _rating;
   set rating(int rating) => _rating = rating;
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     _name = json['name'];
     _thumbnailImage = json['thumbnail_image'];
+    _basePrice = json['base_price'];
     _rating = json['rating'];
   }
 
@@ -202,6 +208,7 @@ class ProductInfo {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this._name;
     data['thumbnail_image'] = this._thumbnailImage;
+    data['base_price'] = this._basePrice;
     data['rating'] = this._rating;
     return data;
   }
@@ -210,8 +217,8 @@ class ProductInfo {
 class Links {
   String _first;
   String _last;
-  dynamic _prev;
-  dynamic _next;
+  Null _prev;
+  Null _next;
 
   Links({String first, String last, Null prev, Null next}) {
     this._first = first;
@@ -224,10 +231,10 @@ class Links {
   set first(String first) => _first = first;
   String get last => _last;
   set last(String last) => _last = last;
-  dynamic get prev => _prev;
-  set prev(dynamic prev) => _prev = prev;
-  dynamic get next => _next;
-  set next(dynamic next) => _next = next;
+  Null get prev => _prev;
+  set prev(Null prev) => _prev = prev;
+  Null get next => _next;
+  set next(Null next) => _next = next;
 
   Links.fromJson(Map<String, dynamic> json) {
     _first = json['first'];

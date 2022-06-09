@@ -78,8 +78,8 @@ class Data {
   String name;
   String thumbnailImage;
   String basePrice;
-  int rating;
-  int sales;
+  dynamic rating;
+  dynamic sales;
   Links links;
 
   Data(

@@ -485,7 +485,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         ),
                         Spacer(),
                         Text(
-                          _orderDetails.tax,
+                          "${_orderDetails.tax}",
                           style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 14,

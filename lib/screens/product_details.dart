@@ -175,6 +175,11 @@ class _ProductDetailsState extends State<ProductDetails> {
       _singlePriceString = _productDetails.data[0].mainPrice;
       calculateTotalPrice();
       _stock = _productDetails.data[0].currentStock;
+      if(_stock<1){
+        setState(() {
+          _quantity=0;
+        });
+      }
       _productDetails.data[0].photos.forEach((photo) {
         _productImageList.add(photo);
       });
@@ -704,7 +709,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
     var conversationCreateResponse = await ChatRepository()
         .getCreateConversationResponse(
-            product_id: widget.id, title: title, message: message);
+            product_id: widget.id, message: message);
 
     if (conversationCreateResponse.result == false) {
       ToastComponent.showDialog(
@@ -724,8 +729,8 @@ class _ProductDetailsState extends State<ProductDetails> {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return Chat(
         conversation_id: conversationCreateResponse.conversation_id,
-        messenger_name: conversationCreateResponse.shop_name,
-        messenger_title: conversationCreateResponse.title,
+       // messenger_name: conversationCreateResponse.shop_name,
+       // messenger_title: conversationCreateResponse.title,
         messenger_image: conversationCreateResponse.shop_logo,
       );
       ;
@@ -783,18 +788,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         16.0,
                         0.0,
                       ),
-                      child: _productDetails != null
-                          ? Text(
-                              _productDetails.data[0].name,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: MyTheme.font_grey,
-                                  fontWeight: FontWeight.w600),
-                              maxLines: 2,
-                            )
-                          : ShimmerHelper().buildBasicShimmer(
-                              height: 30.0,
-                            )),
+                      child: productNameAndStroke()),
                 ])),
                 SliverList(
                   delegate: SliverChildListDelegate([
@@ -1321,7 +1315,111 @@ class _ProductDetailsState extends State<ProductDetails> {
           style: LatoHeavy,
         ),
         SizedBox(height: 10,),
+
         Container(
+          margin: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: MyTheme.white,
+              boxShadow: [
+                BoxShadow(
+                  color: MyTheme.dark_grey.withOpacity(0.3),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  //offset: Offset(1,0)
+                )
+              ]
+          ),
+          child:         Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    child: Icon(
+                      Icons.remove,
+                      color: MyTheme.primary_Colour,
+                      size: 18,
+                    ),
+                    height: 30,
+                    shape: CircleBorder(
+                      side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                    ),
+                    color: Colors.white,
+                    onPressed: () {
+                      if (_quantity > 1) {
+
+                        setState(() {
+
+                        });
+                        _quantity--;
+                        calculateTotalPrice();
+
+
+                      }else{
+                        ToastComponent.showDialog(
+                            "${AppLocalizations.of(context).cart_screen_cannot_order_more_than} ${_quantity} ${AppLocalizations.of(context).cart_screen_items_of_this}",
+                            context,
+                            gravity: Toast.CENTER,
+                            duration: Toast.LENGTH_LONG);
+
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(width: 20,),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  child: Text("${_quantity}",
+                    style: TextStyle(color: MyTheme.primary_Colour, fontSize: 16),
+                  ),
+                ),
+
+                SizedBox(width: 20,),
+
+                SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    child: Icon(
+                      Icons.add,
+                      color: MyTheme.primary_Colour,
+                      size: 18,
+                    ),
+                    shape: CircleBorder(
+                      side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                    ),
+                    color: Colors.white,
+                    onPressed: () {
+                      if (_quantity < _stock) {
+
+                        setState(() {
+
+                        });
+                        _quantity++;
+                        calculateTotalPrice();
+
+                      }else{
+                        ToastComponent.showDialog(
+                            "${AppLocalizations.of(context).cart_screen_cannot_order_more_than} ${_quantity} ${AppLocalizations.of(context).cart_screen_items_of_this}",
+                            context,
+                            gravity: Toast.CENTER,
+                            duration: Toast.LENGTH_LONG);
+                      }
+                    },
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+        ),
+        /*Container(
           height: 26,
           width: 100,
           decoration: BoxDecoration(
@@ -1344,7 +1442,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               buildQuantityUpButton()
             ],
           ),
-        ),
+        ),*/
    /*     Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6.0),
           child: Text(
@@ -1856,7 +1954,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           },
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          padding: const EdgeInsets.symmetric(horizontal: 3.0),
           child: Text(
             "(" + _productDetails.data[0].ratingCount.toString() + ")",
             style: TextStyle(
@@ -2103,9 +2201,12 @@ class _ProductDetailsState extends State<ProductDetails> {
             icon: Icon(FontAwesome.plus, size: 12, color: MyTheme.dark_grey),
             onPressed: () {
               if (_quantity < _stock) {
-                _quantity++;
-                setState(() {});
-                calculateTotalPrice();
+
+                setState(() {
+                  _quantity++;
+                  calculateTotalPrice();
+                });
+
               }
             }),
       );
@@ -2116,9 +2217,13 @@ class _ProductDetailsState extends State<ProductDetails> {
           icon: Icon(FontAwesome.minus, size: 12, color: MyTheme.dark_grey),
           onPressed: () {
             if (_quantity > 1) {
-              _quantity--;
-              setState(() {});
-              calculateTotalPrice();
+
+              setState(() {
+                _quantity--;
+                calculateTotalPrice();
+              });
+
+
             }
           }));
 
@@ -2599,6 +2704,41 @@ class _ProductDetailsState extends State<ProductDetails> {
           )
         ],
       ),
+    );
+  }
+
+  productNameAndStroke() {
+    return Row(
+      children: [
+        _productDetails != null
+            ? Text(
+          _productDetails.data[0].name,
+          style: TextStyle(
+              fontSize: 16,
+              color: MyTheme.font_grey,
+              fontWeight: FontWeight.w600),
+          maxLines: 2,
+        )
+            : ShimmerHelper().buildBasicShimmer(
+          height: 30.0,
+        )  ,
+
+        Expanded(child: Container(),),
+        Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  "In Stroke (${_stock})", style: LatoBold.copyWith(color: _stock>=1 ? MyTheme.black : MyTheme.grey_153),
+                )
+              ],
+            ),
+            Text(
+              "Out Of Stroke (${_stock})", style: LatoBold.copyWith(color: _stock<1 ? MyTheme.black : MyTheme.grey_153),
+            )
+          ],
+        )
+      ],
     );
   }
 

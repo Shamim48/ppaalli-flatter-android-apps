@@ -41,9 +41,9 @@ class AddressRepository {
     var post_body = jsonEncode({
       "user_id": "${user_id.$}",
       "address": "$address",
-      "country_id": "$country",
+      "country": country,
       //"state_id": "$state_id",
-      "city_id": "$city",
+      "city": city,
       "postal_code": "$postal_code",
       "phone": "$phone"
     });
@@ -149,9 +149,9 @@ class AddressRepository {
     return addressDeleteResponseFromJson(response.body);
   }
 
-  Future<CityResponse> getCityListByState({state_id = 0, name = ""}) async {
+  Future<CityResponse> getCityListByState({countryId = 0, name = ""}) async {
     Uri url = Uri.parse(
-        "${AppConfig.BASE_URL}/cities-by-state/${state_id}?name=${name}");
+        "${AppConfig.BASE_URL}/cities");
     final response = await http.get(url);
 
     print(url.toString());
@@ -168,8 +168,8 @@ class AddressRepository {
     return myStateResponseFromJson(response.body);
   }
 
-  Future<CountryResponse> getCountryList({name = ""}) async {
-    Uri url = Uri.parse("${AppConfig.BASE_URL}/countries?name=${name}");
+  Future<CountryResponse> getCountryList() async {
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/countries");
     final response = await http.get(url);
     return countryResponseFromJson(response.body);
   }

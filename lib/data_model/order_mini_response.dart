@@ -1,158 +1,204 @@
-// To parse this JSON data, do
-//
-//     final orderMiniResponse = orderMiniResponseFromJson(jsonString);
-// https://app.quicktype.io/
 import 'dart:convert';
 
 OrderMiniResponse orderMiniResponseFromJson(String str) => OrderMiniResponse.fromJson(json.decode(str));
 
-String orderMiniResponseToJson(OrderMiniResponse data) => json.encode(data.toJson());
-
 class OrderMiniResponse {
-  OrderMiniResponse({
-    this.orders,
-    this.links,
-    this.meta,
-    this.success,
-    this.status,
-  });
-
-  List<Order> orders;
-  OrderMiniResponseLinks links;
+  List<Data> data;
+  Links links;
   Meta meta;
   bool success;
   int status;
 
-  factory OrderMiniResponse.fromJson(Map<String, dynamic> json) => OrderMiniResponse(
-    orders: List<Order>.from(json["data"].map((x) => Order.fromJson(x))),
-    links: OrderMiniResponseLinks.fromJson(json["links"]),
-    meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-    success: json["success"],
-    status: json["status"],
-  );
+  OrderMiniResponse(
+      {this.data, this.links, this.meta, this.success, this.status});
 
-  Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(orders.map((x) => x.toJson())),
-    "links": links.toJson(),
-    "meta": meta == null ? null : meta.toJson(),
-    "success": success,
-    "status": status,
-  };
+  OrderMiniResponse.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = new List<Data>();
+      json['data'].forEach((v) {
+        data.add(new Data.fromJson(v));
+      });
+    }
+    links = json['links'] != null ? new Links.fromJson(json['links']) : null;
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+    success = json['success'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    if (this.links != null) {
+      data['links'] = this.links.toJson();
+    }
+    if (this.meta != null) {
+      data['meta'] = this.meta.toJson();
+    }
+    data['success'] = this.success;
+    data['status'] = this.status;
+    return data;
+  }
 }
 
-class Order {
-  Order({
-    this.id,
-    this.code,
-    this.user_id,
-    this.payment_type,
-    this.payment_status,
-    this.payment_status_string,
-    this.delivery_status,
-    this.delivery_status_string,
-    this.grand_total,
-    this.date,
-    this.links,
-  });
-
+class Data {
   int id;
   String code;
-  int user_id;
-  String  payment_type;
-  String payment_status;
-  String  payment_status_string;
-  String delivery_status;
-  String delivery_status_string;
-  String grand_total;
+  int userId;
+  String paymentType;
+  String paymentStatus;
+  String paymentStatusString;
+  String deliveryStatus;
+  String deliveryStatusString;
+  String grandTotal;
   String date;
-  OrderLinks links;
+  List<Items> items;
+  Links links;
 
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
-    id: json["id"],
-    code: json["code"],
-    user_id: json["user_id"],
-    payment_type: json["payment_type"],
-    payment_status: json["payment_status"],
-    payment_status_string: json["payment_status_string"],
-    delivery_status: json["delivery_status"],
-    delivery_status_string: json["delivery_status_string"],
-    grand_total: json["grand_total"],
-    date: json["date"],
-    links: OrderLinks.fromJson(json["links"]),
-  );
+  Data(
+      {this.id,
+        this.code,
+        this.userId,
+        this.paymentType,
+        this.paymentStatus,
+        this.paymentStatusString,
+        this.deliveryStatus,
+        this.deliveryStatusString,
+        this.grandTotal,
+        this.date,
+        this.items,
+        this.links});
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "code": code,
-    "user_id": user_id,
-    "payment_type":payment_type,
-    "payment_status": payment_status,
-    "payment_status_string": payment_status_string,
-    "delivery_status": delivery_status,
-    "delivery_status_string": delivery_status_string,
-    "grand_total": grand_total,
-    "date": date,
-    "links": links.toJson(),
-  };
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    code = json['code'];
+    userId = json['user_id'];
+    paymentType = json['payment_type'];
+    paymentStatus = json['payment_status'];
+    paymentStatusString = json['payment_status_string'];
+    deliveryStatus = json['delivery_status'];
+    deliveryStatusString = json['delivery_status_string'];
+    grandTotal = json['grand_total'];
+    date = json['date'];
+    if (json['items'] != null) {
+      items = new List<Items>();
+      json['items'].forEach((v) {
+        items.add(new Items.fromJson(v));
+      });
+    }
+    links = json['links'] != null ? new Links.fromJson(json['links']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['code'] = this.code;
+    data['user_id'] = this.userId;
+    data['payment_type'] = this.paymentType;
+    data['payment_status'] = this.paymentStatus;
+    data['payment_status_string'] = this.paymentStatusString;
+    data['delivery_status'] = this.deliveryStatus;
+    data['delivery_status_string'] = this.deliveryStatusString;
+    data['grand_total'] = this.grandTotal;
+    data['date'] = this.date;
+    if (this.items != null) {
+      data['items'] = this.items.map((v) => v.toJson()).toList();
+    }
+    if (this.links != null) {
+      data['links'] = this.links.toJson();
+    }
+    return data;
+  }
 }
 
-class OrderLinks {
-  OrderLinks({
-    this.details,
-  });
+class Items {
+  int id;
+  String productName;
+  String thumbnailImage;
+  int price;
+  String formatPrice;
+  dynamic tax;
+  int shippingCost;
+  int quantity;
 
+  Items(
+      {this.id,
+        this.productName,
+        this.thumbnailImage,
+        this.price,
+        this.formatPrice,
+        this.tax,
+        this.shippingCost,
+        this.quantity});
+
+  Items.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    productName = json['product_name'];
+    thumbnailImage = json['thumbnail_image'];
+    price = json['price'];
+    formatPrice = json['format_price'];
+    tax = json['tax'];
+    shippingCost = json['shipping_cost'];
+    quantity = json['quantity'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['product_name'] = this.productName;
+    data['thumbnail_image'] = this.thumbnailImage;
+    data['price'] = this.price;
+    data['format_price'] = this.formatPrice;
+    data['tax'] = this.tax;
+    data['shipping_cost'] = this.shippingCost;
+    data['quantity'] = this.quantity;
+    return data;
+  }
+}
+
+class LinksDetails {
   String details;
 
-  factory OrderLinks.fromJson(Map<String, dynamic> json) => OrderLinks(
-    details: json["details"],
-  );
+  LinksDetails({this.details});
 
-  Map<String, dynamic> toJson() => {
-    "details": details,
-  };
+  LinksDetails.fromJson(Map<String, dynamic> json) {
+    details = json['details'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['details'] = this.details;
+    return data;
+  }
 }
 
+class Links {
+  String first;
+  String last;
+  Null prev;
+  String next;
 
+  Links({this.first, this.last, this.prev, this.next});
 
-class OrderMiniResponseLinks {
-  OrderMiniResponseLinks({
-    this.first,
-    this.last,
-    this.prev,
-    this.next,
-  });
+  Links.fromJson(Map<String, dynamic> json) {
+    first = json['first'];
+    last = json['last'];
+    prev = json['prev'];
+    next = json['next'];
+  }
 
-  dynamic first;
-  dynamic last;
-  dynamic prev;
-  dynamic next;
-
-  factory OrderMiniResponseLinks.fromJson(Map<String, dynamic> json) => OrderMiniResponseLinks(
-    first: json["first"],
-    last: json["last"],
-    prev: json["prev"],
-    next: json["next"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "first": first,
-    "last": last,
-    "prev": prev,
-    "next": next,
-  };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['first'] = this.first;
+    data['last'] = this.last;
+    data['prev'] = this.prev;
+    data['next'] = this.next;
+    return data;
+  }
 }
 
 class Meta {
-  Meta({
-    this.currentPage,
-    this.from,
-    this.lastPage,
-    this.path,
-    this.perPage,
-    this.to,
-    this.total,
-  });
-
   int currentPage;
   int from;
   int lastPage;
@@ -161,24 +207,34 @@ class Meta {
   int to;
   int total;
 
-  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-    currentPage: json["current_page"],
-    from: json["from"],
-    lastPage: json["last_page"],
-    path: json["path"],
-    perPage: json["per_page"],
-    to: json["to"],
-    total: json["total"],
-  );
+  Meta(
+      {this.currentPage,
+        this.from,
+        this.lastPage,
+        this.path,
+        this.perPage,
+        this.to,
+        this.total});
 
-  Map<String, dynamic> toJson() => {
-    "current_page": currentPage,
-    "from": from,
-    "last_page": lastPage,
-    "path": path,
-    "per_page": perPage,
-    "to": to,
-    "total": total,
-  };
+  Meta.fromJson(Map<String, dynamic> json) {
+    currentPage = json['current_page'];
+    from = json['from'];
+    lastPage = json['last_page'];
+    path = json['path'];
+    perPage = json['per_page'];
+    to = json['to'];
+    total = json['total'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['current_page'] = this.currentPage;
+    data['from'] = this.from;
+    data['last_page'] = this.lastPage;
+    data['path'] = this.path;
+    data['per_page'] = this.perPage;
+    data['to'] = this.to;
+    data['total'] = this.total;
+    return data;
+  }
 }
-

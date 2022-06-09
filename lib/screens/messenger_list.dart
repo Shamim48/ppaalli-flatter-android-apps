@@ -211,7 +211,7 @@ class _MessengerListState extends State<MessengerList> {
   buildMessengerList() {
     return SingleChildScrollView(
       child: ListView.builder(
-        itemCount: _groupList.length,
+        itemCount:groupColor ? _groupList.length : _list.length,
         scrollDirection: Axis.vertical,
         padding: EdgeInsets.all(0.0),
         physics: NeverScrollableScrollPhysics(),

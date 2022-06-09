@@ -1,4 +1,5 @@
 import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/data_model/StudentCheckResponse.dart';
 import 'package:active_ecommerce_flutter/data_model/profile_image_update_response.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,6 +25,20 @@ class ProfileRepository {
     );
     return profileCountersResponseFromJson(response.body);
   }
+
+  Future<StudentCheck> getStudentCheckResponse() async {
+
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/student/check/${user_id.$}");
+    final response = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer ${access_token.$}","App-Language": app_language.$,
+      },
+    );
+    return studentCheckResponseFromJson(response.body);
+  }
+
+
 
   Future<ProfileUpdateResponse> getProfileUpdateResponse(
       @required String name,@required String password) async {

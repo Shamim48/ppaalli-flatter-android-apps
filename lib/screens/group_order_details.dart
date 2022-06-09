@@ -604,7 +604,7 @@ class _GroupOrderDetailsState extends State<GroupOrderDetails> {
 
     var conversationCreateResponse = await ChatRepository()
         .getCreateConversationResponse(
-        product_id: widget.id, title: title, message: message);
+        product_id: widget.id, message: message);
 
     if (conversationCreateResponse.result == false) {
       ToastComponent.showDialog(

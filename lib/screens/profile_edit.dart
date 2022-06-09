@@ -1,3 +1,4 @@
+import 'package:active_ecommerce_flutter/screens/profile.dart';
 import 'package:active_ecommerce_flutter/ui_elements/common_ui_element.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
@@ -145,6 +146,7 @@ class _ProfileEditState extends State<ProfileEdit> {
     } else {
       ToastComponent.showDialog(profileUpdateResponse.message, context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> Profile()), (route) => false);
 
       user_name.$ = name;
       setState(() {});

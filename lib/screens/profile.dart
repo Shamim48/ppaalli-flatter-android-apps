@@ -11,6 +11,7 @@ import 'package:active_ecommerce_flutter/repositories/wallet_repository.dart';
 import 'package:active_ecommerce_flutter/screens/address.dart';
 import 'package:active_ecommerce_flutter/screens/club_point.dart';
 import 'package:active_ecommerce_flutter/screens/group_order_history.dart';
+import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
@@ -41,11 +42,21 @@ class _ProfileState extends State<Profile> {
   int _wishlistCounter = 0;
   String _wishlistCounterString = "...";
   int _orderCounter = 0;
+  int _orderCompleteCounter = 0;
+  int _orderProcessCounter = 0;
+  int _orderPendingCounter = 0;
+  int _orderCancelCounter = 0;
+  int _groupOrderCount = 0;
+  int _orderGroupBuyingCounter = 0;
   String _orderCounterString = "...";
 
   var _balanceDetails = null;
 
-  bool isTabCkick=false;
+  bool isTabCkick = false;
+
+  bool _isStudent = false;
+
+  _onWillPop()async{ return false; }
 
   @override
   void initState() {
@@ -58,8 +69,7 @@ class _ProfileState extends State<Profile> {
   }
 
   fetchBalanceDetails() async {
-    var balanceDetailsResponse =
-    await WalletRepository().getBalance();
+    var balanceDetailsResponse = await WalletRepository().getBalance();
 
     _balanceDetails = balanceDetailsResponse;
 
@@ -90,9 +100,14 @@ class _ProfileState extends State<Profile> {
     var profileCountersResponse =
         await ProfileRepository().getProfileCountersResponse();
 
-    _cartCounter = profileCountersResponse.cart_item_count;
-    _wishlistCounter = profileCountersResponse.wishlist_item_count;
-    _orderCounter = profileCountersResponse.order_count;
+    _cartCounter = profileCountersResponse.cartItemCount;
+    _wishlistCounter = profileCountersResponse.wishlistItemCount;
+    _orderCounter = profileCountersResponse.orderCount;
+    _orderCancelCounter = profileCountersResponse.orderCancelled;
+    _orderCompleteCounter = profileCountersResponse.orderComplete;
+    _orderPendingCounter = profileCountersResponse.orderPending;
+    _orderProcessCounter = profileCountersResponse.orderConfirmed;
+    _groupOrderCount = profileCountersResponse.groupOrderCount;
 
     _cartCounterString =
         counterText(_cartCounter.toString(), default_length: 2);
@@ -100,9 +115,16 @@ class _ProfileState extends State<Profile> {
         counterText(_wishlistCounter.toString(), default_length: 2);
     _orderCounterString =
         counterText(_orderCounter.toString(), default_length: 2);
-    setState(() {
+    setState(() {});
+  }
 
-    });
+  fetchStudentCheck() async {
+    var studentCheckResponse =
+        await ProfileRepository().getStudentCheckResponse();
+
+    _isStudent = studentCheckResponse.success;
+
+    setState(() {});
   }
 
   String counterText(String txt, {default_length = 3}) {
@@ -149,16 +171,20 @@ class _ProfileState extends State<Profile> {
         textDirection:
             app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
         child: SafeArea(
-          child: Scaffold(
-            key: _scaffoldKey,
-            // drawer: MainDrawer(),
-            backgroundColor: Colors.white,
-            /* appBar: AppBar(
-          leading: Icon(Icons.arrow_back,color: Colors.black,),
+          child: WillPopScope(
+            onWillPop: () => Future.value(false),
+            child: Scaffold(
+
+              key: _scaffoldKey,
+              // drawer: MainDrawer(),
               backgroundColor: Colors.white,
+              /* appBar: AppBar(
+            leading: Icon(Icons.arrow_back,color: Colors.black,),
+                backgroundColor: Colors.white,
         ),*/
-            //buildAppBar(context),
-            body: buildBody(context),
+              //buildAppBar(context),
+              body: buildBody(context),
+            ),
           ),
         ));
   }
@@ -356,236 +382,393 @@ class _ProfileState extends State<Profile> {
   }
 
   buildVerticalMenu() {
-    return  Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(height: 15,),
-      Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
-      InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                return ProfileEdit();
-              }));
-            },
-            child: Visibility(
-              visible: true,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0,top: 5,left: 30,right: 30),
-                child: Row(
-                  children: [
-                    Image.asset("dummy_assets/icons/my_profile.png",color: MyTheme.primary_Colour, height: 30, width: 30,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("Update Profile",
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 15,
+        ),
+        Container(
+          height: 1,
+          width: double.infinity,
+          color: MyTheme.primary_Colour,
+        ),
+        is_logged_in.$
+            ? InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ProfileEdit();
+                  }));
+                },
+                child: Visibility(
+                  visible: true,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        bottom: 5.0, top: 5, left: 30, right: 30),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          "dummy_assets/icons/my_profile.png",
+                          color: MyTheme.primary_Colour,
+                          height: 30,
+                          width: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            "Update Profile",
+                            //  AppLocalizations.of(context)
+                            // .profile_screen_notification,
+                            textAlign: TextAlign.center,
+                            style: LatoSemiBold.copyWith(
+                                color: MyTheme.font_grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            : InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Login();
+                  }));
+                },
+                child: Visibility(
+                  visible: true,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        bottom: 5.0, top: 5, left: 30, right: 30),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          "dummy_assets/icons/my_profile.png",
+                          color: MyTheme.primary_Colour,
+                          height: 30,
+                          width: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            "Log in",
+                            //  AppLocalizations.of(context)
+                            // .profile_screen_notification,
+                            textAlign: TextAlign.center,
+                            style: LatoSemiBold.copyWith(
+                                color: MyTheme.font_grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+        Container(
+          height: 1,
+          width: double.infinity,
+          color: MyTheme.primary_Colour,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return OrderList(
+                from_checkout: false,
+                defaultDeliveryStatusKey: "pending",
+              );
+            }));
+          },
+          child: Visibility(
+            visible: true,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 5.0, top: 5, left: 30, right: 30),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "dummy_assets/icons/order_history.png",
+                    color: MyTheme.primary_Colour,
+                    height: 30,
+                    width: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      "Order History",
                       //  AppLocalizations.of(context)
-                           // .profile_screen_notification,
-                        textAlign: TextAlign.center,
-                        style: LatoSemiBold.copyWith(color: MyTheme.font_grey,fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    )
-                  ],
-                ),
+                      // .profile_screen_notification,
+                      textAlign: TextAlign.center,
+                      style: LatoSemiBold.copyWith(
+                          color: MyTheme.font_grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
-          Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
-          InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                return OrderList(from_checkout: false,);
-              }));
-            },
-            child: Visibility(
-              visible: true,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0,top: 5,left: 30,right: 30),
-                child: Row(
-                  children: [
-                    Image.asset("dummy_assets/icons/order_history.png",color: MyTheme.primary_Colour, height: 30, width: 30,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("Order History",
-                        //  AppLocalizations.of(context)
-                        // .profile_screen_notification,
-                        textAlign: TextAlign.center,
-                        style: LatoSemiBold.copyWith(color: MyTheme.font_grey,fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    )
-                  ],
-                ),
+        ),
+        Container(
+          height: 1,
+          width: double.infinity,
+          color: MyTheme.primary_Colour,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => GroupOrderHistory()));
+          },
+          child: Visibility(
+            visible: true,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 5.0, top: 5, left: 30, right: 30),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "dummy_assets/icons/group_order.png",
+                    color: MyTheme.primary_Colour,
+                    height: 30,
+                    width: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      "Group Order Details",
+                      //  AppLocalizations.of(context)
+                      // .profile_screen_notification,
+                      textAlign: TextAlign.center,
+                      style: LatoSemiBold.copyWith(
+                          color: MyTheme.font_grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
-          Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
-          InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> GroupOrderHistory(
-              )));
-            },
-            child: Visibility(
-              visible: true,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0,top: 5,left: 30,right: 30),
-                child: Row(
-                  children: [
-                    Image.asset("dummy_assets/icons/group_order.png",color: MyTheme.primary_Colour, height: 30, width: 30,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("Group Order Details",
-                        //  AppLocalizations.of(context)
-                        // .profile_screen_notification,
-                        textAlign: TextAlign.center,
-                        style: LatoSemiBold.copyWith(color: MyTheme.font_grey,fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    )
-                  ],
-                ),
+        ),
+        Container(
+          height: 1,
+          width: double.infinity,
+          color: MyTheme.primary_Colour,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return Wishlist();
+            }));
+          },
+          child: Visibility(
+            visible: true,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 5.0, top: 5, left: 30, right: 30),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "dummy_assets/icons/wishlist.png",
+                    color: MyTheme.primary_Colour,
+                    height: 30,
+                    width: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      "Wishlist",
+                      //  AppLocalizations.of(context)
+                      // .profile_screen_notification,
+                      textAlign: TextAlign.center,
+                      style: LatoSemiBold.copyWith(
+                          color: MyTheme.font_grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
-          Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
-          InkWell(
-            onTap: () {
-             Navigator.push(context, MaterialPageRoute(builder: (context){
-               return Wishlist();
-             }));
-            },
-            child: Visibility(
-              visible: true,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0,top: 5,left: 30,right: 30),
-                child: Row(
-                  children: [
-                    Image.asset("dummy_assets/icons/wishlist.png",color: MyTheme.primary_Colour, height: 30, width: 30,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("Wishlist",
-                        //  AppLocalizations.of(context)
-                        // .profile_screen_notification,
-                        textAlign: TextAlign.center,
-                        style: LatoSemiBold.copyWith(color: MyTheme.font_grey,fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    )
-                  ],
-                ),
+        ),
+        Container(
+          height: 1,
+          width: double.infinity,
+          color: MyTheme.primary_Colour,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return PasswordForget();
+            }));
+          },
+          child: Visibility(
+            visible: true,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 5.0, top: 5, left: 30, right: 30),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "dummy_assets/icons/change_pass.png",
+                    color: MyTheme.primary_Colour,
+                    height: 30,
+                    width: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      "Change password",
+                      //  AppLocalizations.of(context)
+                      // .profile_screen_notification,
+                      textAlign: TextAlign.center,
+                      style: LatoSemiBold.copyWith(
+                          color: MyTheme.font_grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
-          Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
-
-          InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                return PasswordForget();
-              }));
-            },
-            child: Visibility(
-              visible: true,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0,top: 5,left: 30,right: 30),
-                child: Row(
-                  children: [
-                    Image.asset("dummy_assets/icons/change_pass.png",color: MyTheme.primary_Colour, height: 30, width: 30,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("Change password",
-                        //  AppLocalizations.of(context)
-                        // .profile_screen_notification,
-                        textAlign: TextAlign.center,
-                        style: LatoSemiBold.copyWith(color: MyTheme.font_grey,fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    )
-                  ],
-                ),
+        ),
+        Container(
+          height: 1,
+          width: double.infinity,
+          color: MyTheme.primary_Colour,
+        ),
+        InkWell(
+          onTap: () {
+            ToastComponent.showDialog(
+                AppLocalizations.of(context).common_coming_soon, context,
+                gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+          },
+          child: Visibility(
+            visible: true,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 5.0, top: 5, left: 30, right: 30),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "dummy_assets/icons/help.png",
+                    color: MyTheme.primary_Colour,
+                    height: 30,
+                    width: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      "Help",
+                      //  AppLocalizations.of(context)
+                      // .profile_screen_notification,
+                      textAlign: TextAlign.center,
+                      style: LatoSemiBold.copyWith(
+                          color: MyTheme.font_grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
-          Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
-          InkWell(
-            onTap: () {
-              ToastComponent.showDialog(
-                  AppLocalizations.of(context).common_coming_soon, context,
-                  gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-            },
-            child: Visibility(
-              visible: true,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0,top: 5,left: 30,right: 30),
-                child: Row(
-                  children: [
-                    Image.asset("dummy_assets/icons/help.png",color: MyTheme.primary_Colour, height: 30, width: 30,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("Help",
-                        //  AppLocalizations.of(context)
-                        // .profile_screen_notification,
-                        textAlign: TextAlign.center,
-                        style: LatoSemiBold.copyWith(color: MyTheme.font_grey,fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    )
-                  ],
-                ),
+        ),
+        Container(
+          height: 1,
+          width: double.infinity,
+          color: MyTheme.primary_Colour,
+        ),
+        InkWell(
+          onTap: () {
+            ToastComponent.showDialog(
+                AppLocalizations.of(context).common_coming_soon, context,
+                gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+          },
+          child: Visibility(
+            visible: true,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 5.0, top: 5, left: 30, right: 30),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "dummy_assets/icons/about.png",
+                    color: MyTheme.primary_Colour,
+                    height: 30,
+                    width: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      "About",
+                      //  AppLocalizations.of(context)
+                      // .profile_screen_notification,
+                      textAlign: TextAlign.center,
+                      style: LatoSemiBold.copyWith(
+                          color: MyTheme.font_grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
-          Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
-          InkWell(
-            onTap: () {
-              ToastComponent.showDialog(
-                  AppLocalizations.of(context).common_coming_soon, context,
-                  gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-            },
-            child: Visibility(
-              visible: true,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0,top: 5,left: 30,right: 30),
-                child: Row(
-                  children: [
-                    Image.asset("dummy_assets/icons/about.png",color: MyTheme.primary_Colour, height: 30, width: 30,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("About",
-                        //  AppLocalizations.of(context)
-                        // .profile_screen_notification,
-                        textAlign: TextAlign.center,
-                        style: LatoSemiBold.copyWith(color: MyTheme.font_grey,fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    )
-                  ],
+        ),
+        Container(
+          height: 1,
+          width: double.infinity,
+          color: MyTheme.primary_Colour,
+        ),
+        is_logged_in.$
+            ? InkWell(
+                onTap: () {
+                  logOut();
+                },
+                child: Visibility(
+                  visible: true,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        bottom: 5.0, top: 5, left: 30, right: 30),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          "dummy_assets/icons/log_out.png",
+                          color: MyTheme.primary_Colour,
+                          height: 30,
+                          width: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            "Log out",
+                            //  AppLocalizations.of(context)
+                            // .profile_screen_notification,
+                            textAlign: TextAlign.center,
+                            style: LatoSemiBold.copyWith(
+                                color: MyTheme.font_grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-          Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
-          InkWell(
-            onTap: () {
-              logOut();
-            },
-            child: Visibility(
-              visible: true,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0,top: 5,left: 30,right: 30),
-                child: Row(
-                  children: [
-                    Image.asset("dummy_assets/icons/log_out.png",color: MyTheme.primary_Colour, height: 30, width: 30,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("Log out",
-                        //  AppLocalizations.of(context)
-                        // .profile_screen_notification,
-                        textAlign: TextAlign.center,
-                        style: LatoSemiBold.copyWith(color: MyTheme.font_grey,fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Container(height: 1,width: double.infinity, color: MyTheme.primary_Colour,),
-
-
-
+              )
+            : Container(),
+        Container(
+          height: 1,
+          width: double.infinity,
+          color: MyTheme.primary_Colour,
+        ),
 
 /*          InkWell(
             onTap: () {
@@ -624,90 +807,88 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ),*/
-          AddonConfig.club_point_addon_installed
-              ? InkWell(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return Clubpoint();
-                    }));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Row(
-                      children: [
-                        Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.orange,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.monetization_on_outlined,
-                                color: Colors.white,
-                              ),
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                            AppLocalizations.of(context)
-                                .profile_screen_earning_points,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 14),
+        AddonConfig.club_point_addon_installed
+            ? InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Clubpoint();
+                  }));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Row(
+                    children: [
+                      Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            shape: BoxShape.circle,
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              : Container(),
-          AddonConfig.refund_addon_installed
-              ? InkWell(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return RefundRequest();
-                    }));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Row(
-                      children: [
-                        Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.pinkAccent,
-                              shape: BoxShape.circle,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.monetization_on_outlined,
+                              color: Colors.white,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.double_arrow,
-                                color: Colors.white,
-                              ),
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                            AppLocalizations.of(context)
-                                .profile_screen_refund_requests,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: MyTheme.font_grey, fontSize: 14),
-                          ),
-                        )
-                      ],
-                    ),
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          AppLocalizations.of(context)
+                              .profile_screen_earning_points,
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(color: MyTheme.font_grey, fontSize: 14),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              : Container(),
-        ],
-      );
+                ),
+              )
+            : Container(),
+        AddonConfig.refund_addon_installed
+            ? InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return RefundRequest();
+                  }));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Row(
+                    children: [
+                      Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.pinkAccent,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.double_arrow,
+                              color: Colors.white,
+                            ),
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          AppLocalizations.of(context)
+                              .profile_screen_refund_requests,
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(color: MyTheme.font_grey, fontSize: 14),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : Container(),
+      ],
+    );
   }
 
   buildCountersRow() {
@@ -790,18 +971,18 @@ class _ProfileState extends State<Profile> {
       children: [
         /*Padding(padding: EdgeInsets.only(left: 10,top: 10),
         child: Icon(Icons.arrow_back,color: MyTheme.primary_Colour, size: 30,),),*/
-        Center(child:
-        Padding(
-          padding: EdgeInsets.all(10),
-          child: Text(
-            "PROFILE",
-            style: LatoHeavy.copyWith(
-                color: MyTheme.primary_Colour,
-                fontSize: 18,
-                fontWeight: FontWeight.bold
+        Center(
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              "PROFILE",
+              style: LatoHeavy.copyWith(
+                  color: MyTheme.primary_Colour,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
           ),
-        ),),
+        ),
         Row(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -833,15 +1014,18 @@ class _ProfileState extends State<Profile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(
-                        left: Dimensions.PADDING_SIZE_DEFAULT  ),
+                    padding:
+                        EdgeInsets.only(left: Dimensions.PADDING_SIZE_DEFAULT),
                     child: Text(
                       "${user_name.$}",
                       // "${user_name.$}",
+                      maxLines: 2,
                       style: LatoHeavy.copyWith(
-                          fontSize: 20,
+                          fontSize: 17,
+                          overflow: TextOverflow.ellipsis,
                           color: MyTheme.font_grey,
                           fontWeight: FontWeight.w800),
+
                     ),
                   ),
                   /*Padding(
@@ -862,18 +1046,18 @@ class _ProfileState extends State<Profile> {
 
                   Padding(
                     padding: EdgeInsets.only(
-                        top: 5,
-                        left: Dimensions.PADDING_SIZE_DEFAULT),
+                        top: 5, left: Dimensions.PADDING_SIZE_DEFAULT),
                     child: Text(
                       "${user_email.$}",
-                      style: LatoRegular.copyWith(color: Colors.black),
+                      maxLines: 2,
+                      style: LatoRegular.copyWith(color: Colors.black, fontSize: 12, overflow: TextOverflow.ellipsis,),
                     ),
                   )
                 ],
               ),
             )
 
-         /*Padding(
+            /*Padding(
           padding: const EdgeInsets.only(top: 16.0),
           child: Container(
             height: 24,
@@ -902,80 +1086,95 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ),*/
-
           ],
         )
       ],
     );
   }
 
-  buildBalanceSection(){
-    return Padding(padding: EdgeInsets.fromLTRB(30,10,30,10),
-    child: Row(
-      children: [
-        InkWell(
-          onTap: (){
-            setState(() {
-              isTabCkick=!isTabCkick;
-            });
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-               Container(
-                  height: 25,
-                  width: 25,
-                  decoration: BoxDecoration(
-                    color: isTabCkick ? MyTheme.white:  MyTheme.golden,
-                    shape: BoxShape.circle,
-
-                  ),
-                  child: Center(
-                    child: Text("\$",style: LatoSemiBold.copyWith(color: Colors.white),),
-                  )
-              ),
-              SizedBox(width: 5,),
-              Text( isTabCkick ? _balanceDetails.balance : "Check Balance"),
-              Container(
-
-                  height: 25,
-                  width: 25,
-                  decoration: BoxDecoration(
-                    color: isTabCkick ? MyTheme.golden: MyTheme.golden.withOpacity(0.3),
-                    shape: BoxShape.circle,
-
-                  ),
-                  child: Center(
-                    child: Text("\$",style: LatoSemiBold.copyWith(color: Colors.white),),
-                  )
-              ),
-            ],
-          ),
-        ),
-        Expanded(child: Container()),
-        Row(
-          children: [
-
-            Text("Is Student", style: LatoMedium.copyWith(fontWeight: FontWeight.bold),),
-            SizedBox(width: 5,),
-            Container(
-                height: 18,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: MyTheme.golden,
-                    boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 1, spreadRadius: .5)],
-                    borderRadius: BorderRadius.circular(5)
-
+  buildBalanceSection() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+      child: Row(
+        children: [
+          InkWell(
+            onTap: () {
+              setState(() {
+                isTabCkick = !isTabCkick;
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                    height: 25,
+                    width: 25,
+                    decoration: BoxDecoration(
+                      color: isTabCkick ? MyTheme.white : MyTheme.golden,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        "\$",
+                        style: LatoSemiBold.copyWith(color: Colors.white),
+                      ),
+                    )),
+                SizedBox(
+                  width: 5,
                 ),
-                child: Center(
-                  child: Text("\$",style: LatoSemiBold.copyWith(color: Colors.white),),
-                )
+                Text(isTabCkick ? _balanceDetails.balance : "Check Balance"),
+                Container(
+                    height: 25,
+                    width: 25,
+                    decoration: BoxDecoration(
+                      color: isTabCkick
+                          ? MyTheme.golden
+                          : MyTheme.golden.withOpacity(0.3),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        "\$",
+                        style: LatoSemiBold.copyWith(color: Colors.white),
+                      ),
+                    )),
+              ],
             ),
-          ],
-        )
-
-      ],
-    ),
+          ),
+          Expanded(child: Container()),
+          Row(
+            children: [
+              Text(
+                _isStudent ? "Is Student" : "",
+                style: LatoMedium.copyWith(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              _isStudent
+                  ? Container(
+                      height: 18,
+                      width: 40,
+                      decoration: BoxDecoration(
+                          color: MyTheme.golden,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey[300],
+                                blurRadius: 1,
+                                spreadRadius: .5)
+                          ],
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Center(
+                        child: Text(
+                          "\$",
+                          style: LatoSemiBold.copyWith(color: Colors.white),
+                        ),
+                      ))
+                  : Container(),
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -990,78 +1189,39 @@ class _ProfileState extends State<Profile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                              height: 35,
-                              width: 150,
-                              decoration: BoxDecoration(color: MyTheme.white,
-                                  boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 2, spreadRadius: 1)],
-                                  borderRadius: BorderRadius.circular(7)
-                              ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return OrderList(
+                          defaultDeliveryStatusKey: "delivered",
+                        );
+                      }));
+                    },
+                    child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                                height: 35,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey[300],
+                                          blurRadius: 2,
+                                          spreadRadius: 1)
+                                    ],
+                                    borderRadius: BorderRadius.circular(7)),
                                 child: Row(
                                   children: [
                                     // Image.asset("assets/"),
                                     ClipRRect(
-                                      borderRadius: BorderRadius.only( topLeft: Radius.circular(5),bottomLeft: Radius.circular(5)),
-                                      child: Container(
-                                        height: double.infinity,
-                                        width: 35,
-                                        color: MyTheme.primary_Colour,
-                                        // clipBehavior: Clip.antiAlias,
-                                         child: Padding(
-                                           padding: EdgeInsets.all(5),
-                                           child: Image.asset("dummy_assets/icons/complete_order.png"),
-                                         )
-
-                                      ),
-                                    ),
-                                    SizedBox(width: 10,),
-                                    Text('Order Complete',style: LatoSemiBold.copyWith(color: Colors.black,fontSize: 12),)
-
-                                  ],
-                                )
-
-
-                          ),
-                          Positioned(
-                              right: 3,
-                              top: -15,
-                              child: Container(
-                                  height: 25,
-                                  width: 25,
-                                  decoration: BoxDecoration(
-                                    color: MyTheme.primary_Colour,
-                                    shape: BoxShape.circle,
-
-                                  ),
-                                  child: Center(
-                                    child: Text("12",style: LatoSemiBold.copyWith(color: Colors.white),),
-                                  )
-                              ))
-                        ],
-                      )),
-                  Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                              height: 35,
-                              width: 150,
-                              decoration: BoxDecoration(color: MyTheme.white,
-                                  boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 2, spreadRadius: 1)],
-                                  borderRadius: BorderRadius.circular(5)
-                              ),
-
-                                child: Row(
-                                  children: [
-                                    // Image.asset("assets/"),
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.only( topLeft: Radius.circular(5),bottomLeft: Radius.circular(5)),
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(5),
+                                          bottomLeft: Radius.circular(5)),
                                       child: Container(
                                           height: double.infinity,
                                           width: 35,
@@ -1069,218 +1229,348 @@ class _ProfileState extends State<Profile> {
                                           // clipBehavior: Clip.antiAlias,
                                           child: Padding(
                                             padding: EdgeInsets.all(5),
-                                            child: Image.asset("dummy_assets/icons/process_order.png"),
-                                          )
-
-                                      ),
+                                            child: Image.asset(
+                                                "dummy_assets/icons/complete_order.png"),
+                                          )),
                                     ),
-                                    SizedBox(width: 10,),
-                                    Text('Order Process',style: LatoSemiBold.copyWith(color: Colors.black,fontSize: 12),)
-
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'Order Complete',
+                                      style: LatoSemiBold.copyWith(
+                                          color: Colors.black, fontSize: 12),
+                                    )
                                   ],
-
-                              )
-
-                          ),
-                          Positioned(
-                              right: 3,
-                              top: -15,
-                              child: Container(
-                                  height: 25,
-                                  width: 25,
-                                  decoration: BoxDecoration(
-                                    color: MyTheme.primary_Colour,
-                                    shape: BoxShape.circle,
-
-                                  ),
-                                  child: Center(
-                                    child: Text("5",style: LatoSemiBold.copyWith(color: Colors.white),),
-                                  )
-                              ))
-                        ],
-                      )),
+                                )),
+                            Positioned(
+                                right: 3,
+                                top: -15,
+                                child: Container(
+                                    height: 25,
+                                    width: 25,
+                                    decoration: BoxDecoration(
+                                      color: MyTheme.primary_Colour,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "${_orderCompleteCounter}",
+                                        style: LatoSemiBold.copyWith(
+                                            color: Colors.white),
+                                      ),
+                                    )))
+                          ],
+                        )),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return OrderList(
+                          defaultDeliveryStatusKey: "on_delivery",
+                        );
+                      }));
+                    },
+                    child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                                height: 35,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey[300],
+                                          blurRadius: 2,
+                                          spreadRadius: 1)
+                                    ],
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Row(
+                                  children: [
+                                    // Image.asset("assets/"),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(5),
+                                          bottomLeft: Radius.circular(5)),
+                                      child: Container(
+                                          height: double.infinity,
+                                          width: 35,
+                                          color: MyTheme.primary_Colour,
+                                          // clipBehavior: Clip.antiAlias,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(5),
+                                            child: Image.asset(
+                                                "dummy_assets/icons/process_order.png"),
+                                          )),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'Order Process',
+                                      style: LatoSemiBold.copyWith(
+                                          color: Colors.black, fontSize: 12),
+                                    )
+                                  ],
+                                )),
+                            Positioned(
+                                right: 3,
+                                top: -15,
+                                child: Container(
+                                    height: 25,
+                                    width: 25,
+                                    decoration: BoxDecoration(
+                                      color: MyTheme.primary_Colour,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "${_orderProcessCounter}",
+                                        style: LatoSemiBold.copyWith(
+                                            color: Colors.white),
+                                      ),
+                                    )))
+                          ],
+                        )),
+                  ),
                 ],
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                              height: 35,
-                              width: 150,
-                              decoration: BoxDecoration(color: MyTheme.white,
-                                  boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 2, spreadRadius: 1)],
-                                  borderRadius: BorderRadius.circular(5)
-                              ),
-                              child: Row(
-                                children: [
-                                  // Image.asset("assets/"),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only( topLeft: Radius.circular(5),bottomLeft: Radius.circular(5)),
-                                    child: Container(
-                                        height: double.infinity,
-                                        width: 35,
-                                        color: MyTheme.primary_Colour,
-                                        // clipBehavior: Clip.antiAlias,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(6),
-                                          child: Image.asset("dummy_assets/icons/pending_order.png"),
-                                        )
-
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return OrderList(
+                          defaultDeliveryStatusKey: "pending",
+                        );
+                      }));
+                    },
+                    child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                                height: 35,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey[300],
+                                          blurRadius: 2,
+                                          spreadRadius: 1)
+                                    ],
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Row(
+                                  children: [
+                                    // Image.asset("assets/"),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(5),
+                                          bottomLeft: Radius.circular(5)),
+                                      child: Container(
+                                          height: double.infinity,
+                                          width: 35,
+                                          color: MyTheme.primary_Colour,
+                                          // clipBehavior: Clip.antiAlias,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(6),
+                                            child: Image.asset(
+                                                "dummy_assets/icons/pending_order.png"),
+                                          )),
                                     ),
-                                  ),
-                                  SizedBox(width: 10,),
-                                  Text('Order Pending',style: LatoSemiBold.copyWith(color: Colors.black,fontSize: 12),)
-
-                                ],
-
-                              )
-
-                          ),
-                          Positioned(
-                              right: 3,
-                              top: -15,
-                              child: Container(
-                                  height: 25,
-                                  width: 25,
-                                  decoration: BoxDecoration(
-                                    color: MyTheme.primary_Colour,
-                                    shape: BoxShape.circle,
-
-                                  ),
-                                  child: Center(
-                                    child: Text("3",style: LatoSemiBold.copyWith(color: Colors.white),),
-                                  )
-                              ))
-                        ],
-                      )),
-                  Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                              height: 35,
-                              width: 150,
-                              decoration: BoxDecoration(color: MyTheme.white,
-                                  boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 2, spreadRadius: 1)],
-                                  borderRadius: BorderRadius.circular(5)
-                              ),
-                              child: Row(
-                                children: [
-                                  // Image.asset("assets/"),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only( topLeft: Radius.circular(5),bottomLeft: Radius.circular(5)),
-                                    child: Container(
-                                        height: double.infinity,
-                                        width: 30,
-                                        color: MyTheme.primary_Colour,
-                                        // clipBehavior: Clip.antiAlias,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(5),
-                                          child: Image.asset("dummy_assets/icons/cancel_order.png"),
-                                        )
-
+                                    SizedBox(
+                                      width: 10,
                                     ),
-                                  ),
-                                  SizedBox(width: 10,),
-                                  Text('Order Cancel',style: LatoSemiBold.copyWith(color: Colors.black,fontSize: 12),)
-
-                                ],
-
-                              )
-
-                          ),
-                          Positioned(
-                              right: 3,
-                              top: -15,
-                              child: Container(
-                                  height: 25,
-                                  width: 25,
-                                  decoration: BoxDecoration(
-                                    color: MyTheme.primary_Colour,
-                                    shape: BoxShape.circle,
-
-                                  ),
-                                  child: Center(
-                                    child: Text("4",style: LatoSemiBold.copyWith(color: Colors.white),),
-                                  )
-                              ))
-                        ],
-                      )),
+                                    Text(
+                                      'Order Pending',
+                                      style: LatoSemiBold.copyWith(
+                                          color: Colors.black, fontSize: 12),
+                                    )
+                                  ],
+                                )),
+                            Positioned(
+                                right: 3,
+                                top: -15,
+                                child: Container(
+                                    height: 25,
+                                    width: 25,
+                                    decoration: BoxDecoration(
+                                      color: MyTheme.primary_Colour,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "${_orderPendingCounter}",
+                                        style: LatoSemiBold.copyWith(
+                                            color: Colors.white),
+                                      ),
+                                    )))
+                          ],
+                        )),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return OrderList(
+                              defaultDeliveryStatusKey: "cancelled",
+                            );
+                          }));
+                    },
+                    child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                                height: 35,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey[300],
+                                          blurRadius: 2,
+                                          spreadRadius: 1)
+                                    ],
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Row(
+                                  children: [
+                                    // Image.asset("assets/"),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(5),
+                                          bottomLeft: Radius.circular(5)),
+                                      child: Container(
+                                          height: double.infinity,
+                                          width: 30,
+                                          color: MyTheme.primary_Colour,
+                                          // clipBehavior: Clip.antiAlias,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(5),
+                                            child: Image.asset(
+                                                "dummy_assets/icons/cancel_order.png"),
+                                          )),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'Order Cancel',
+                                      style: LatoSemiBold.copyWith(
+                                          color: Colors.black, fontSize: 12),
+                                    )
+                                  ],
+                                )),
+                            Positioned(
+                                right: 3,
+                                top: -15,
+                                child: Container(
+                                    height: 25,
+                                    width: 25,
+                                    decoration: BoxDecoration(
+                                      color: MyTheme.primary_Colour,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "${_orderCancelCounter}",
+                                        style: LatoSemiBold.copyWith(
+                                            color: Colors.white),
+                                      ),
+                                    )))
+                          ],
+                        )),
+                  ),
                 ],
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                              height: 35,
-                              width: 150,
-                              decoration: BoxDecoration(color: MyTheme.white,
-                                  boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 2, spreadRadius: 1)],
-                                  borderRadius: BorderRadius.circular(5)
-                              ),
-                              child: Row(
-                                children: [
-                                  // Image.asset("assets/"),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only( topLeft: Radius.circular(5),bottomLeft: Radius.circular(5)),
-                                    child: Container(
-                                        height: double.infinity,
-                                        width: 35,
-                                        color: MyTheme.primary_Colour,
-                                        // clipBehavior: Clip.antiAlias,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(6),
-                                          child: Image.asset("dummy_assets/icons/group_buying.png"),
-                                        )
-
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GroupOrderHistory()));
+                    },
+                    child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                                height: 35,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: MyTheme.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey[300],
+                                          blurRadius: 2,
+                                          spreadRadius: 1)
+                                    ],
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Row(
+                                  children: [
+                                    // Image.asset("assets/"),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(5),
+                                          bottomLeft: Radius.circular(5)),
+                                      child: Container(
+                                          height: double.infinity,
+                                          width: 35,
+                                          color: MyTheme.primary_Colour,
+                                          // clipBehavior: Clip.antiAlias,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(6),
+                                            child: Image.asset(
+                                                "dummy_assets/icons/group_buying.png"),
+                                          )),
                                     ),
-                                  ),
-                                  SizedBox(width: 10,),
-                                  Text('Group Buying',style: LatoSemiBold.copyWith(color: Colors.black,fontSize: 12),)
-
-                                ],
-
-                              )
-
-                          ),
-                          Positioned(
-                              right: 3,
-                              top: -15,
-                              child: Container(
-                                  height: 25,
-                                  width: 25,
-                                  decoration: BoxDecoration(
-                                    color: MyTheme.primary_Colour,
-                                    shape: BoxShape.circle,
-
-                                  ),
-                                  child: Center(
-                                    child: Text("7",style: LatoSemiBold.copyWith(color: Colors.white),),
-                                  )
-                              ))
-                        ],
-                      )),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'Group Buying',
+                                      style: LatoSemiBold.copyWith(
+                                          color: Colors.black, fontSize: 12),
+                                    )
+                                  ],
+                                )),
+                            Positioned(
+                                right: 3,
+                                top: -15,
+                                child: Container(
+                                    height: 25,
+                                    width: 25,
+                                    decoration: BoxDecoration(
+                                      color: MyTheme.primary_Colour,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "${_groupOrderCount}",
+                                        style: LatoSemiBold.copyWith(
+                                            color: Colors.white),
+                                      ),
+                                    )))
+                          ],
+                        )),
+                  ),
                 ],
               )
-
-
             ],
-
-          )
-      ),
+          )),
     );
   }
 
@@ -1325,17 +1615,15 @@ class _ProfileState extends State<Profile> {
   }
 
   void logOut() async {
-    var response= await  AuthRepository().getLogoutResponse();
-    if(response.result ==true){
+    var response = await AuthRepository().getLogoutResponse();
+    if (response.result == true) {
       AuthHelper().clearUserData();
-      ToastComponent.showDialog(
-          "Log Out", context,
+      ToastComponent.showDialog("Log Out", context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-      Navigator.push(context, MaterialPageRoute(builder: (context){
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
         return Main();
       }));
-      setState(() {
-      });
+      setState(() {});
     }
   }
 }

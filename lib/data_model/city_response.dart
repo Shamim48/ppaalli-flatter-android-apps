@@ -9,51 +9,55 @@ CityResponse cityResponseFromJson(String str) => CityResponse.fromJson(json.deco
 String cityResponseToJson(CityResponse data) => json.encode(data.toJson());
 
 class CityResponse {
-  CityResponse({
-    this.cities,
-    this.success,
-    this.status,
-  });
-
-  List<City> cities;
+  List<City> data;
   bool success;
   int status;
 
-  factory CityResponse.fromJson(Map<String, dynamic> json) => CityResponse(
-    cities: List<City>.from(json["data"].map((x) => City.fromJson(x))),
-    success: json["success"],
-    status: json["status"],
-  );
+  CityResponse({this.data, this.success, this.status});
 
-  Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(cities.map((x) => x.toJson())),
-    "success": success,
-    "status": status,
-  };
+  CityResponse.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = new List<City>();
+      json['data'].forEach((v) {
+        data.add(new City.fromJson(v));
+      });
+    }
+    success = json['success'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    data['success'] = this.success;
+    data['status'] = this.status;
+    return data;
+  }
 }
 
 class City {
-  City({
-    this.id,
-    this.state_id,
-    this.name,
-  });
-
-  @override toString() => '$name';
-
   int id;
-  int state_id;
+  int countryId;
   String name;
+  int cost;
 
-  factory City.fromJson(Map<String, dynamic> json) => City(
-    id: json["id"],
-    state_id: json["state_id"],
-    name: json["name"],
-  );
+  City({this.id, this.countryId, this.name, this.cost});
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "state_id": state_id,
-    "name": name,
-  };
+  City.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    countryId = json['country_id'];
+    name = json['name'];
+    cost = json['cost'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['country_id'] = this.countryId;
+    data['name'] = this.name;
+    data['cost'] = this.cost;
+    return data;
+  }
 }

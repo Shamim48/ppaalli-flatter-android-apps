@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-OnGoingGroupProduct onGoingProductResponseFromJson(String str) => OnGoingGroupProduct.fromJson(json.decode(str));
+OnGoingGroupProduct onGoingProductResponseFromJson(String str) => OnGoingGroupProduct.
+fromJson(json.decode(str));
 
 class OnGoingGroupProduct {
   List<OnGoingData> _data;

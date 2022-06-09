@@ -1,5 +1,6 @@
 import 'package:active_ecommerce_flutter/data_model/cart_response.dart';
 import 'package:active_ecommerce_flutter/data_model/product_mini_response.dart';
+import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/shipping_info.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _CartState extends State<Cart> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ScrollController _mainScrollController = ScrollController();
   var _shopList = [];
+
   bool _isInitial = true;
   var _cartTotal = 0.00;
   var _cartTotalString = ". . .";
@@ -73,11 +75,11 @@ class _CartState extends State<Cart> {
     _cartTotal = 0.00;
     if (_shopList.length > 0) {
       _shopList.forEach((shop) {
-        if (shop.cart_items.length > 0) {
-          shop.cart_items.forEach((cart_item) {
+        if (shop.cartItems.length > 0) {
+          shop.cartItems.forEach((cartItems) {
             _cartTotal +=
-                (cart_item.price + cart_item.tax) * cart_item.quantity;
-            _cartTotalString = "${cart_item.currency_symbol}${_cartTotal}";
+                (cartItems.price + cartItems.tax) * cartItems.quantity;
+            _cartTotalString = "${cartItems.currencySymbol}${_cartTotal}";
           });
         }
       });
@@ -89,24 +91,24 @@ class _CartState extends State<Cart> {
   partialTotalString(index) {
     var partialTotal = 0.00;
     var partialTotalString = "";
-    if (_shopList[index].cart_items.length > 0) {
-      _shopList[index].cart_items.forEach((cart_item) {
-        partialTotal += (cart_item.price + cart_item.tax) * cart_item.quantity;
-        partialTotalString = "${cart_item.currency_symbol}${partialTotal}";
+    if (_shopList[index].cartItems.length > 0) {
+      _shopList[index].cartItems.forEach((cartItems) {
+        partialTotal += (cartItems.price + cartItems.tax) * cartItems.quantity;
+        partialTotalString = "${cartItems.currencySymbol}${partialTotal}";
       });
     }
     return partialTotalString;
   }
 
   onQuantityIncrease(seller_index, item_index) {
-    if (_shopList[seller_index].cart_items[item_index].quantity <
-        _shopList[seller_index].cart_items[item_index].upper_limit) {
-      _shopList[seller_index].cart_items[item_index].quantity++;
+    if (_shopList[seller_index].cartItems[item_index].quantity <
+        _shopList[seller_index].cartItems[item_index].upper_limit) {
+      _shopList[seller_index].cartItems[item_index].quantity++;
       getSetCartTotal();
       setState(() {});
     } else {
       ToastComponent.showDialog(
-          "${AppLocalizations.of(context).cart_screen_cannot_order_more_than} ${_shopList[seller_index].cart_items[item_index].upper_limit} ${AppLocalizations.of(context).cart_screen_items_of_this}",
+          "${AppLocalizations.of(context).cart_screen_cannot_order_more_than} ${_shopList[seller_index].cartItems[item_index].upper_limit} ${AppLocalizations.of(context).cart_screen_items_of_this}",
           context,
           gravity: Toast.CENTER,
           duration: Toast.LENGTH_LONG);
@@ -114,14 +116,14 @@ class _CartState extends State<Cart> {
   }
 
   onQuantityDecrease(seller_index, item_index) {
-    if (_shopList[seller_index].cart_items[item_index].quantity >
-        _shopList[seller_index].cart_items[item_index].lower_limit) {
-      _shopList[seller_index].cart_items[item_index].quantity--;
+    if (_shopList[seller_index].cartItems[item_index].quantity >
+        _shopList[seller_index].cartItems[item_index].lower_limit) {
+      _shopList[seller_index].cartItems[item_index].quantity--;
       getSetCartTotal();
       setState(() {});
     } else {
       ToastComponent.showDialog(
-          "${AppLocalizations.of(context).cart_screen_cannot_order_more_than} ${_shopList[seller_index].cart_items[item_index].lower_limit} ${AppLocalizations.of(context).cart_screen_items_of_this}",
+          "${AppLocalizations.of(context).cart_screen_cannot_order_more_than} ${_shopList[seller_index].cartItems[item_index].lower_limit} ${AppLocalizations.of(context).cart_screen_items_of_this}",
           context,
           gravity: Toast.CENTER,
           duration: Toast.LENGTH_LONG);
@@ -198,10 +200,10 @@ class _CartState extends State<Cart> {
     var cart_quantities = [];
     if (_shopList.length > 0) {
       _shopList.forEach((shop) {
-        if (shop.cart_items.length > 0) {
-          shop.cart_items.forEach((cart_item) {
-            cart_ids.add(cart_item.id);
-            cart_quantities.add(cart_item.quantity);
+        if (shop.cartItems.length > 0) {
+          shop.cartItems.forEach((cartItems) {
+            cart_ids.add(cartItems.id);
+            cart_quantities.add(cartItems.quantity);
           });
         }
       });
@@ -369,7 +371,7 @@ class _CartState extends State<Cart> {
                         Spacer(),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text("$_cartTotalString",
+                          child: Text("0",
                               style: LatoMedium),
                         ),
                       ],
@@ -417,7 +419,7 @@ class _CartState extends State<Cart> {
                         style: LatoHeavy.copyWith(color: MyTheme.white),
                       ),
                       onPressed: () {
-                        onPressUpdate();
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Filter()));
                       },
                     ),
                   ),
@@ -526,7 +528,7 @@ backgroundColor: Colors.white,
   SingleChildScrollView buildCartSellerItemList(seller_index) {
     return SingleChildScrollView(
       child: ListView.builder(
-        itemCount: _shopList[seller_index].cart_items.length,
+        itemCount: _shopList[seller_index].cartItems.length,
         scrollDirection: Axis.vertical,
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -548,7 +550,7 @@ backgroundColor: Colors.white,
           child: IconButton(
             onPressed: () {
               onPressDelete(_shopList[seller_index]
-                  .cart_items[item_index]
+                  .cartItems[item_index]
                   .id);
             },
             icon: Icon(
@@ -597,8 +599,8 @@ backgroundColor: Colors.white,
                         placeholder: 'assets/placeholder.png',
                         image: AppConfig.BASE_PATH +
                             _shopList[seller_index]
-                                .cart_items[item_index]
-                                .product_thumbnail_image,
+                                .cartItems[item_index]
+                                .productThumbnailImage,
                         fit: BoxFit.fitWidth,
                       ))),
 
@@ -607,14 +609,15 @@ backgroundColor: Colors.white,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 8.0),
+                      padding: EdgeInsets.only(left: 5.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
                             _shopList[seller_index]
-                                .cart_items[item_index]
-                                .product_name,
+                                .cartItems[item_index]
+                                .productName,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: LatoHeavy,
@@ -626,16 +629,15 @@ backgroundColor: Colors.white,
                               Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Text(
-                                  _shopList[seller_index]
-                                      .cart_items[item_index]
-                                      .currency_symbol +
-                                      (_shopList[seller_index]
-                                          .cart_items[item_index]
-                                          .price *
-                                          _shopList[seller_index]
-                                              .cart_items[item_index]
-                                              .quantity)
-                                          .toString(),
+                                    _shopList[seller_index]
+                                        .cartItems[item_index]
+                                        .type==1 ? "${_shopList[seller_index]
+                                        .cartItems[item_index]
+                                        .productBasePrice} " : "${_shopList[seller_index]
+                                        .cartItems[item_index]
+                                        .currencySymbol}${_shopList[seller_index]
+                                        .cartItems[item_index]
+                                        .price}" ,
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
@@ -670,14 +672,23 @@ backgroundColor: Colors.white,
                             ],
                           ),*/
 
+
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
-                            child: Text("\$20(10%)"+" Advanced",
+                            child: _shopList[seller_index]
+                                .cartItems[item_index]
+                                .type==1 ? Text( "${_shopList[seller_index]
+                                .cartItems[item_index]
+                                .currencySymbol}${_shopList[seller_index]
+                                .cartItems[item_index]
+                                .price}(${_shopList[seller_index]
+                                .cartItems[item_index]
+                                .advancePaymentPercentage}%) "+" Advanced",
                               textAlign: TextAlign.left,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: LatoMedium,
-                            ),
+                            ): null,
                           ),
 
 
@@ -731,7 +742,7 @@ backgroundColor: Colors.white,
                         padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                         child: Text(
                           _shopList[seller_index]
-                              .cart_items[item_index]
+                              .cartItems[item_index]
                               .quantity
                               .toString(),
                           style: TextStyle(color: MyTheme.primary_Colour, fontSize: 16),

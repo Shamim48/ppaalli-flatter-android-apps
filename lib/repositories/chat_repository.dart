@@ -131,6 +131,27 @@ class ChatRepository {
 
   Future<ConversationCreateResponse> getCreateConversationResponse(
       {@required product_id,
+      @required String message}) async {
+    var post_body = jsonEncode({
+      "user_id": "${user_id.$}",
+      "product_id": "${product_id}",
+      "message": "${message}"
+    });
+
+   // Uri url = Uri.parse("${AppConfig.BASE_URL}/chat/create-conversation");
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/seller/chat/create_conversations");
+    final response = await http.post(url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$
+        },
+        body: post_body);
+    return conversationCreateResponseFromJson(response.body);
+  }
+
+  /*Future<ConversationCreateResponse> getCreateConversationResponse(
+      {@required product_id,
       @required String title,
       @required String message}) async {
     var post_body = jsonEncode({
@@ -149,5 +170,6 @@ class ChatRepository {
         },
         body: post_body);
     return conversationCreateResponseFromJson(response.body);
-  }
+  }*/
+
 }

@@ -358,8 +358,8 @@ backgroundColor: Colors.white,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            widget.messenger_title,
+                          Text( widget.messenger_title!=null ?
+                            widget.messenger_title : "",
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
@@ -369,8 +369,8 @@ backgroundColor: Colors.white,
                                 height: 1.6,
                                 fontWeight: FontWeight.w600),
                           ),
-                          Text(
-                            widget.messenger_name,
+                          Text( widget.messenger_name!=null ?
+                            widget.messenger_name :" ",
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,

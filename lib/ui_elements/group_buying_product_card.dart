@@ -54,14 +54,12 @@ class _GroupBuyingProductCardState extends State<GroupBuyingProductCard> {
     // TODO: implement initState
     super.initState();
     if(endTime!=0){
-      end = convertTimeStampToDateTime(1646376303);
+      end = convertTimeStampToDateTime(widget.endTime);
       diff = end.difference(now).inMilliseconds;
       endTime = diff + now.millisecondsSinceEpoch;
       void onEnd() {}
       _timerController=CountdownTimerController(endTime: endTime, onEnd: onEnd);
     }
-
-
   }
 
   @override
@@ -134,7 +132,7 @@ class _GroupBuyingProductCardState extends State<GroupBuyingProductCard> {
 
 
 
-
+                          // Group buying timer
                          Positioned(child: widget.startTime!=0 ?  Container(
 
                             padding: EdgeInsets.only(top: 3, bottom: 3, left: 5, right: 15),
@@ -142,7 +140,7 @@ class _GroupBuyingProductCardState extends State<GroupBuyingProductCard> {
                                 color: MyTheme.primary_Colour.withOpacity(0.8),
                               borderRadius: BorderRadius.circular(30)
                             ),
-                            child: Text("${time.hours}h.${time.min}m.${time.sec}s",style:  LatoHeavy.copyWith(color: MyTheme.white, fontWeight: FontWeight.w900),))
+                            child: time.hours!=0 ? Text("${time.hours}h.${time.min}m.${time.sec}s",style:  LatoHeavy.copyWith(color: MyTheme.white, fontWeight: FontWeight.w900),): Container())
                          : Container(),
                         top: 6,
                         right: 15,
