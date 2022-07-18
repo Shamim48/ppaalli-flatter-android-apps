@@ -140,7 +140,7 @@ class _GroupBuyingProductCardState extends State<GroupBuyingProductCard> {
                                 color: MyTheme.primary_Colour.withOpacity(0.8),
                               borderRadius: BorderRadius.circular(30)
                             ),
-                            child: time.hours!=0 ? Text("${time.hours}h.${time.min}m.${time.sec}s",style:  LatoHeavy.copyWith(color: MyTheme.white, fontWeight: FontWeight.w900),): Container())
+                            child: time.hours==null ?  Container(): Text("${time.hours}h.${time.min}m.${time.sec}s",style:  LatoHeavy.copyWith(color: MyTheme.white, fontWeight: FontWeight.w900),))
                          : Container(),
                         top: 6,
                         right: 15,

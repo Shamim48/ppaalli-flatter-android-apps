@@ -12,13 +12,13 @@ class AppConfig {
   static const bool HTTPS = false;
 
   //configure this
- // static const DOMAIN_PATH = "ecommerce9.nextpagetl.com"; //localhost
+  static const DOMAIN_PATH = "ecommerce9.nextpagetl.com"; //localhost
   //https://ecommerce9.nextpagetl.com/api/v2
-  static const DOMAIN_PATH = "143.110.188.27"; //localhost
+ // static const DOMAIN_PATH = "143.110.188.27"; //localhost
  // static const DOMAIN_PATH = "ecommerce9.nextpagetl.com"; //localhost
   //static const DOMAIN_PATH = "demo.activeitzone.com/ecommerce_flutter_demo"; //inside a folder
   //static const DOMAIN_PATH = "mydomain.com"; // directly inside the public folder
-
+//https://ecommerce9.nextpagetl.com/api/v2
   //do not configure these below
   static const String API_ENDPATH = "api/v2";
   static const String PUBLIC_FOLDER = "public";

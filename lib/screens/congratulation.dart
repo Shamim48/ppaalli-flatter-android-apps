@@ -1,6 +1,7 @@
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
+import 'package:active_ecommerce_flutter/screens/profile.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -87,7 +88,7 @@ class _CongratulationsState extends State<Congratulations> {
                   InkWell(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return OrderList(from_checkout: true, defaultDeliveryStatusKey: "pending",);
+                        return Profile();
                       }));
                     },
                     child: Container(

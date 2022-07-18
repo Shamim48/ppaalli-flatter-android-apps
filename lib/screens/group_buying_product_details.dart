@@ -20,6 +20,7 @@ import 'package:active_ecommerce_flutter/screens/chat.dart';
 import 'package:active_ecommerce_flutter/screens/common_webview_screen.dart';
 import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/product_reviews.dart';
+import 'package:active_ecommerce_flutter/screens/shipping_info.dart';
 import 'package:active_ecommerce_flutter/screens/video_description_screen.dart';
 import 'package:active_ecommerce_flutter/ui_elements/list_product_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/mini_product_card.dart';
@@ -88,6 +89,12 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
   CheckGroupBuying _checkGroupBuying;
 
   GroupProductDetails _groupProductDetails;
+
+  var _shopList = [];
+
+  bool _isInitial = true;
+  var _cartTotal = 0.00;
+  var _cartTotalString = ". . .";
 
   @override
   void initState() {
@@ -352,6 +359,10 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
   onPressBuyNow(context) {
     addToCart(mode: "buy_now", context: context);
   }
+ onPressConfirm({context, snackbar}) {
+    addToConfirm(mode: "add_to_cart", context: context, snackbar: snackbar);
+  }
+
 
   addToCart({mode, context = null, snackbar = null}) async {
     if (is_logged_in.$ == false) {
@@ -361,7 +372,6 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return Login();
       }));
-
       return;
     }
 
@@ -390,6 +400,71 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
       });
     }
   }
+  addToConfirm({mode, context = null, snackbar = null}) async {
+    if (is_logged_in.$ == false) {
+      ToastComponent.showDialog(
+          AppLocalizations.of(context).common_login_warning, context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return Login();
+      }));
+      return;
+    }
+
+    /*productCartList.add(_productDetails.data[0]);
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Cart(has_bottomnav: true,);
+      }));*/
+
+    print(widget.id);
+    print(_variant);
+    print(user_id.$);
+    print(_quantity);
+
+    var cartAddResponse = await CartRepository()
+        .getGroupCartAddResponse(id:widget.id, user_id: user_id.$, quantity: _quantity);
+
+    if (cartAddResponse.result == false) {
+      ToastComponent.showDialog(cartAddResponse.message, context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      return;
+    } else {
+      fetchData();
+
+    }
+  }
+  fetchData() async {
+    var cartResponseList =
+    await CartRepository().getCartResponseList(user_id.$);
+
+    if (cartResponseList != null && cartResponseList.length > 0) {
+      _shopList = cartResponseList;
+      onPressProceedToShipping();
+    }
+    // _shopList=cartList;
+    _isInitial = false;
+    getSetCartTotal();
+    setState(() {
+
+    });
+  }
+
+  getSetCartTotal() {
+    _cartTotal = 0.00;
+    if (_shopList.length > 0) {
+      _shopList.forEach((shop) {
+        if (shop.cartItems.length > 0) {
+          shop.cartItems.forEach((cartItems) {
+            _cartTotal +=
+                (cartItems.price + cartItems.tax) * cartItems.quantity;
+            _cartTotalString = "${cartItems.currencySymbol}${_cartTotal}";
+          });
+        }
+      });
+    }
+
+    setState(() {});
+  }
 
   onPopped(value) async {
     reset();
@@ -405,6 +480,56 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
         _showCopied = false;
       });
     });
+  }
+  onPressProceedToShipping() {
+    process(mode: "proceed_to_shipping");
+  }
+  process({mode}) async {
+    var cart_ids = [];
+    var cart_quantities = [];
+    if (_shopList.length > 0) {
+      _shopList.forEach((shop) {
+        if (shop.cartItems.length > 0) {
+          shop.cartItems.forEach((cartItems) {
+            cart_ids.add(cartItems.id);
+            cart_quantities.add(cartItems.quantity);
+          });
+        }
+      });
+    }
+
+    if (cart_ids.length == 0) {
+      ToastComponent.showDialog(AppLocalizations.of(context).cart_screen_cart_empty, context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      return;
+    }
+
+    var cart_ids_string = cart_ids.join(',').toString();
+    var cart_quantities_string = cart_quantities.join(',').toString();
+
+    print(cart_ids_string);
+    print(cart_quantities_string);
+
+    var cartProcessResponse = await CartRepository()
+        .getCartProcessResponse(cart_ids_string, cart_quantities_string);
+
+    if (cartProcessResponse.result == false) {
+      ToastComponent.showDialog(cartProcessResponse.message, context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+    } else {
+      ToastComponent.showDialog(cartProcessResponse.message, context,
+          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+
+     if (mode == "proceed_to_shipping") {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ShippingInfo(
+
+          );
+        })).then((value) {
+          onPopped(value);
+        });
+      }
+    }
   }
 
   onPressShare(context) {
@@ -2309,7 +2434,6 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
               ),
               InkWell(
                 onTap: (){
-
                   onPressAddToCart(context: context);
                 },
                 child: Container(
@@ -2341,7 +2465,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
               ),
               InkWell(
                 onTap: (){
-
+                  onPressConfirm(context: context);
                 },
                 child: Container(
                     height: 40,

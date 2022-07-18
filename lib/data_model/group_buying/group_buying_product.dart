@@ -305,8 +305,8 @@ class CheckGroupBuying {
   int _minPrice;
   int _maxPrice;
   String _minMaxPrice;
-  String _startTime;
-  String _endTime;
+  int _startTime;
+  int _endTime;
 
   CheckGroupBuying(
       {bool success,
@@ -315,8 +315,8 @@ class CheckGroupBuying {
         int minPrice,
         int maxPrice,
         String minMaxPrice,
-        String startTime,
-        String endTime}) {
+        int startTime,
+        int endTime}) {
     this._success = success;
     this._status = status;
     this._message = message;
@@ -339,10 +339,10 @@ class CheckGroupBuying {
   set maxPrice(int maxPrice) => _maxPrice = maxPrice;
   String get minMaxPrice => _minMaxPrice;
   set minMaxPrice(String minMaxPrice) => _minMaxPrice = minMaxPrice;
-  String get startTime => _startTime;
-  set startTime(String startTime) => _startTime = startTime;
-  String get endTime => _endTime;
-  set endTime(String endTime) => _endTime = endTime;
+  int get startTime => _startTime;
+  set startTime(int startTime) => _startTime = startTime;
+  int get endTime => _endTime;
+  set endTime(int endTime) => _endTime = endTime;
 
   CheckGroupBuying.fromJson(Map<String, dynamic> json) {
     _success = json['success'];
