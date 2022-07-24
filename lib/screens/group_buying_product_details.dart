@@ -958,6 +958,22 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                       16.0,
                       10.0,
                       16.0,
+                      0.0,
+                    ),
+                    child: _productDetails != null
+                        ? buildPriceRangTitle()
+                        : ShimmerHelper().buildBasicShimmer(
+                            height: 50.0,
+                          ),
+                  ),
+                ])),
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      16.0,
+                      0.0,
+                      16.0,
                       10.0,
                     ),
                     child: _productDetails != null
@@ -2290,35 +2306,37 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
     );
   }
 
-  priceRangeRow(BuildContext context) {
+  buildPriceRangTitle(){
     return Container(
-      margin: EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Container(
-            height: 35,
-            decoration: BoxDecoration(
-                color: MyTheme.red_div,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10))),
-            child: Center(
-              child: Text(
-                "Invite Friends And Family",
-                style: LatoHeavy.copyWith(
-                    color: Colors.white,
-                    fontSize: 20,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black45.withOpacity(0.3),
-                        offset: Offset(3, 3),
-                        blurRadius: 5,
-                      ),
-                    ],
-                    fontWeight: FontWeight.w900),
-              ),
-            ),
-          ),
+      height: 35,
+      decoration: BoxDecoration(
+          color: MyTheme.red_div,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10))),
+      child: Center(
+        child: Text(
+          "Invite Friends And Family",
+          style: LatoHeavy.copyWith(
+              color: Colors.white,
+              fontSize: 20,
+              shadows: [
+                Shadow(
+                  color: Colors.black45.withOpacity(0.3),
+                  offset: Offset(3, 3),
+                  blurRadius: 5,
+                ),
+              ],
+              fontWeight: FontWeight.w900),
+        ),
+      ),
+    );
+  }
+
+  priceRangeRow(BuildContext context) {
+    return _groupProductDetails!=null ? Container(
+     // margin: EdgeInsets.only(20),
+      child:
           Table(
             border: TableBorder.all(width: 1, color: MyTheme.primary_Colour),
             columnWidths: {
@@ -2338,8 +2356,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                     ),
                   )),
                 ),*/
-                Expanded(
-                  child: Container(
+                 Container(
                     padding: EdgeInsets.all(8),
                     child: Center(
                         child: Text(
@@ -2352,7 +2369,6 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                       ),
                     )),
                   ),
-                ),
                 Container(
                   width: 70,
                   padding: EdgeInsets.all(8),
@@ -2367,7 +2383,8 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                   )),
                 ),
               ]),
-              for (var groupProduct in _groupProductDetails.data)
+
+               for (var groupProduct in _groupProductDetails.data)
                 TableRow(children: [
                   /*Container(
                     width: 20,
@@ -2390,8 +2407,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                           ),
                         )),
                   ),*/
-                  Expanded(
-                    child: Container(
+                   Container(
                       padding: EdgeInsets.all(8),
                       child: Center(
                           child: Text(
@@ -2401,7 +2417,6 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                         ),
                       )),
                     ),
-                  ),
                   Container(
                     width: 70,
                     padding: EdgeInsets.all(8),
@@ -2413,12 +2428,10 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
                       ),
                     )),
                   ),
-                ]),
+                ])
             ],
-          )
-        ],
       ),
-    );
+    ):Container();
   }
 
   cartAndCheckoutRow(BuildContext context) {
@@ -2461,7 +2474,7 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
             children: [
               Container(
                 height: 30,
-                child: Text("Require ${_groupProductDetails.advancePayment}% amount to join"),
+                child: Text( _groupProductDetails.data!=null ? "Require ${_groupProductDetails.advancePayment}% amount to join":""),
               ),
               InkWell(
                 onTap: (){
@@ -2491,6 +2504,5 @@ class _GroupBuyingProductDetailsState extends State<GroupBuyingProductDetails> {
         ],
       ),
     );
-
   }
 }

@@ -75,8 +75,8 @@ class OnGoingData {
   int _id;
   int _productId;
   int _quantityRangeId;
-  int _productUnitPrice;
-  int _advancePaymentPrice;
+  String _productUnitPrice;
+  String _advancePaymentPrice;
   int _timesloatId;
   int _startTime;
   int _endTime;
@@ -88,8 +88,8 @@ class OnGoingData {
       {int id,
         int productId,
         int quantityRangeId,
-        int productUnitPrice,
-        int advancePaymentPrice,
+        String productUnitPrice,
+        String advancePaymentPrice,
         int timesloatId,
         int startTime,
         int endTime,
@@ -116,11 +116,11 @@ class OnGoingData {
   int get quantityRangeId => _quantityRangeId;
   set quantityRangeId(int quantityRangeId) =>
       _quantityRangeId = quantityRangeId;
-  int get productUnitPrice => _productUnitPrice;
-  set productUnitPrice(int productUnitPrice) =>
+  String get productUnitPrice => _productUnitPrice;
+  set productUnitPrice(String productUnitPrice) =>
       _productUnitPrice = productUnitPrice;
-  int get advancePaymentPrice => _advancePaymentPrice;
-  set advancePaymentPrice(int advancePaymentPrice) =>
+  String get advancePaymentPrice => _advancePaymentPrice;
+  set advancePaymentPrice(String advancePaymentPrice) =>
       _advancePaymentPrice = advancePaymentPrice;
   int get timesloatId => _timesloatId;
   set timesloatId(int timesloatId) => _timesloatId = timesloatId;

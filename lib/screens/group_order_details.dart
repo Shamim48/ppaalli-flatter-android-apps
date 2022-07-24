@@ -150,7 +150,7 @@ class _GroupOrderDetailsState extends State<GroupOrderDetails> {
                         child: _groupOrderDetails != null
                             ? priceAndTimeRow(context)
                             : ShimmerHelper().buildBasicShimmer(
-                          height: 50.0,
+                          height: 60.0,
                         ),
                       ),
                     ])),
@@ -683,8 +683,7 @@ class _GroupOrderDetailsState extends State<GroupOrderDetails> {
                   )),
                 ),*/
 
-                Expanded(
-                  child: Container(
+                 Container(
                     color: Colors.amber,
                     padding: EdgeInsets.all(8),
                     child: Center(
@@ -698,7 +697,6 @@ class _GroupOrderDetailsState extends State<GroupOrderDetails> {
                           ),
                         )),
                   ),
-                ),
                 Container(
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
@@ -720,8 +718,7 @@ class _GroupOrderDetailsState extends State<GroupOrderDetails> {
                 TableRow(children: [
 
 
-                  Expanded(
-                    child: Container(
+                   Container(
                       padding: EdgeInsets.all(8),
                       child: Center(
                           child: Text(
@@ -731,7 +728,6 @@ class _GroupOrderDetailsState extends State<GroupOrderDetails> {
                             ),
                           )),
                     ),
-                  ),
                   Container(
                     width: 70,
                     padding: EdgeInsets.all(8),
@@ -764,8 +760,7 @@ class _GroupOrderDetailsState extends State<GroupOrderDetails> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
 
-            Expanded(
-              child: Container(
+            Container(
                 height: 50,
                 decoration: BoxDecoration(
                     color: Colors.amber,
@@ -774,7 +769,6 @@ class _GroupOrderDetailsState extends State<GroupOrderDetails> {
                       bottomLeft: Radius.circular(10)
                     )
                 ),
-
                 padding: EdgeInsets.all(8),
                 child: Center(
                     child: Text(
@@ -791,7 +785,7 @@ class _GroupOrderDetailsState extends State<GroupOrderDetails> {
 
                     )),
               ),
-            ),
+
           Expanded(
             child: Container(
               height: 50,

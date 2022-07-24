@@ -48,9 +48,9 @@ class CartItems {
   String productThumbnailImage;
   String productBasePrice;
   String variation;
-  int price;
+  dynamic price;
   String currencySymbol;
-  int tax;
+  dynamic tax;
   int shippingCost;
   int quantity;
   int lowerLimit;

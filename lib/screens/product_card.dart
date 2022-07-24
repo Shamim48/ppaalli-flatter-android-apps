@@ -1,6 +1,7 @@
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
 import 'package:active_ecommerce_flutter/app_config.dart';
@@ -19,7 +20,7 @@ class ProductCard extends StatefulWidget {
   String image;
   String name;
   String main_price;
-  int rating;
+  dynamic rating;
 
   ProductCard({Key key,this.id, this.image, this.name, this.main_price,this.rating=0}) : super(key: key);
 
@@ -31,6 +32,41 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   SnackBar _addedToCartSnackbar;
   String wishlistImage=Images.heart_outline;
+  int _quantity = 1;
+  int _stock = 0;
+
+  var _productDetailsFetched = false;
+
+  var _productDetails = null;
+
+  fetchProductDetails() async {
+    var productDetailsResponse ;
+      productDetailsResponse= await ProductRepository().getProductDetails(id: widget.id);
+    // var productDetailsResponse =_productImageList.ge;
+    // if (productDetailsResponse.data.length > 0) {
+    _productDetails = productDetailsResponse;
+    // }
+    setProductDetailValues();
+    setState(() {});
+  }
+
+  setProductDetailValues() {
+    if (_productDetails != null) {
+      _stock = _productDetails.data[0].currentStock;
+      if(_stock<1){
+        ToastComponent.showDialog("This Product Out Of Stock!", context,
+            gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+        setState(() {
+          _quantity=0;
+        });
+      }else{
+        onPressAddToCart(context, _addedToCartSnackbar,widget.id);
+      }
+      _productDetailsFetched = true;
+
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,8 +211,7 @@ class _ProductCardState extends State<ProductCard> {
                         child: Padding(
                           padding: EdgeInsets.only(left: 5, right: 5),
                           child: FlatButton(onPressed: (){
-                            onPressAddToCart(context, _addedToCartSnackbar,widget.id);
-
+                            fetchProductDetails();
                           },
                             minWidth: MediaQuery.of(context).size.width,
                             color: MyTheme.black,

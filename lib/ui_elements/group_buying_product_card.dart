@@ -133,21 +133,21 @@ class _GroupBuyingProductCardState extends State<GroupBuyingProductCard> {
 
 
                           // Group buying timer
-                         Positioned(child: widget.startTime!=0 ?  Container(
+                         Positioned(child: diff>0 ?  Container(
 
                             padding: EdgeInsets.only(top: 3, bottom: 3, left: 5, right: 15),
                             decoration: BoxDecoration(
                                 color: MyTheme.primary_Colour.withOpacity(0.8),
                               borderRadius: BorderRadius.circular(30)
                             ),
-                            child: time.hours==null ?  Container(): Text("${time.hours}h.${time.min}m.${time.sec}s",style:  LatoHeavy.copyWith(color: MyTheme.white, fontWeight: FontWeight.w900),))
+                            child: diff<0 ?  Container(): Text("${time.hours}h.${time.min}m.${time.sec}s",style:  LatoHeavy.copyWith(color: MyTheme.white, fontWeight: FontWeight.w900),))
                          : Container(),
                         top: 6,
                         right: 15,
                       ),
 
 /*${time.days.toString()}d*/
-                        Positioned(child: widget.startTime!=0 ? Container(
+                        Positioned(child: diff>0  ? Container(
                           width: 30,
                           height: 30,
                           padding: EdgeInsets.all(4.5),

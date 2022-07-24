@@ -65,7 +65,7 @@ class Data {
   String _name;
   String _thumbnailImage;
   String _basePrice;
-  int _rating;
+  dynamic _rating;
   int _sales;
   List<VersityInfo> _versityInfo;
   DetailsLinks _links;
@@ -75,7 +75,7 @@ class Data {
         String name,
         String thumbnailImage,
         String basePrice,
-        int rating,
+        dynamic rating,
         int sales,
         List<VersityInfo> versityInfo,
         DetailsLinks links}) {
@@ -97,8 +97,8 @@ class Data {
   set thumbnailImage(String thumbnailImage) => _thumbnailImage = thumbnailImage;
   String get basePrice => _basePrice;
   set basePrice(String basePrice) => _basePrice = basePrice;
-  int get rating => _rating;
-  set rating(int rating) => _rating = rating;
+  dynamic get rating => _rating;
+  set rating(dynamic rating) => _rating = rating;
   int get sales => _sales;
   set sales(int sales) => _sales = sales;
   List<VersityInfo> get versityInfo => _versityInfo;

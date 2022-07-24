@@ -85,10 +85,10 @@ class _CongratulationsState extends State<Congratulations> {
                       child: Center(child: Text("Brows Product", style: LatoHeavy.copyWith(color: MyTheme.primary_Colour, fontSize: 18),))
                     ),
                   ),
-                  InkWell(
+                 /* InkWell(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return Profile();
+                        return Profile(show_back_button: true,);
                       }));
                     },
                     child: Container(
@@ -110,7 +110,7 @@ class _CongratulationsState extends State<Congratulations> {
                       child: Center(child: Text("Order History", style: LatoHeavy.copyWith(color: MyTheme.primary_Colour, fontSize: 18),))
                     ),
                   ),
-
+*/
 
                 ],
               ),

@@ -25,6 +25,7 @@ import 'package:active_ecommerce_flutter/ui_elements/mini_product_card.dart';
 import 'package:active_ecommerce_flutter/utill/images.dart';
 import 'package:active_ecommerce_flutter/utill/styles.dart';
 import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -260,23 +261,18 @@ class _ProductDetailsState extends State<ProductDetails> {
     var color_string = _colorList.length > 0
         ? _colorList[_selectedColorIndex].toString().replaceAll("#", "")
         : "";
-
     /*print("color string: "+color_string);
     return;*/
-
     var variantResponse = await ProductRepository().getVariantWiseInfo(
         id: widget.id, color: color_string, variants: _choiceString);
-
     /*print("vr"+variantResponse.toJson().toString());
     return;*/
-
     _singlePrice = variantResponse.price;
     _stock = variantResponse.stock;
     if (_quantity > _stock) {
       _quantity = _stock;
       setState(() {});
     }
-
     _variant = variantResponse.variant;
     setState(() {});
 
@@ -323,17 +319,14 @@ class _ProductDetailsState extends State<ProductDetails> {
     _currentImage = 0;
     setState(() {});
   }
-
   Future<void> _onPageRefresh() async {
     reset();
     fetchAll();
   }
-
   calculateTotalPrice() {
     _totalPrice = _singlePrice * _quantity;
     setState(() {});
   }
-
   _onVariantChange(_choice_options_index, value) {
     _selectedChoices[_choice_options_index] = value;
     setChoiceString();
@@ -774,22 +767,20 @@ class _ProductDetailsState extends State<ProductDetails> {
             color: MyTheme.primaryColor,
             backgroundColor: Colors.white,
             onRefresh: _onPageRefresh,
+            displacement: 0,
             child: CustomScrollView(
               controller: _mainScrollController,
-              physics: const BouncingScrollPhysics(
+              physics: BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
               slivers: <Widget>[
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        16.0,
-                        8.0,
-                        16.0,
-                        0.0,
-                      ),
-                      child: productNameAndStroke()),
-                ])),
+                /*SingleChildScrollView(
+                  padding: EdgeInsets.only(left: 16, right: 16, top: 5, bottom: 5),
+                  child: SizedBox(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width-40,
+                    child: productNameAndStroke(),)
+                  ),*/
+
                 SliverList(
                   delegate: SliverChildListDelegate([
                     Padding(
@@ -803,11 +794,53 @@ class _ProductDetailsState extends State<ProductDetails> {
                           buildProductImageSection(),
                     ),
                     Divider(
-                      height: 24.0,
+                      height: 10.0,
                     ),
                   ]),
                 ),
 
+                /* SliverList(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        16.0,
+                        10.0,
+                        16.0,
+                        0.0,
+                      ),
+                      child: //buildProductImagePart(),
+                      productNameAndStroke(),
+                    ),
+                    Divider(
+                      height: 2.0,
+                    ),
+                  ]),
+                ),*/
+
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          16.0,
+                          8.0,
+                          16.0,
+                          0.0,
+                        ),
+                        child: _productDetails != null
+                            ? Row(
+                          children: [
+                            SizedBox(width: 10,),
+                            buildProductName(),
+                            Expanded(child: Container()),
+                            buildMainPriceRow(),
+                            SizedBox(width: 10,),
+                          ],
+                        )
+                            : ShimmerHelper().buildBasicShimmer(
+                          height: 30.0,
+                        ),
+                      ),
+                    ])),
 
                 SliverList(
                     delegate: SliverChildListDelegate([
@@ -824,7 +857,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         SizedBox(width: 10,),
                         buildQuantityRow(),
                         Expanded(child: Container()),
-                        buildMainPriceRow(),
+                        buildStock(),
                         SizedBox(width: 10,),
                       ],
                     )
@@ -851,7 +884,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                     ])),
 
-                 SliverList(
+                 /*SliverList(
                     delegate: SliverChildListDelegate([
                       Padding(
                         padding: const EdgeInsets.fromLTRB(
@@ -864,7 +897,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             ? buildDiscountRow(context)
                             : Container(),
                       ),
-                    ])),
+                    ])),*/
                 SliverList(
                     delegate: SliverChildListDelegate([
                       Padding(
@@ -882,12 +915,15 @@ class _ProductDetailsState extends State<ProductDetails> {
 
                 SliverList(
                     delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 16,top: 10
-                        ),
-                        child: Text("Description:", style: LatoHeavy.copyWith(fontSize: 20),),// buildDescription(),
+                      SizedBox(
+                        height: 30,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 16,top: 10
+                          ),
+                          child: Text("Description:", style: LatoHeavy.copyWith(fontSize: 20),),// buildDescription(),
 
+                        ),
                       ),
                     ])),
 
@@ -901,8 +937,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                           5.0,
                         ),
                         child: _productDetails != null
-                            ? Html(data: """${_productDetails.data[0].description}""" )
+                            ? _productDetails.data[0].description!=null ?  Html(data: """${_productDetails.data[0].description}""" )
                             : Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 8.0),
+                            child: ShimmerHelper().buildBasicShimmer(
+                              height: 60.0,
+                            )):Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8.0, vertical: 8.0),
                             child: ShimmerHelper().buildBasicShimmer(
@@ -1454,6 +1495,20 @@ class _ProductDetailsState extends State<ProductDetails> {
       ],
     );
   }
+  Text buildProductName() {
+    return _productDetails != null
+        ? Text(
+      _productDetails.data[0].name,
+      style: TextStyle(
+          fontSize: 16,
+          color: MyTheme.black,
+          fontWeight: FontWeight.w700),
+      maxLines: 2,
+    )
+        : ShimmerHelper().buildBasicShimmer(
+      height: 30.0,
+    )  ;
+  }
 
   Padding buildVariantShimmers() {
     return Padding(
@@ -1808,7 +1863,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         Text(
             AppLocalizations.of(context).product_details_screen_total_price,
             style: LatoHeavy),
-       SizedBox(height: 10,),
+       SizedBox(height: 5,),
        /* _productDetails.data[0].hasDiscount
             ? Padding(
                 padding: EdgeInsets.only(right: 8.0),
@@ -1825,6 +1880,24 @@ class _ProductDetailsState extends State<ProductDetails> {
           style: LatoHeavy
         )
       ],
+    );
+  }
+
+  Column buildStock() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+     children: [
+      Row(
+      children: [
+      Text(
+      "In Stroke (${_stock})", style: LatoBold.copyWith(color: _stock>=1 ? MyTheme.black : MyTheme.grey_153),
+    )
+    ],
+    ),
+    Text(
+    "Out Of Stroke (${_stock})", style: LatoBold.copyWith(color: _stock<1 ? MyTheme.black : MyTheme.grey_153),
+    )
+    ],
     );
   }
 
@@ -2626,8 +2699,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                   )),
                 ),*/
-                Expanded(
-                  child: Container(
+                 Container(
                     padding: EdgeInsets.all(8),
                     child: Center(
                         child: Text(
@@ -2639,7 +2711,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                         )),
                   ),
-                ),
                 Container(
                   width: 70,
                   padding: EdgeInsets.all(8),
@@ -2676,8 +2747,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                         )),
                   ),*/
-                  Expanded(
-                    child: Container(
+                  Container(
                       padding: EdgeInsets.all(8),
                       child: Center(
                           child: Text(
@@ -2687,7 +2757,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                             ),
                           )),
                     ),
-                  ),
                   Container(
                     width: 70,
                     padding: EdgeInsets.all(8),
@@ -2708,37 +2777,41 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   productNameAndStroke() {
-    return Row(
-      children: [
-        _productDetails != null
-            ? Text(
-          _productDetails.data[0].name,
-          style: TextStyle(
-              fontSize: 16,
-              color: MyTheme.font_grey,
-              fontWeight: FontWeight.w600),
-          maxLines: 2,
-        )
-            : ShimmerHelper().buildBasicShimmer(
-          height: 30.0,
-        )  ,
-
-        Expanded(child: Container(),),
-        Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  "In Stroke (${_stock})", style: LatoBold.copyWith(color: _stock>=1 ? MyTheme.black : MyTheme.grey_153),
-                )
-              ],
-            ),
-            Text(
-              "Out Of Stroke (${_stock})", style: LatoBold.copyWith(color: _stock<1 ? MyTheme.black : MyTheme.grey_153),
-            )
-          ],
-        )
-      ],
+    return Container(
+      height: 40,
+      width: MediaQuery.of(context).size.width-40,
+      child: Row(
+        children: [
+         /* _productDetails != null
+              ? Text(
+            _productDetails.data[0].name,
+            style: TextStyle(
+                fontSize: 16,
+                color: MyTheme.font_grey,
+                fontWeight: FontWeight.w600),
+            maxLines: 2,
+          )
+              : ShimmerHelper().buildBasicShimmer(
+            height: 30.0,
+          )  ,
+*/
+        //  Expanded(child: Container(),),
+         /* ListView(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "In Stroke (${_stock})", style: LatoBold.copyWith(color: _stock>=1 ? MyTheme.black : MyTheme.grey_153),
+                  )
+                ],
+              ),
+              Text(
+                "Out Of Stroke (${_stock})", style: LatoBold.copyWith(color: _stock<1 ? MyTheme.black : MyTheme.grey_153),
+              )
+            ],
+          )*/
+        ],
+      ),
     );
   }
 
